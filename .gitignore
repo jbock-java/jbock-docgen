@@ -1,0 +1,6 @@
+/.idea/
+/*.iml
+/target
+*.edited
+*.orig
+*~
