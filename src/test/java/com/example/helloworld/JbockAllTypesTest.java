@@ -7,11 +7,11 @@ import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class EverythingTest {
+class JbockAllTypesTest {
 
     @Test
     void noInput() {
-        Everything_Parser.ParseResult result = Everything_Parser.create()
+        JbockAllTypes_Parser.ParseResult result = JbockAllTypes_Parser.create()
                 .withErrorStream(new PrintStream(new ByteArrayOutputStream()))
                 .parse(new String[]{});
         assertTrue(result.error());

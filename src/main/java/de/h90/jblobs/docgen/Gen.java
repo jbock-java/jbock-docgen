@@ -14,7 +14,7 @@ import java.util.*;
 
 public class Gen {
 
-    private static final String GEN_CLASS_NAME = "Everything";
+    private static final String GEN_CLASS_NAME = "JbockAllTypes";
     private static final Comparator<MethodData> COMPARATOR = Comparator
             .comparingInt(MethodData::type)
             .thenComparing(data -> data.name);
@@ -30,9 +30,9 @@ public class Gen {
             TypeName type = e.getKey();
             String name = baseName(type);
             if (type.isPrimitive()) {
-                data.add(new MethodData(name + "_primitive", type));
+                data.add(new MethodData(name + "_primitive_required", type));
             } else {
-                data.add(new MethodData(name + "_required", type));
+                data.add(new MethodData(requiredName(name), type));
             }
             if (!e.getValue().special()) {
                 data.add(new MethodData(name + "_opt", ParameterizedTypeName.get(ClassName.get(Optional.class), type)));
@@ -53,6 +53,13 @@ public class Gen {
 
         javaFile.writeTo(Paths.get("src/main/java"));
 
+    }
+
+    private static String requiredName(String name) {
+        if (name.toLowerCase().contains("optional")) {
+            return name;
+        }
+        return name + "_required";
     }
 
 
@@ -98,10 +105,16 @@ public class Gen {
     private static String baseName(TypeName type) {
         String[] tokens = type.toString().split("\\.", -1);
         String name = tokens[tokens.length - 1];
-        if (Character.isLowerCase(name.charAt(0))) {
-            return name;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < name.length(); i++) {
+            char c = name.charAt(i);
+            if (Character.isUpperCase(c)) {
+                sb.append(Character.toLowerCase(c));
+            } else {
+                return sb.toString() + name.substring(i);
+            }
         }
-        return Character.toUpperCase(name.charAt(0)) + name.substring(1);
+        return sb.toString();
     }
 
     private static MethodSpec createMethod(MethodData datum) {
