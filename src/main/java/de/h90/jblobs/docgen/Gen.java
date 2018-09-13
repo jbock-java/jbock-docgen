@@ -24,7 +24,7 @@ public class Gen {
         coercions.setAccessible(true);
         Map<TypeName, Coercion> map = (Map<TypeName, Coercion>) coercions.get(CoercionProvider.getInstance());
         TypeSpec.Builder spec = TypeSpec.classBuilder(GEN_CLASS_NAME);
-        spec.addMethod(createMethod(new MethodData("string_array", ArrayTypeName.get(String.class))));
+        spec.addMethod(createMethod(new MethodData("string_array", ArrayTypeName.of(String.class))));
         ArrayList<MethodData> data = new ArrayList<>(map.size());
         for (Map.Entry<TypeName, Coercion> e : map.entrySet()) {
             TypeName type = e.getKey();
@@ -44,7 +44,8 @@ public class Gen {
             spec.addMethod(createMethod(datum));
         }
         spec.addModifiers(Modifier.ABSTRACT);
-        spec.addJavadoc("Lists and optionals represent repeatable and optional arguments.\n");
+        spec.addJavadoc("Lists and arrays represent repeatable arguments.\n");
+        spec.addJavadoc("Optionals represent optional arguments.\n");
         spec.addJavadoc("Booleans represent flags.\n");
         spec.addJavadoc("Everything else represents a required argument.\n");
         spec.addAnnotation(CommandLineArguments.class);

@@ -24,11 +24,13 @@ import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
 import java.util.regex.Pattern;
+
 import net.jbock.CommandLineArguments;
 import net.jbock.Parameter;
 
 /**
- * Lists and optionals represent repeatable and optional arguments.
+ * Lists and arrays represent repeatable arguments.
+ * Optionals represent optional arguments.
  * Booleans represent flags.
  * Everything else represents a required argument.
  */
@@ -36,7 +38,7 @@ import net.jbock.Parameter;
 abstract class JbockAllTypes {
 
   @Parameter
-  abstract String stringArray();
+  abstract String[] stringArray();
 
   @Parameter
   abstract boolean booleanPrimitiveRequired();
