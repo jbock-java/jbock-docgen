@@ -35,8 +35,8 @@ public class Gen {
                 data.add(new MethodData(requiredName(name), type));
             }
             if (!e.getValue().special()) {
-                data.add(new MethodData(name + "_opt", ParameterizedTypeName.get(ClassName.get(Optional.class), type)));
-                data.add(new MethodData(name + "_list", ParameterizedTypeName.get(ClassName.get(List.class), type)));
+                data.add(new MethodData(name + "_optional", ParameterizedTypeName.get(ClassName.get(Optional.class), type)));
+                data.add(new MethodData(name + "_repeatable", ParameterizedTypeName.get(ClassName.get(List.class), type)));
             }
         }
         data.sort(COMPARATOR);
@@ -44,6 +44,9 @@ public class Gen {
             spec.addMethod(createMethod(datum));
         }
         spec.addModifiers(Modifier.ABSTRACT);
+        spec.addJavadoc("Lists and optionals represent repeatable and optional arguments.\n");
+        spec.addJavadoc("Booleans represent flags.\n");
+        spec.addJavadoc("Everything else represents a required argument.\n");
         spec.addAnnotation(CommandLineArguments.class);
 
 

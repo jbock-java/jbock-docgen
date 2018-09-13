@@ -24,10 +24,14 @@ import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
 import java.util.regex.Pattern;
-
 import net.jbock.CommandLineArguments;
 import net.jbock.Parameter;
 
+/**
+ * Lists and optionals represent repeatable and optional arguments.
+ * Booleans represent flags.
+ * Everything else represents a required argument.
+ */
 @CommandLineArguments
 abstract class JbockAllTypes {
 
@@ -119,110 +123,110 @@ abstract class JbockAllTypes {
   abstract ZonedDateTime zonedDateTimeRequired();
 
   @Parameter
-  abstract List<BigDecimal> bigDecimalList();
+  abstract List<BigDecimal> bigDecimalRepeatable();
 
   @Parameter
-  abstract List<BigInteger> bigIntegerList();
+  abstract List<BigInteger> bigIntegerRepeatable();
 
   @Parameter
-  abstract List<Character> characterList();
+  abstract List<Character> characterRepeatable();
 
   @Parameter
-  abstract List<Charset> charsetList();
+  abstract List<Charset> charsetRepeatable();
 
   @Parameter
-  abstract List<Double> doubleList();
+  abstract List<Double> doubleRepeatable();
 
   @Parameter
-  abstract List<File> fileList();
+  abstract List<File> fileRepeatable();
 
   @Parameter
-  abstract List<Float> floatList();
+  abstract List<Float> floatRepeatable();
 
   @Parameter
-  abstract List<Instant> instantList();
+  abstract List<Instant> instantRepeatable();
 
   @Parameter
-  abstract List<Integer> integerList();
+  abstract List<Integer> integerRepeatable();
 
   @Parameter
-  abstract List<LocalDate> localDateList();
+  abstract List<LocalDate> localDateRepeatable();
 
   @Parameter
-  abstract List<LocalDateTime> localDateTimeList();
+  abstract List<LocalDateTime> localDateTimeRepeatable();
 
   @Parameter
-  abstract List<Long> longList();
+  abstract List<Long> longRepeatable();
 
   @Parameter
-  abstract List<OffsetDateTime> offsetDateTimeList();
+  abstract List<OffsetDateTime> offsetDateTimeRepeatable();
 
   @Parameter
-  abstract List<Path> pathList();
+  abstract List<Path> pathRepeatable();
 
   @Parameter
-  abstract List<Pattern> patternList();
+  abstract List<Pattern> patternRepeatable();
 
   @Parameter
-  abstract List<String> stringList();
+  abstract List<String> stringRepeatable();
 
   @Parameter
-  abstract List<URI> uriList();
+  abstract List<URI> uriRepeatable();
 
   @Parameter
-  abstract List<ZonedDateTime> zonedDateTimeList();
+  abstract List<ZonedDateTime> zonedDateTimeRepeatable();
 
   @Parameter
-  abstract Optional<BigDecimal> bigDecimalOpt();
+  abstract Optional<BigDecimal> bigDecimalOptional();
 
   @Parameter
-  abstract Optional<BigInteger> bigIntegerOpt();
+  abstract Optional<BigInteger> bigIntegerOptional();
 
   @Parameter
-  abstract Optional<Character> characterOpt();
+  abstract Optional<Character> characterOptional();
 
   @Parameter
-  abstract Optional<Charset> charsetOpt();
+  abstract Optional<Charset> charsetOptional();
 
   @Parameter
-  abstract Optional<Double> doubleOpt();
+  abstract Optional<Double> doubleOptional();
 
   @Parameter
-  abstract Optional<File> fileOpt();
+  abstract Optional<File> fileOptional();
 
   @Parameter
-  abstract Optional<Float> floatOpt();
+  abstract Optional<Float> floatOptional();
 
   @Parameter
-  abstract Optional<Instant> instantOpt();
+  abstract Optional<Instant> instantOptional();
 
   @Parameter
-  abstract Optional<Integer> integerOpt();
+  abstract Optional<Integer> integerOptional();
 
   @Parameter
-  abstract Optional<LocalDate> localDateOpt();
+  abstract Optional<LocalDate> localDateOptional();
 
   @Parameter
-  abstract Optional<LocalDateTime> localDateTimeOpt();
+  abstract Optional<LocalDateTime> localDateTimeOptional();
 
   @Parameter
-  abstract Optional<Long> longOpt();
+  abstract Optional<Long> longOptional();
 
   @Parameter
-  abstract Optional<OffsetDateTime> offsetDateTimeOpt();
+  abstract Optional<OffsetDateTime> offsetDateTimeOptional();
 
   @Parameter
-  abstract Optional<Path> pathOpt();
+  abstract Optional<Path> pathOptional();
 
   @Parameter
-  abstract Optional<Pattern> patternOpt();
+  abstract Optional<Pattern> patternOptional();
 
   @Parameter
-  abstract Optional<String> stringOpt();
+  abstract Optional<String> stringOptional();
 
   @Parameter
-  abstract Optional<URI> uriOpt();
+  abstract Optional<URI> uriOptional();
 
   @Parameter
-  abstract Optional<ZonedDateTime> zonedDateTimeOpt();
+  abstract Optional<ZonedDateTime> zonedDateTimeOptional();
 }
