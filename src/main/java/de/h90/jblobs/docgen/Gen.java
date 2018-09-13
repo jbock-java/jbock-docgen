@@ -4,37 +4,31 @@ import net.jbock.CommandLineArguments;
 import net.jbock.Parameter;
 import net.jbock.coerce.Coercion;
 import net.jbock.coerce.CoercionProvider;
-import net.jbock.com.squareup.javapoet.ArrayTypeName;
-import net.jbock.com.squareup.javapoet.ClassName;
-import net.jbock.com.squareup.javapoet.MethodSpec;
-import net.jbock.com.squareup.javapoet.ParameterizedTypeName;
-import net.jbock.com.squareup.javapoet.TypeName;
-import net.jbock.com.squareup.javapoet.TypeSpec;
+import net.jbock.com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
+import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.nio.file.Paths;
+import java.util.*;
 
 public class Gen {
 
-    static Comparator<MethodData> comparator = Comparator.comparingInt(MethodData::type)
+    private static final String GEN_CLASS_NAME = "Everything";
+    private static final Comparator<MethodData> COMPARATOR = Comparator
+            .comparingInt(MethodData::type)
             .thenComparing(data -> data.name);
 
-    public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
+    public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException, IOException {
         Field coercions = CoercionProvider.class.getDeclaredField("coercions");
         coercions.setAccessible(true);
         Map<TypeName, Coercion> map = (Map<TypeName, Coercion>) coercions.get(CoercionProvider.getInstance());
-        TypeSpec.Builder spec = TypeSpec.classBuilder("Everything");
+        TypeSpec.Builder spec = TypeSpec.classBuilder(GEN_CLASS_NAME);
         spec.addMethod(createMethod(new MethodData("string_array", ArrayTypeName.get(String.class))));
         ArrayList<MethodData> data = new ArrayList<>(map.size());
         for (Map.Entry<TypeName, Coercion> e : map.entrySet()) {
             TypeName type = e.getKey();
-            String[] tokens = type.toString().toLowerCase().split("\\.", -1);
-            String name = tokens[tokens.length - 1];
+            String name = baseName(type);
             if (type.isPrimitive()) {
                 data.add(new MethodData(name + "_primitive", type));
             } else {
@@ -45,13 +39,20 @@ public class Gen {
                 data.add(new MethodData(name + "_list", ParameterizedTypeName.get(ClassName.get(List.class), type)));
             }
         }
-        data.sort(comparator);
+        data.sort(COMPARATOR);
         for (MethodData datum : data) {
             spec.addMethod(createMethod(datum));
         }
         spec.addModifiers(Modifier.ABSTRACT);
         spec.addAnnotation(CommandLineArguments.class);
-        System.out.println(spec.build().toString());
+
+
+        String packageName = "com.example.helloworld";
+        JavaFile javaFile = JavaFile.builder(packageName, spec.build())
+                .build();
+
+        javaFile.writeTo(Paths.get("src/main/java"));
+
     }
 
 
@@ -92,6 +93,15 @@ public class Gen {
             }
         }
         return sb.toString();
+    }
+
+    private static String baseName(TypeName type) {
+        String[] tokens = type.toString().split("\\.", -1);
+        String name = tokens[tokens.length - 1];
+        if (Character.isLowerCase(name.charAt(0))) {
+            return name;
+        }
+        return Character.toUpperCase(name.charAt(0)) + name.substring(1);
     }
 
     private static MethodSpec createMethod(MethodData datum) {

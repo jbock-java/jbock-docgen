@@ -12,7 +12,7 @@
         <surefire.version>2.22.0</surefire.version>
         <compiler-plugin.version>3.8.0</compiler-plugin.version>
         <log4j.version>2.11.1</log4j.version>
-        <jbock.version>2.5.2</jbock.version>
+        <jbock.version>2.5.3</jbock.version>
         <mockito.version>2.22.0</mockito.version>
         <exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
     </properties>
