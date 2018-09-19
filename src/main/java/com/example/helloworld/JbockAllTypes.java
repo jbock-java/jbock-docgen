@@ -29,16 +29,13 @@ import net.jbock.CommandLineArguments;
 import net.jbock.Parameter;
 
 /**
- * Lists and arrays represent repeatable arguments.
+ * Lists represent repeatable arguments.
  * Optionals represent optional arguments.
  * Booleans represent flags.
  * Everything else represents a required argument.
  */
 @CommandLineArguments
 abstract class JbockAllTypes {
-
-  @Parameter
-  abstract String[] stringArray();
 
   @Parameter
   abstract boolean booleanPrimitiveRequired();

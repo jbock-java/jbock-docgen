@@ -4,13 +4,22 @@ import net.jbock.CommandLineArguments;
 import net.jbock.Parameter;
 import net.jbock.coerce.Coercion;
 import net.jbock.coerce.CoercionProvider;
-import net.jbock.com.squareup.javapoet.*;
+import net.jbock.com.squareup.javapoet.ClassName;
+import net.jbock.com.squareup.javapoet.JavaFile;
+import net.jbock.com.squareup.javapoet.MethodSpec;
+import net.jbock.com.squareup.javapoet.ParameterizedTypeName;
+import net.jbock.com.squareup.javapoet.TypeName;
+import net.jbock.com.squareup.javapoet.TypeSpec;
 
 import javax.lang.model.element.Modifier;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class Gen {
 
@@ -24,7 +33,6 @@ public class Gen {
         coercions.setAccessible(true);
         Map<TypeName, Coercion> map = (Map<TypeName, Coercion>) coercions.get(CoercionProvider.getInstance());
         TypeSpec.Builder spec = TypeSpec.classBuilder(GEN_CLASS_NAME);
-        spec.addMethod(createMethod(new MethodData("string_array", ArrayTypeName.of(String.class))));
         ArrayList<MethodData> data = new ArrayList<>(map.size());
         for (Map.Entry<TypeName, Coercion> e : map.entrySet()) {
             TypeName type = e.getKey();
@@ -44,7 +52,7 @@ public class Gen {
             spec.addMethod(createMethod(datum));
         }
         spec.addModifiers(Modifier.ABSTRACT);
-        spec.addJavadoc("Lists and arrays represent repeatable arguments.\n");
+        spec.addJavadoc("Lists represent repeatable arguments.\n");
         spec.addJavadoc("Optionals represent optional arguments.\n");
         spec.addJavadoc("Booleans represent flags.\n");
         spec.addJavadoc("Everything else represents a required argument.\n");
