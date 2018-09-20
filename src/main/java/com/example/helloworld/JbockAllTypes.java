@@ -18,84 +18,39 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
 import java.util.regex.Pattern;
-
 import net.jbock.CommandLineArguments;
 import net.jbock.Parameter;
 
 /**
  * Lists represent repeatable arguments.
  * Optionals represent optional arguments.
- * Booleans represent flags.
+ * Booleans represent flags, unless there's a mapper.
  * Everything else represents a required argument.
  */
 @CommandLineArguments
 abstract class JbockAllTypes {
 
   @Parameter
-  abstract boolean booleanPrimitiveRequired();
+  abstract boolean requiredBooleanPrimitive();
 
   @Parameter
-  abstract char charPrimitiveRequired();
+  abstract char requiredCharPrimitive();
 
   @Parameter
-  abstract double doublePrimitiveRequired();
+  abstract double requiredDoublePrimitive();
 
   @Parameter
-  abstract float floatPrimitiveRequired();
+  abstract float requiredFloatPrimitive();
 
   @Parameter
-  abstract int intPrimitiveRequired();
+  abstract int requiredIntPrimitive();
 
   @Parameter
-  abstract long longPrimitiveRequired();
-
-  @Parameter
-  abstract BigDecimal bigDecimalRequired();
-
-  @Parameter
-  abstract BigInteger bigIntegerRequired();
-
-  @Parameter
-  abstract Boolean booleanRequired();
-
-  @Parameter
-  abstract Character characterRequired();
-
-  @Parameter
-  abstract Charset charsetRequired();
-
-  @Parameter
-  abstract Double doubleRequired();
-
-  @Parameter
-  abstract File fileRequired();
-
-  @Parameter
-  abstract Float floatRequired();
-
-  @Parameter
-  abstract Instant instantRequired();
-
-  @Parameter
-  abstract Integer integerRequired();
-
-  @Parameter
-  abstract LocalDate localDateRequired();
-
-  @Parameter
-  abstract LocalDateTime localDateTimeRequired();
-
-  @Parameter
-  abstract Long longRequired();
-
-  @Parameter
-  abstract OffsetDateTime offsetDateTimeRequired();
+  abstract long requiredLongPrimitive();
 
   @Parameter
   abstract OptionalDouble optionalDouble();
@@ -107,125 +62,59 @@ abstract class JbockAllTypes {
   abstract OptionalLong optionalLong();
 
   @Parameter
-  abstract Path pathRequired();
+  abstract BigDecimal requiredBigDecimal();
 
   @Parameter
-  abstract Pattern patternRequired();
+  abstract BigInteger requiredBigInteger();
 
   @Parameter
-  abstract String stringRequired();
+  abstract Boolean requiredBoolean();
 
   @Parameter
-  abstract URI uriRequired();
+  abstract Character requiredCharacter();
 
   @Parameter
-  abstract ZonedDateTime zonedDateTimeRequired();
+  abstract Charset requiredCharset();
 
   @Parameter
-  abstract List<BigDecimal> bigDecimalRepeatable();
+  abstract Double requiredDouble();
 
   @Parameter
-  abstract List<BigInteger> bigIntegerRepeatable();
+  abstract File requiredFile();
 
   @Parameter
-  abstract List<Character> characterRepeatable();
+  abstract Float requiredFloat();
 
   @Parameter
-  abstract List<Charset> charsetRepeatable();
+  abstract Instant requiredInstant();
 
   @Parameter
-  abstract List<Double> doubleRepeatable();
+  abstract Integer requiredInteger();
 
   @Parameter
-  abstract List<File> fileRepeatable();
+  abstract LocalDate requiredLocalDate();
 
   @Parameter
-  abstract List<Float> floatRepeatable();
+  abstract LocalDateTime requiredLocalDateTime();
 
   @Parameter
-  abstract List<Instant> instantRepeatable();
+  abstract Long requiredLong();
 
   @Parameter
-  abstract List<Integer> integerRepeatable();
+  abstract OffsetDateTime requiredOffsetDateTime();
 
   @Parameter
-  abstract List<LocalDate> localDateRepeatable();
+  abstract Path requiredPath();
 
   @Parameter
-  abstract List<LocalDateTime> localDateTimeRepeatable();
+  abstract Pattern requiredPattern();
 
   @Parameter
-  abstract List<Long> longRepeatable();
+  abstract String requiredString();
 
   @Parameter
-  abstract List<OffsetDateTime> offsetDateTimeRepeatable();
+  abstract URI requiredUri();
 
   @Parameter
-  abstract List<Path> pathRepeatable();
-
-  @Parameter
-  abstract List<Pattern> patternRepeatable();
-
-  @Parameter
-  abstract List<String> stringRepeatable();
-
-  @Parameter
-  abstract List<URI> uriRepeatable();
-
-  @Parameter
-  abstract List<ZonedDateTime> zonedDateTimeRepeatable();
-
-  @Parameter
-  abstract Optional<BigDecimal> bigDecimalOptional();
-
-  @Parameter
-  abstract Optional<BigInteger> bigIntegerOptional();
-
-  @Parameter
-  abstract Optional<Character> characterOptional();
-
-  @Parameter
-  abstract Optional<Charset> charsetOptional();
-
-  @Parameter
-  abstract Optional<Double> doubleOptional();
-
-  @Parameter
-  abstract Optional<File> fileOptional();
-
-  @Parameter
-  abstract Optional<Float> floatOptional();
-
-  @Parameter
-  abstract Optional<Instant> instantOptional();
-
-  @Parameter
-  abstract Optional<Integer> integerOptional();
-
-  @Parameter
-  abstract Optional<LocalDate> localDateOptional();
-
-  @Parameter
-  abstract Optional<LocalDateTime> localDateTimeOptional();
-
-  @Parameter
-  abstract Optional<Long> longOptional();
-
-  @Parameter
-  abstract Optional<OffsetDateTime> offsetDateTimeOptional();
-
-  @Parameter
-  abstract Optional<Path> pathOptional();
-
-  @Parameter
-  abstract Optional<Pattern> patternOptional();
-
-  @Parameter
-  abstract Optional<String> stringOptional();
-
-  @Parameter
-  abstract Optional<URI> uriOptional();
-
-  @Parameter
-  abstract Optional<ZonedDateTime> zonedDateTimeOptional();
+  abstract ZonedDateTime requiredZonedDateTime();
 }

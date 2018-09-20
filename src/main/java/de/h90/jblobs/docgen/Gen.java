@@ -4,12 +4,7 @@ import net.jbock.CommandLineArguments;
 import net.jbock.Parameter;
 import net.jbock.coerce.Coercion;
 import net.jbock.coerce.CoercionProvider;
-import net.jbock.com.squareup.javapoet.ClassName;
-import net.jbock.com.squareup.javapoet.JavaFile;
-import net.jbock.com.squareup.javapoet.MethodSpec;
-import net.jbock.com.squareup.javapoet.ParameterizedTypeName;
-import net.jbock.com.squareup.javapoet.TypeName;
-import net.jbock.com.squareup.javapoet.TypeSpec;
+import net.jbock.com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
 import java.io.IOException;
@@ -19,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class Gen {
 
@@ -38,13 +32,10 @@ public class Gen {
             TypeName type = e.getKey();
             String name = baseName(type);
             if (type.isPrimitive()) {
-                data.add(new MethodData(name + "_primitive_required", type));
+                data.add(new MethodData("required_" + name + "_primitive", type));
             } else {
-                data.add(new MethodData(requiredName(name), type));
-            }
-            if (!e.getValue().special()) {
-                data.add(new MethodData(name + "_optional", ParameterizedTypeName.get(ClassName.get(Optional.class), type)));
-                data.add(new MethodData(name + "_repeatable", ParameterizedTypeName.get(ClassName.get(List.class), type)));
+                data.add(new MethodData(
+                        (name.toLowerCase().contains("optional") ? "" : "required_") + name, type));
             }
         }
         data.sort(COMPARATOR);
@@ -54,7 +45,7 @@ public class Gen {
         spec.addModifiers(Modifier.ABSTRACT);
         spec.addJavadoc("Lists represent repeatable arguments.\n");
         spec.addJavadoc("Optionals represent optional arguments.\n");
-        spec.addJavadoc("Booleans represent flags.\n");
+        spec.addJavadoc("Booleans represent flags, unless there's a mapper.\n");
         spec.addJavadoc("Everything else represents a required argument.\n");
         spec.addAnnotation(CommandLineArguments.class);
 
@@ -65,13 +56,6 @@ public class Gen {
 
         javaFile.writeTo(Paths.get("src/main/java"));
 
-    }
-
-    private static String requiredName(String name) {
-        if (name.toLowerCase().contains("optional")) {
-            return name;
-        }
-        return name + "_required";
     }
 
 
