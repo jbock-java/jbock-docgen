@@ -1,19 +1,23 @@
 package de.h90.jblobs.docgen;
 
+import com.squareup.javapoet.*;
 import net.jbock.CommandLineArguments;
 import net.jbock.Parameter;
-import net.jbock.coerce.Coercion;
-import net.jbock.coerce.CoercionProvider;
-import net.jbock.com.squareup.javapoet.*;
+import net.jbock.coerce.mappers.CoercionFactory;
+import net.jbock.coerce.mappers.StandardCoercions;
+import net.jbock.compiler.EvaluatingProcessor;
 
 import javax.lang.model.element.Modifier;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Gen {
 
@@ -22,17 +26,23 @@ public class Gen {
             .comparingInt(MethodData::type)
             .thenComparing(data -> data.name);
 
-    public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException, IOException {
-        Field coercions = CoercionProvider.class.getDeclaredField("coercions");
-        coercions.setAccessible(true);
-        Map<TypeName, Coercion> map = (Map<TypeName, Coercion>) coercions.get(CoercionProvider.getInstance());
+    private static void notMain(Elements elements, Types types) throws NoSuchFieldException, IllegalAccessException, IOException, NoSuchMethodException, InvocationTargetException, InstantiationException {
+        Constructor<StandardCoercions> constructor = StandardCoercions.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        StandardCoercions coercions = constructor.newInstance();
+        Field coercionsField = coercions.getClass().getDeclaredField("coercions");
+        coercionsField.setAccessible(true);
+        Map<?, CoercionFactory> map = (Map<?, CoercionFactory>) coercionsField.get(coercions);
         TypeSpec.Builder spec = TypeSpec.classBuilder(GEN_CLASS_NAME);
-        ArrayList<MethodData> data = new ArrayList<>(map.size());
-        for (Map.Entry<TypeName, Coercion> e : map.entrySet()) {
-            TypeName type = e.getKey();
+        List<MethodData> data = new ArrayList<>(map.size());
+        for (CoercionFactory coercion : map.values()) {
+            Method mapperReturnTypeMethod = CoercionFactory.class.getDeclaredMethod("mapperReturnType");
+            mapperReturnTypeMethod.setAccessible(true);
+            TypeMirror mapperReturnType = (TypeMirror) mapperReturnTypeMethod.invoke(coercion);
+            TypeName type = TypeName.get(mapperReturnType);
             String name = baseName(type);
             if (type.isPrimitive()) {
-                data.add(new MethodData("required_" + name + "_primitive", type));
+                data.add(new MethodData(name + "_primitive", type));
             } else {
                 data.add(new MethodData(
                         (name.toLowerCase().contains("optional") ? "" : "required_") + name, type));
@@ -43,10 +53,6 @@ public class Gen {
             spec.addMethod(createMethod(datum));
         }
         spec.addModifiers(Modifier.ABSTRACT);
-        spec.addJavadoc("Lists represent repeatable arguments.\n");
-        spec.addJavadoc("Optionals represent optional arguments.\n");
-        spec.addJavadoc("Booleans represent flags, unless there's a mapper.\n");
-        spec.addJavadoc("Everything else represents a required argument.\n");
         spec.addAnnotation(CommandLineArguments.class);
 
 
@@ -58,6 +64,9 @@ public class Gen {
 
     }
 
+    public static void main(String[] args) {
+        EvaluatingProcessor.source().run((elements, types) -> notMain(elements, types));
+    }
 
     static class MethodData {
 
@@ -114,10 +123,21 @@ public class Gen {
     }
 
     private static MethodSpec createMethod(MethodData datum) {
+        AnnotationSpec.Builder spec = AnnotationSpec.builder(Parameter.class)
+                .addMember("longName", "$S", datum.name);
+        if (datum.type.equals(TypeName.get(Boolean.class)) ||
+                datum.type.equals(TypeName.BOOLEAN)) {
+            spec.addMember("flag", "true");
+        }
+        if (datum.type.equals(TypeName.get(OptionalInt.class)) ||
+                datum.type.equals(TypeName.get(OptionalLong.class)) ||
+                datum.type.equals(TypeName.get(OptionalDouble.class))) {
+            spec.addMember("optional", "true");
+        }
         return MethodSpec.methodBuilder(datum.name)
                 .addModifiers(Modifier.ABSTRACT)
                 .returns(datum.type)
-                .addAnnotation(Parameter.class)
+                .addAnnotation(spec.build())
                 .build();
     }
 }

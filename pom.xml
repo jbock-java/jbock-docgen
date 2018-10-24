@@ -9,10 +9,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.3.1</junit.version>
+        <compile-testing.version>0.15</compile-testing.version>
         <surefire.version>2.22.0</surefire.version>
         <compiler-plugin.version>3.8.0</compiler-plugin.version>
         <log4j.version>2.11.1</log4j.version>
-        <jbock.version>2.5.5</jbock.version>
+        <jbock.version>2.6.0</jbock.version>
         <mockito.version>2.22.0</mockito.version>
         <exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
     </properties>
@@ -29,6 +30,12 @@
             <groupId>com.github.h908714124</groupId>
             <artifactId>jbock</artifactId>
             <version>${jbock.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.testing.compile</groupId>
+            <artifactId>compile-testing</artifactId>
+            <version>${compile-testing.version}</version>
         </dependency>
 
         <dependency>
@@ -65,6 +72,13 @@
                 <configuration>
                     <source>8</source>
                     <target>8</target>
+                    <annotationProcessorPaths>
+                        <dependency>
+                            <groupId>com.github.h908714124</groupId>
+                            <artifactId>jbock</artifactId>
+                            <version>${jbock.version}</version>
+                        </dependency>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
 

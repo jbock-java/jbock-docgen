@@ -2,11 +2,13 @@ package com.example.helloworld;
 
 import java.io.File;
 import java.lang.Boolean;
+import java.lang.Byte;
 import java.lang.Character;
 import java.lang.Double;
 import java.lang.Float;
 import java.lang.Integer;
 import java.lang.Long;
+import java.lang.Short;
 import java.lang.String;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -25,96 +27,170 @@ import java.util.regex.Pattern;
 import net.jbock.CommandLineArguments;
 import net.jbock.Parameter;
 
-/**
- * Lists represent repeatable arguments.
- * Optionals represent optional arguments.
- * Booleans represent flags, unless there's a mapper.
- * Everything else represents a required argument.
- */
 @CommandLineArguments
 abstract class JbockAllTypes {
+  @Parameter(
+      longName = "booleanPrimitive",
+      flag = true
+  )
+  abstract boolean booleanPrimitive();
 
-  @Parameter
-  abstract boolean requiredBooleanPrimitive();
+  @Parameter(
+      longName = "bytePrimitive"
+  )
+  abstract byte bytePrimitive();
 
-  @Parameter
-  abstract char requiredCharPrimitive();
+  @Parameter(
+      longName = "charPrimitive"
+  )
+  abstract char charPrimitive();
 
-  @Parameter
-  abstract double requiredDoublePrimitive();
+  @Parameter(
+      longName = "doublePrimitive"
+  )
+  abstract double doublePrimitive();
 
-  @Parameter
-  abstract float requiredFloatPrimitive();
+  @Parameter(
+      longName = "floatPrimitive"
+  )
+  abstract float floatPrimitive();
 
-  @Parameter
-  abstract int requiredIntPrimitive();
+  @Parameter(
+      longName = "intPrimitive"
+  )
+  abstract int intPrimitive();
 
-  @Parameter
-  abstract long requiredLongPrimitive();
+  @Parameter(
+      longName = "longPrimitive"
+  )
+  abstract long longPrimitive();
 
-  @Parameter
+  @Parameter(
+      longName = "shortPrimitive"
+  )
+  abstract short shortPrimitive();
+
+  @Parameter(
+      longName = "optionalDouble",
+      optional = true
+  )
   abstract OptionalDouble optionalDouble();
 
-  @Parameter
+  @Parameter(
+      longName = "optionalInt",
+      optional = true
+  )
   abstract OptionalInt optionalInt();
 
-  @Parameter
+  @Parameter(
+      longName = "optionalLong",
+      optional = true
+  )
   abstract OptionalLong optionalLong();
 
-  @Parameter
+  @Parameter(
+      longName = "requiredBigDecimal"
+  )
   abstract BigDecimal requiredBigDecimal();
 
-  @Parameter
+  @Parameter(
+      longName = "requiredBigInteger"
+  )
   abstract BigInteger requiredBigInteger();
 
-  @Parameter
+  @Parameter(
+      longName = "requiredBoolean",
+      flag = true
+  )
   abstract Boolean requiredBoolean();
 
-  @Parameter
+  @Parameter(
+      longName = "requiredByte"
+  )
+  abstract Byte requiredByte();
+
+  @Parameter(
+      longName = "requiredCharacter"
+  )
   abstract Character requiredCharacter();
 
-  @Parameter
+  @Parameter(
+      longName = "requiredCharset"
+  )
   abstract Charset requiredCharset();
 
-  @Parameter
+  @Parameter(
+      longName = "requiredDouble"
+  )
   abstract Double requiredDouble();
 
-  @Parameter
+  @Parameter(
+      longName = "requiredFile"
+  )
   abstract File requiredFile();
 
-  @Parameter
+  @Parameter(
+      longName = "requiredFloat"
+  )
   abstract Float requiredFloat();
 
-  @Parameter
+  @Parameter(
+      longName = "requiredInstant"
+  )
   abstract Instant requiredInstant();
 
-  @Parameter
+  @Parameter(
+      longName = "requiredInteger"
+  )
   abstract Integer requiredInteger();
 
-  @Parameter
+  @Parameter(
+      longName = "requiredLocalDate"
+  )
   abstract LocalDate requiredLocalDate();
 
-  @Parameter
+  @Parameter(
+      longName = "requiredLocalDateTime"
+  )
   abstract LocalDateTime requiredLocalDateTime();
 
-  @Parameter
+  @Parameter(
+      longName = "requiredLong"
+  )
   abstract Long requiredLong();
 
-  @Parameter
+  @Parameter(
+      longName = "requiredOffsetDateTime"
+  )
   abstract OffsetDateTime requiredOffsetDateTime();
 
-  @Parameter
+  @Parameter(
+      longName = "requiredPath"
+  )
   abstract Path requiredPath();
 
-  @Parameter
+  @Parameter(
+      longName = "requiredPattern"
+  )
   abstract Pattern requiredPattern();
 
-  @Parameter
+  @Parameter(
+      longName = "requiredShort"
+  )
+  abstract Short requiredShort();
+
+  @Parameter(
+      longName = "requiredString"
+  )
   abstract String requiredString();
 
-  @Parameter
+  @Parameter(
+      longName = "requiredUri"
+  )
   abstract URI requiredUri();
 
-  @Parameter
+  @Parameter(
+      longName = "requiredZonedDateTime"
+  )
   abstract ZonedDateTime requiredZonedDateTime();
 }
