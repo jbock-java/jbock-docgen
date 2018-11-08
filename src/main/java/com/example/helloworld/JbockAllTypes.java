@@ -20,15 +20,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
-import java.util.OptionalLong;
 import java.util.regex.Pattern;
 import net.jbock.CommandLineArguments;
 import net.jbock.Parameter;
 
 @CommandLineArguments
 abstract class JbockAllTypes {
+
   @Parameter(
       longName = "booleanPrimitive",
       flag = true
@@ -69,24 +67,6 @@ abstract class JbockAllTypes {
       longName = "shortPrimitive"
   )
   abstract short shortPrimitive();
-
-  @Parameter(
-      longName = "optionalDouble",
-      optional = true
-  )
-  abstract OptionalDouble optionalDouble();
-
-  @Parameter(
-      longName = "optionalInt",
-      optional = true
-  )
-  abstract OptionalInt optionalInt();
-
-  @Parameter(
-      longName = "optionalLong",
-      optional = true
-  )
-  abstract OptionalLong optionalLong();
 
   @Parameter(
       longName = "requiredBigDecimal"

@@ -35,10 +35,12 @@ public class Gen {
         Map<?, CoercionFactory> map = (Map<?, CoercionFactory>) coercionsField.get(coercions);
         TypeSpec.Builder spec = TypeSpec.classBuilder(GEN_CLASS_NAME);
         List<MethodData> data = new ArrayList<>(map.size());
-        for (CoercionFactory coercion : map.values()) {
+        for (Object mapMirror : map.keySet()) {
             Method mapperReturnTypeMethod = CoercionFactory.class.getDeclaredMethod("mapperReturnType");
             mapperReturnTypeMethod.setAccessible(true);
-            TypeMirror mapperReturnType = (TypeMirror) mapperReturnTypeMethod.invoke(coercion);
+            Field typeMirrorField = mapMirror.getClass().getDeclaredField("typeMirror");
+            typeMirrorField.setAccessible(true);
+            TypeMirror mapperReturnType = (TypeMirror) typeMirrorField.get(mapMirror);
             TypeName type = TypeName.get(mapperReturnType);
             String name = baseName(type);
             if (type.isPrimitive()) {
