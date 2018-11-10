@@ -1,6 +1,7 @@
 package de.h90.jblobs.docgen;
 
 import com.squareup.javapoet.AnnotationSpec;
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
@@ -124,6 +125,9 @@ public class Gen {
                 if (TypeName.get(aClass).equals(type)) {
                     return -1;
                 }
+            }
+            if (type instanceof ClassName) {
+                return Math.abs(((ClassName) type).packageName().hashCode());
             }
             return 0;
         }
