@@ -1,15 +1,6 @@
 package com.example.helloworld;
 
 import java.io.File;
-import java.lang.Boolean;
-import java.lang.Byte;
-import java.lang.Character;
-import java.lang.Double;
-import java.lang.Float;
-import java.lang.Integer;
-import java.lang.Long;
-import java.lang.Short;
-import java.lang.String;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
@@ -20,6 +11,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
+import java.util.OptionalLong;
 import java.util.regex.Pattern;
 import net.jbock.CommandLineArguments;
 import net.jbock.Parameter;
@@ -28,149 +22,167 @@ import net.jbock.Parameter;
 abstract class JbockAllTypes {
 
   @Parameter(
-      longName = "booleanPrimitive",
+      longName = "boolean",
       flag = true
   )
-  abstract boolean booleanPrimitive();
+  abstract boolean aboolean();
 
   @Parameter(
-      longName = "bytePrimitive"
+      longName = "byte"
   )
-  abstract byte bytePrimitive();
+  abstract byte abyte();
 
   @Parameter(
-      longName = "charPrimitive"
+      longName = "char"
   )
-  abstract char charPrimitive();
+  abstract char achar();
 
   @Parameter(
-      longName = "doublePrimitive"
+      longName = "double"
   )
-  abstract double doublePrimitive();
+  abstract double adouble();
 
   @Parameter(
-      longName = "floatPrimitive"
+      longName = "float"
   )
-  abstract float floatPrimitive();
+  abstract float afloat();
 
   @Parameter(
-      longName = "intPrimitive"
+      longName = "int"
   )
-  abstract int intPrimitive();
+  abstract int aint();
 
   @Parameter(
-      longName = "longPrimitive"
+      longName = "long"
   )
-  abstract long longPrimitive();
+  abstract long along();
 
   @Parameter(
-      longName = "shortPrimitive"
+      longName = "short"
   )
-  abstract short shortPrimitive();
+  abstract short ashort();
 
   @Parameter(
-      longName = "requiredBigDecimal"
-  )
-  abstract BigDecimal requiredBigDecimal();
-
-  @Parameter(
-      longName = "requiredBigInteger"
-  )
-  abstract BigInteger requiredBigInteger();
-
-  @Parameter(
-      longName = "requiredBoolean",
+      longName = "Boolean",
       flag = true
   )
-  abstract Boolean requiredBoolean();
+  abstract Boolean aBoxedBoolean();
 
   @Parameter(
-      longName = "requiredByte"
+      longName = "Byte"
   )
-  abstract Byte requiredByte();
+  abstract Byte aBoxedByte();
 
   @Parameter(
-      longName = "requiredCharacter"
+      longName = "Character"
   )
-  abstract Character requiredCharacter();
+  abstract Character aBoxedCharacter();
 
   @Parameter(
-      longName = "requiredCharset"
+      longName = "Double"
   )
-  abstract Charset requiredCharset();
+  abstract Double aBoxedDouble();
 
   @Parameter(
-      longName = "requiredDouble"
+      longName = "Float"
   )
-  abstract Double requiredDouble();
+  abstract Float aBoxedFloat();
 
   @Parameter(
-      longName = "requiredFile"
+      longName = "Integer"
   )
-  abstract File requiredFile();
+  abstract Integer aBoxedInteger();
 
   @Parameter(
-      longName = "requiredFloat"
+      longName = "Long"
   )
-  abstract Float requiredFloat();
+  abstract Long aBoxedLong();
 
   @Parameter(
-      longName = "requiredInstant"
+      longName = "Short"
   )
-  abstract Instant requiredInstant();
+  abstract Short aBoxedShort();
 
   @Parameter(
-      longName = "requiredInteger"
+      longName = "OptionalDouble",
+      optional = true
   )
-  abstract Integer requiredInteger();
+  abstract OptionalDouble aOptionalDouble();
 
   @Parameter(
-      longName = "requiredLocalDate"
+      longName = "OptionalInt",
+      optional = true
   )
-  abstract LocalDate requiredLocalDate();
+  abstract OptionalInt aOptionalInt();
 
   @Parameter(
-      longName = "requiredLocalDateTime"
+      longName = "OptionalLong",
+      optional = true
   )
-  abstract LocalDateTime requiredLocalDateTime();
+  abstract OptionalLong aOptionalLong();
 
   @Parameter(
-      longName = "requiredLong"
+      longName = "BigDecimal"
   )
-  abstract Long requiredLong();
+  abstract BigDecimal aBigDecimal();
 
   @Parameter(
-      longName = "requiredOffsetDateTime"
+      longName = "BigInteger"
   )
-  abstract OffsetDateTime requiredOffsetDateTime();
+  abstract BigInteger aBigInteger();
 
   @Parameter(
-      longName = "requiredPath"
+      longName = "Charset"
   )
-  abstract Path requiredPath();
+  abstract Charset aCharset();
 
   @Parameter(
-      longName = "requiredPattern"
+      longName = "File"
   )
-  abstract Pattern requiredPattern();
+  abstract File aFile();
 
   @Parameter(
-      longName = "requiredShort"
+      longName = "Instant"
   )
-  abstract Short requiredShort();
+  abstract Instant aInstant();
 
   @Parameter(
-      longName = "requiredString"
+      longName = "LocalDate"
   )
-  abstract String requiredString();
+  abstract LocalDate aLocalDate();
 
   @Parameter(
-      longName = "requiredUri"
+      longName = "LocalDateTime"
   )
-  abstract URI requiredUri();
+  abstract LocalDateTime aLocalDateTime();
 
   @Parameter(
-      longName = "requiredZonedDateTime"
+      longName = "OffsetDateTime"
   )
-  abstract ZonedDateTime requiredZonedDateTime();
+  abstract OffsetDateTime aOffsetDateTime();
+
+  @Parameter(
+      longName = "Path"
+  )
+  abstract Path aPath();
+
+  @Parameter(
+      longName = "Pattern"
+  )
+  abstract Pattern aPattern();
+
+  @Parameter(
+      longName = "String"
+  )
+  abstract String aString();
+
+  @Parameter(
+      longName = "URI"
+  )
+  abstract URI aURI();
+
+  @Parameter(
+      longName = "ZonedDateTime"
+  )
+  abstract ZonedDateTime aZonedDateTime();
 }
