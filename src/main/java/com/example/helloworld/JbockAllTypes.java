@@ -29,169 +29,163 @@ import net.jbock.Parameter;
 
 @CommandLineArguments
 abstract class JbockAllTypes {
-
   @Parameter(
-          longName = "boolean",
-          flag = true
+      longName = "boolean"
   )
   abstract boolean aboolean();
 
   @Parameter(
-          longName = "byte"
+      longName = "byte"
   )
   abstract byte abyte();
 
   @Parameter(
-          longName = "char"
+      longName = "char"
   )
   abstract char achar();
 
   @Parameter(
-          longName = "double"
+      longName = "double"
   )
   abstract double adouble();
 
   @Parameter(
-          longName = "float"
+      longName = "float"
   )
   abstract float afloat();
 
   @Parameter(
-          longName = "int"
+      longName = "int"
   )
   abstract int aint();
 
   @Parameter(
-          longName = "long"
+      longName = "long"
   )
   abstract long along();
 
   @Parameter(
-          longName = "short"
+      longName = "short"
   )
   abstract short ashort();
 
   @Parameter(
-          longName = "Boolean",
-          flag = true
+      longName = "Boolean"
   )
   abstract Boolean aBoxedBoolean();
 
   @Parameter(
-          longName = "Byte"
+      longName = "Byte"
   )
   abstract Byte aBoxedByte();
 
   @Parameter(
-          longName = "Character"
+      longName = "Character"
   )
   abstract Character aBoxedCharacter();
 
   @Parameter(
-          longName = "Double"
+      longName = "Double"
   )
   abstract Double aBoxedDouble();
 
   @Parameter(
-          longName = "Float"
+      longName = "Float"
   )
   abstract Float aBoxedFloat();
 
   @Parameter(
-          longName = "Integer"
+      longName = "Integer"
   )
   abstract Integer aBoxedInteger();
 
   @Parameter(
-          longName = "Long"
+      longName = "Long"
   )
   abstract Long aBoxedLong();
 
   @Parameter(
-          longName = "Short"
+      longName = "Short"
   )
   abstract Short aBoxedShort();
 
   @Parameter(
-          longName = "OptionalDouble",
-          optional = true
+      longName = "OptionalDouble"
   )
   abstract OptionalDouble aOptionalDouble();
 
   @Parameter(
-          longName = "OptionalInt",
-          optional = true
+      longName = "OptionalInt"
   )
   abstract OptionalInt aOptionalInt();
 
   @Parameter(
-          longName = "OptionalLong",
-          optional = true
+      longName = "OptionalLong"
   )
   abstract OptionalLong aOptionalLong();
 
   @Parameter(
-          longName = "URI"
+      longName = "URI"
   )
   abstract URI aURI();
 
   @Parameter(
-          longName = "Instant"
+      longName = "Instant"
   )
   abstract Instant aInstant();
 
   @Parameter(
-          longName = "LocalDate"
+      longName = "LocalDate"
   )
   abstract LocalDate aLocalDate();
 
   @Parameter(
-          longName = "LocalDateTime"
+      longName = "LocalDateTime"
   )
   abstract LocalDateTime aLocalDateTime();
 
   @Parameter(
-          longName = "OffsetDateTime"
+      longName = "OffsetDateTime"
   )
   abstract OffsetDateTime aOffsetDateTime();
 
   @Parameter(
-          longName = "ZonedDateTime"
+      longName = "ZonedDateTime"
   )
   abstract ZonedDateTime aZonedDateTime();
 
   @Parameter(
-          longName = "BigDecimal"
+      longName = "BigDecimal"
   )
   abstract BigDecimal aBigDecimal();
 
   @Parameter(
-          longName = "BigInteger"
+      longName = "BigInteger"
   )
   abstract BigInteger aBigInteger();
 
   @Parameter(
-          longName = "String"
+      longName = "String"
   )
   abstract String aString();
 
   @Parameter(
-          longName = "Charset"
+      longName = "Charset"
   )
   abstract Charset aCharset();
 
   @Parameter(
-          longName = "Path"
+      longName = "Path"
   )
   abstract Path aPath();
 
   @Parameter(
-          longName = "File"
+      longName = "File"
   )
   abstract File aFile();
 
   @Parameter(
-          longName = "Pattern"
+      longName = "Pattern"
   )
   abstract Pattern aPattern();
 }

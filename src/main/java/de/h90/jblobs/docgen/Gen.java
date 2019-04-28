@@ -24,11 +24,13 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 import net.jbock.CommandLineArguments;
 import net.jbock.Parameter;
 import net.jbock.coerce.mappers.CoercionFactory;
 import net.jbock.coerce.mappers.StandardCoercions;
 import net.jbock.compiler.EvaluatingProcessor;
+import net.jbock.compiler.TypeTool;
 
 public class Gen {
 
@@ -41,10 +43,11 @@ public class Gen {
             OptionalLong.class,
             OptionalDouble.class);
 
-    private static void notMain(Elements elements) throws NoSuchFieldException, IllegalAccessException, IOException, NoSuchMethodException, InvocationTargetException, InstantiationException {
-        Constructor<StandardCoercions> constructor = StandardCoercions.class.getDeclaredConstructor();
+    private static void notMain(TypeTool tool, Elements elements) throws NoSuchFieldException, IllegalAccessException, IOException, NoSuchMethodException, InvocationTargetException, InstantiationException {
+        Constructor<?>[] constructors = StandardCoercions.class.getDeclaredConstructors();
+        Constructor<?> constructor = constructors[0];
         constructor.setAccessible(true);
-        StandardCoercions coercions = constructor.newInstance();
+        StandardCoercions coercions = (StandardCoercions) constructor.newInstance(tool);
         Field coercionsField = coercions.getClass().getDeclaredField("coercions");
         coercionsField.setAccessible(true);
         Map<?, CoercionFactory> map = (Map<?, CoercionFactory>) coercionsField.get(coercions);
@@ -82,7 +85,16 @@ public class Gen {
     }
 
     public static void main(String[] args) {
-        EvaluatingProcessor.source().run((elements, types) -> notMain(elements));
+        EvaluatingProcessor.source().run((elements, types) -> {
+            TypeTool tool = createTypeTool(elements, types);
+            notMain(tool, elements);
+        });
+    }
+
+    private static TypeTool createTypeTool(Elements elements, Types types) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<?>[] constructors = TypeTool.class.getDeclaredConstructors();
+        constructors[0].setAccessible(true);
+        return (TypeTool) constructors[0].newInstance(types, elements);
     }
 
     static MethodData createOptionalMethodData(TypeElement element) {
@@ -151,20 +163,13 @@ public class Gen {
     }
 
     private static String baseName(TypeName type) {
-        String[] tokens = type.toString().split("\\.", -1);
+        String[] tokens = type.toString().split("[.]", -1);
         return tokens[tokens.length - 1];
     }
 
     private static MethodSpec createMethod(MethodData datum) {
         AnnotationSpec.Builder spec = AnnotationSpec.builder(Parameter.class)
                 .addMember("longName", "$S", datum.name);
-        if (datum.type.equals(TypeName.get(Boolean.class)) ||
-                datum.type.equals(TypeName.BOOLEAN)) {
-            spec.addMember("flag", "true");
-        }
-        if (datum.optional) {
-            spec.addMember("optional", "true");
-        }
         StringBuilder name = new StringBuilder();
         name.append("a_");
         if (datum.type.isBoxedPrimitive()) {
