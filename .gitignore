@@ -4,3 +4,7 @@
 *.edited
 *.orig
 *~
+/src/main/generated
+/build
+/.gradle
+

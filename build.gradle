@@ -1,0 +1,47 @@
+plugins {
+    id "application"
+}
+
+mainClassName = "de.h90.jblobs.docgen.Gen"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "com.github.h908714124:jbock:2.6.9"
+    compile "com.squareup:javapoet:1.11.1"
+    compile "com.google.testing.compile:compile-testing:0.16"
+    testCompile "org.junit.jupiter:junit-jupiter:5.5.0-M1"
+    annotationProcessor "com.github.h908714124:jbock:2.6.9"
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+compileJava {
+    options.compilerArgs << "-s"
+    options.compilerArgs << "$projectDir/src/main/generated/java"
+
+    doFirst {
+        // make sure that directory exists
+        file(new File(projectDir, "/src/main/generated/java")).mkdirs()
+    }
+}
+
+clean.doLast {
+    // clean-up directory when necessary
+    file(new File(projectDir, "/src/main/generated")).deleteDir()
+}
+
+sourceSets {
+    generated {
+        java {
+            srcDir "$projectDir/src/main/generated/java"
+        }
+    }
+}
