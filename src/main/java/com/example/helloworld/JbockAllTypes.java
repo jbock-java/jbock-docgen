@@ -27,6 +27,10 @@ import java.util.regex.Pattern;
 import net.jbock.CommandLineArguments;
 import net.jbock.Parameter;
 
+/**
+ * This class contains all the basic parameter types
+ * that can be used without a mapper in jbock 2.6.9.
+ */
 @CommandLineArguments
 abstract class JbockAllTypes {
   @Parameter(
@@ -70,122 +74,122 @@ abstract class JbockAllTypes {
   abstract short ashort();
 
   @Parameter(
-      longName = "Boolean"
+      longName = "java.lang.Boolean"
   )
   abstract Boolean aBoxedBoolean();
 
   @Parameter(
-      longName = "Byte"
+      longName = "java.lang.Byte"
   )
   abstract Byte aBoxedByte();
 
   @Parameter(
-      longName = "Character"
+      longName = "java.lang.Character"
   )
   abstract Character aBoxedCharacter();
 
   @Parameter(
-      longName = "Double"
+      longName = "java.lang.Double"
   )
   abstract Double aBoxedDouble();
 
   @Parameter(
-      longName = "Float"
+      longName = "java.lang.Float"
   )
   abstract Float aBoxedFloat();
 
   @Parameter(
-      longName = "Integer"
+      longName = "java.lang.Integer"
   )
   abstract Integer aBoxedInteger();
 
   @Parameter(
-      longName = "Long"
+      longName = "java.lang.Long"
   )
   abstract Long aBoxedLong();
 
   @Parameter(
-      longName = "Short"
+      longName = "java.lang.Short"
   )
   abstract Short aBoxedShort();
 
   @Parameter(
-      longName = "OptionalDouble"
+      longName = "java.util.OptionalDouble"
   )
   abstract OptionalDouble aOptionalDouble();
 
   @Parameter(
-      longName = "OptionalInt"
+      longName = "java.util.OptionalInt"
   )
   abstract OptionalInt aOptionalInt();
 
   @Parameter(
-      longName = "OptionalLong"
+      longName = "java.util.OptionalLong"
   )
   abstract OptionalLong aOptionalLong();
 
   @Parameter(
-      longName = "URI"
+      longName = "java.net.URI"
   )
   abstract URI aURI();
 
   @Parameter(
-      longName = "Instant"
+      longName = "java.time.Instant"
   )
   abstract Instant aInstant();
 
   @Parameter(
-      longName = "LocalDate"
+      longName = "java.time.LocalDate"
   )
   abstract LocalDate aLocalDate();
 
   @Parameter(
-      longName = "LocalDateTime"
+      longName = "java.time.LocalDateTime"
   )
   abstract LocalDateTime aLocalDateTime();
 
   @Parameter(
-      longName = "OffsetDateTime"
+      longName = "java.time.OffsetDateTime"
   )
   abstract OffsetDateTime aOffsetDateTime();
 
   @Parameter(
-      longName = "ZonedDateTime"
+      longName = "java.time.ZonedDateTime"
   )
   abstract ZonedDateTime aZonedDateTime();
 
   @Parameter(
-      longName = "BigDecimal"
+      longName = "java.math.BigDecimal"
   )
   abstract BigDecimal aBigDecimal();
 
   @Parameter(
-      longName = "BigInteger"
+      longName = "java.math.BigInteger"
   )
   abstract BigInteger aBigInteger();
 
   @Parameter(
-      longName = "String"
+      longName = "java.lang.String"
   )
   abstract String aString();
 
   @Parameter(
-      longName = "Charset"
+      longName = "java.nio.charset.Charset"
   )
   abstract Charset aCharset();
 
   @Parameter(
-      longName = "Path"
+      longName = "java.nio.file.Path"
   )
   abstract Path aPath();
 
   @Parameter(
-      longName = "File"
+      longName = "java.io.File"
   )
   abstract File aFile();
 
   @Parameter(
-      longName = "Pattern"
+      longName = "java.util.regex.Pattern"
   )
   abstract Pattern aPattern();
 }

@@ -6,6 +6,18 @@ import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
+import net.jbock.CommandLineArguments;
+import net.jbock.Parameter;
+import net.jbock.coerce.mappers.CoercionFactory;
+import net.jbock.coerce.mappers.StandardCoercions;
+import net.jbock.compiler.EvaluatingProcessor;
+import net.jbock.compiler.TypeTool;
+
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -20,17 +32,6 @@ import java.util.Map;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.Elements;
-import javax.lang.model.util.Types;
-import net.jbock.CommandLineArguments;
-import net.jbock.Parameter;
-import net.jbock.coerce.mappers.CoercionFactory;
-import net.jbock.coerce.mappers.StandardCoercions;
-import net.jbock.compiler.EvaluatingProcessor;
-import net.jbock.compiler.TypeTool;
 
 public class Gen {
 
@@ -43,7 +44,7 @@ public class Gen {
             OptionalLong.class,
             OptionalDouble.class);
 
-    private static void notMain(TypeTool tool, Elements elements) throws NoSuchFieldException, IllegalAccessException, IOException, NoSuchMethodException, InvocationTargetException, InstantiationException {
+    private static void notMain(String version, TypeTool tool, Elements elements) throws NoSuchFieldException, IllegalAccessException, IOException, NoSuchMethodException, InvocationTargetException, InstantiationException {
         Constructor<?>[] constructors = StandardCoercions.class.getDeclaredConstructors();
         Constructor<?> constructor = constructors[0];
         constructor.setAccessible(true);
@@ -66,7 +67,7 @@ public class Gen {
                 .stream()
                 .map(Class::getCanonicalName)
                 .map(elements::getTypeElement)
-                .map(Gen::createOptionalMethodData)
+                .map(Gen::createMethodData)
                 .forEach(data::add);
         data.sort(COMPARATOR);
         for (MethodData datum : data) {
@@ -74,7 +75,10 @@ public class Gen {
         }
         spec.addModifiers(Modifier.ABSTRACT);
         spec.addAnnotation(CommandLineArguments.class);
-
+        spec.addJavadoc("This class contains all the basic parameter types\n" +
+                "that can be used without a mapper in jbock " +
+                version +
+                ".\n");
 
         String packageName = "com.example.helloworld";
         JavaFile javaFile = JavaFile.builder(packageName, spec.build())
@@ -85,9 +89,10 @@ public class Gen {
     }
 
     public static void main(String[] args) {
+        String version = net.jbock.compiler.Processor.class.getPackage().getImplementationVersion();
         EvaluatingProcessor.source().run((elements, types) -> {
             TypeTool tool = createTypeTool(elements, types);
-            notMain(tool, elements);
+            notMain(version, tool, elements);
         });
     }
 
@@ -97,19 +102,13 @@ public class Gen {
         return (TypeTool) constructors[0].newInstance(types, elements);
     }
 
-    static MethodData createOptionalMethodData(TypeElement element) {
+    static MethodData createMethodData(TypeElement element) {
         String name = element.getSimpleName().toString();
-        return createMethodData(name, element.asType(), true);
+        return createMethodData(name, element.asType());
     }
 
     static MethodData createMethodData(String name, TypeMirror element) {
-        return createMethodData(name, element, false);
-    }
-
-    static MethodData createMethodData(String name, TypeMirror element, boolean optional) {
-        return new MethodData(
-                name,
-                TypeName.get(element), optional);
+        return new MethodData(name, TypeName.get(element));
     }
 
     static class MethodData {
@@ -118,12 +117,9 @@ public class Gen {
 
         final TypeName type;
 
-        final boolean optional;
-
-        MethodData(String name, TypeName type, boolean optional) {
+        MethodData(String name, TypeName type) {
             this.name = snakeToCamel(name);
             this.type = type;
-            this.optional = optional;
         }
 
         int ordering() {
@@ -169,7 +165,7 @@ public class Gen {
 
     private static MethodSpec createMethod(MethodData datum) {
         AnnotationSpec.Builder spec = AnnotationSpec.builder(Parameter.class)
-                .addMember("longName", "$S", datum.name);
+                .addMember("longName", "$S", datum.type.toString());
         StringBuilder name = new StringBuilder();
         name.append("a_");
         if (datum.type.isBoxedPrimitive()) {
