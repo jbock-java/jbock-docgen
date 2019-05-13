@@ -9,11 +9,11 @@ repositories {
 }
 
 dependencies {
-    compile "com.github.h908714124:jbock:2.6.9"
+    compile "com.github.h908714124:jbock:2.7.0"
     compile "com.squareup:javapoet:1.11.1"
     compile "com.google.testing.compile:compile-testing:0.16"
     testCompile "org.junit.jupiter:junit-jupiter:5.5.0-M1"
-    annotationProcessor "com.github.h908714124:jbock:2.6.9"
+    annotationProcessor "com.github.h908714124:jbock:2.7.0"
 }
 
 test {
@@ -45,3 +45,4 @@ sourceSets {
         }
     }
 }
+

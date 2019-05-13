@@ -29,7 +29,7 @@ import net.jbock.Parameter;
 
 /**
  * This class contains all the basic parameter types
- * that can be used without a mapper in jbock 2.6.9.
+ * that can be used without a mapper in jbock 2.7.0.
  */
 @CommandLineArguments
 abstract class JbockAllTypes {
