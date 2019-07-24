@@ -76,7 +76,7 @@ public class Gen {
         spec.addModifiers(Modifier.ABSTRACT);
         spec.addAnnotation(CommandLineArguments.class);
         spec.addJavadoc("This class contains all the basic parameter types\n" +
-                "that can be used without a mapper in jbock " +
+                "that can be used without a custom mapper in jbock " +
                 version +
                 ".\n");
 
