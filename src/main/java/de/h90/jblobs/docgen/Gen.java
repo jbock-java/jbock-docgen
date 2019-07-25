@@ -78,7 +78,9 @@ public class Gen {
         spec.addJavadoc("This class contains all the basic parameter types\n" +
                 "that can be used without a custom mapper in jbock " +
                 version +
-                ".\n");
+                ".\n" +
+                "All enum types can also be used directly.\n" +
+                "The default behaviour is to use their {@code static valueOf(String)} method.\n");
 
         String packageName = "com.example.helloworld";
         JavaFile javaFile = JavaFile.builder(packageName, spec.build())

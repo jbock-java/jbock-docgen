@@ -30,6 +30,8 @@ import net.jbock.Parameter;
 /**
  * This class contains all the basic parameter types
  * that can be used without a custom mapper in jbock 2.7.2.
+ * All enum types can also be used directly.
+ * The default behaviour is to use their {@code static valueOf(String)} method.
  */
 @CommandLineArguments
 abstract class JbockAllTypes {
