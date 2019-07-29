@@ -80,7 +80,7 @@ public class Gen {
                 version +
                 ".\n" +
                 "All non-private enums can also be used directly.\n" +
-                "The default behaviour is to use their {@code static valueOf(String)} method.\n");
+                "The default mapper will use their {@code static valueOf(String)} method.\n");
 
         String packageName = "com.example.helloworld";
         JavaFile javaFile = JavaFile.builder(packageName, spec.build())
