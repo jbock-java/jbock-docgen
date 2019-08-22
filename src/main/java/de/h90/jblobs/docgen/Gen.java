@@ -101,7 +101,7 @@ public class Gen {
     private static TypeTool createTypeTool(Elements elements, Types types) throws IllegalAccessException, InvocationTargetException, InstantiationException {
         Constructor<?>[] constructors = TypeTool.class.getDeclaredConstructors();
         constructors[0].setAccessible(true);
-        return (TypeTool) constructors[0].newInstance(types, elements);
+        return (TypeTool) constructors[0].newInstance(elements, types);
     }
 
     static MethodData createMethodData(TypeElement element) {

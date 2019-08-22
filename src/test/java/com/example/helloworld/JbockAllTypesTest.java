@@ -14,6 +14,6 @@ class JbockAllTypesTest {
         JbockAllTypes_Parser.ParseResult result = JbockAllTypes_Parser.create()
                 .withErrorStream(new PrintStream(new ByteArrayOutputStream()))
                 .parse(new String[]{});
-        assertTrue(result.error());
+        assertTrue(result instanceof JbockAllTypes_Parser.ParsingFailed);
     }
 }
