@@ -29,7 +29,7 @@ import net.jbock.Parameter;
 
 /**
  * This class contains all the basic parameter types
- * that can be used without a custom mapper in jbock 2.7.4.
+ * that can be used without a custom mapper in jbock 2.7.5.
  * All non-private enums can also be used directly.
  * The default mapper will use their {@code static valueOf(String)} method.
  */
