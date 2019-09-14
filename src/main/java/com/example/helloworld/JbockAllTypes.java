@@ -1,7 +1,6 @@
 package com.example.helloworld;
 
 import java.io.File;
-import java.lang.Boolean;
 import java.lang.Byte;
 import java.lang.Character;
 import java.lang.Double;
@@ -29,57 +28,12 @@ import net.jbock.Parameter;
 
 /**
  * This class contains all the basic parameter types
- * that can be used without a custom mapper in jbock 2.7.7.
+ * that can be used without a custom mapper in jbock 2.8.0, except primitives.
  * All non-private enums can also be used directly.
  * The default mapper will use their {@code static valueOf(String)} method.
  */
 @CommandLineArguments
 abstract class JbockAllTypes {
-  @Parameter(
-      longName = "boolean"
-  )
-  abstract boolean aboolean();
-
-  @Parameter(
-      longName = "byte"
-  )
-  abstract byte abyte();
-
-  @Parameter(
-      longName = "char"
-  )
-  abstract char achar();
-
-  @Parameter(
-      longName = "double"
-  )
-  abstract double adouble();
-
-  @Parameter(
-      longName = "float"
-  )
-  abstract float afloat();
-
-  @Parameter(
-      longName = "int"
-  )
-  abstract int aint();
-
-  @Parameter(
-      longName = "long"
-  )
-  abstract long along();
-
-  @Parameter(
-      longName = "short"
-  )
-  abstract short ashort();
-
-  @Parameter(
-      longName = "java.lang.Boolean"
-  )
-  abstract Boolean aBoxedBoolean();
-
   @Parameter(
       longName = "java.lang.Byte"
   )

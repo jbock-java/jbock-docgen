@@ -6,23 +6,10 @@ import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
-import net.jbock.CommandLineArguments;
-import net.jbock.Parameter;
-import net.jbock.coerce.mappers.CoercionFactory;
-import net.jbock.coerce.mappers.StandardCoercions;
-import net.jbock.compiler.EvaluatingProcessor;
-import net.jbock.compiler.TypeTool;
-
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.Elements;
-import javax.lang.model.util.Types;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +19,15 @@ import java.util.Map;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
+import net.jbock.CommandLineArguments;
+import net.jbock.Parameter;
+import net.jbock.coerce.mappers.CoercionFactory;
+import net.jbock.coerce.mappers.StandardCoercions;
+import net.jbock.compiler.EvaluatingProcessor;
+import net.jbock.compiler.TypeTool;
 
 public class Gen {
 
@@ -48,25 +44,19 @@ public class Gen {
         Constructor<?>[] constructors = StandardCoercions.class.getDeclaredConstructors();
         Constructor<?> constructor = constructors[0];
         constructor.setAccessible(true);
-        StandardCoercions coercions = (StandardCoercions) constructor.newInstance(tool);
-        Field coercionsField = coercions.getClass().getDeclaredField("coercions");
+        StandardCoercions coercions = (StandardCoercions) constructor.newInstance();
+        Field coercionsField = coercions.getClass().getDeclaredField("COERCIONS");
         coercionsField.setAccessible(true);
-        Map<?, CoercionFactory> map = (Map<?, CoercionFactory>) coercionsField.get(coercions);
+        List<Map.Entry<Class<?>, CoercionFactory>> map = (List<Map.Entry<Class<?>, CoercionFactory>>) coercionsField.get(coercions);
         TypeSpec.Builder spec = TypeSpec.classBuilder(GEN_CLASS_NAME);
         List<MethodData> data = new ArrayList<>(map.size());
-        for (Object mapMirror : map.keySet()) {
-            Method mapperReturnTypeMethod = CoercionFactory.class.getDeclaredMethod("mapperReturnType");
-            mapperReturnTypeMethod.setAccessible(true);
-            Field typeMirrorField = mapMirror.getClass().getDeclaredField("typeMirror");
-            typeMirrorField.setAccessible(true);
-            TypeMirror mapperReturnType = (TypeMirror) typeMirrorField.get(mapMirror);
+        for (Map.Entry<Class<?>, CoercionFactory> mapMirror : map) {
+            Class<?> mapperReturnType = mapMirror.getKey();
             String name = baseName(TypeName.get(mapperReturnType));
             data.add(createMethodData(name, mapperReturnType));
         }
         PRIMITIVE_OPTIONALS
                 .stream()
-                .map(Class::getCanonicalName)
-                .map(elements::getTypeElement)
                 .map(Gen::createMethodData)
                 .forEach(data::add);
         data.sort(COMPARATOR);
@@ -78,7 +68,7 @@ public class Gen {
         spec.addJavadoc("This class contains all the basic parameter types\n" +
                 "that can be used without a custom mapper in jbock " +
                 version +
-                ".\n" +
+                ", except primitives.\n" +
                 "All non-private enums can also be used directly.\n" +
                 "The default mapper will use their {@code static valueOf(String)} method.\n");
 
@@ -104,12 +94,11 @@ public class Gen {
         return (TypeTool) constructors[0].newInstance(elements, types);
     }
 
-    static MethodData createMethodData(TypeElement element) {
-        String name = element.getSimpleName().toString();
-        return createMethodData(name, element.asType());
+    static MethodData createMethodData(Class<?> element) {
+        return createMethodData(element.getSimpleName(), element);
     }
 
-    static MethodData createMethodData(String name, TypeMirror element) {
+    static MethodData createMethodData(String name, Class<?> element) {
         return new MethodData(name, TypeName.get(element));
     }
 
