@@ -1,7 +1,8 @@
-package de.h90.jblobs.docgen;
+package net.jbock.coerce;
 
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
@@ -24,8 +25,6 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import net.jbock.CommandLineArguments;
 import net.jbock.Parameter;
-import net.jbock.coerce.mappers.CoercionFactory;
-import net.jbock.coerce.mappers.StandardCoercions;
 import net.jbock.compiler.EvaluatingProcessor;
 import net.jbock.compiler.TypeTool;
 
@@ -41,16 +40,12 @@ public class Gen {
             OptionalDouble.class);
 
     private static void notMain(String version, TypeTool tool, Elements elements) throws NoSuchFieldException, IllegalAccessException, IOException, NoSuchMethodException, InvocationTargetException, InstantiationException {
-        Constructor<?>[] constructors = StandardCoercions.class.getDeclaredConstructors();
-        Constructor<?> constructor = constructors[0];
-        constructor.setAccessible(true);
-        StandardCoercions coercions = (StandardCoercions) constructor.newInstance();
-        Field coercionsField = coercions.getClass().getDeclaredField("COERCIONS");
-        coercionsField.setAccessible(true);
-        List<Map.Entry<Class<?>, CoercionFactory>> map = (List<Map.Entry<Class<?>, CoercionFactory>>) coercionsField.get(coercions);
+        Field mappers = AutoMapper.class.getDeclaredField("MAPPERS");
+        mappers.setAccessible(true);
+        List<Map.Entry<Class<?>, CodeBlock>> map = (List<Map.Entry<Class<?>, CodeBlock>>) mappers.get(null);
         TypeSpec.Builder spec = TypeSpec.classBuilder(GEN_CLASS_NAME);
         List<MethodData> data = new ArrayList<>(map.size());
-        for (Map.Entry<Class<?>, CoercionFactory> mapMirror : map) {
+        for (Map.Entry<Class<?>, CodeBlock> mapMirror : map) {
             Class<?> mapperReturnType = mapMirror.getKey();
             String name = baseName(TypeName.get(mapperReturnType));
             data.add(createMethodData(name, mapperReturnType));
@@ -66,9 +61,8 @@ public class Gen {
         spec.addModifiers(Modifier.ABSTRACT);
         spec.addAnnotation(CommandLineArguments.class);
         spec.addJavadoc("This class contains all the basic parameter types\n" +
-                "that can be used without a custom mapper in jbock " +
-                version +
-                ", except primitives.\n" +
+                "that can be used without a custom mapper in jbock " + version + ".\n" +
+                "Optional and List thereof can also be used.\n" +
                 "All non-private enums can also be used directly.\n" +
                 "The default mapper will use their {@code static valueOf(String)} method.\n");
 
@@ -94,11 +88,11 @@ public class Gen {
         return (TypeTool) constructors[0].newInstance(elements, types);
     }
 
-    static MethodData createMethodData(Class<?> element) {
+    private static MethodData createMethodData(Class<?> element) {
         return createMethodData(element.getSimpleName(), element);
     }
 
-    static MethodData createMethodData(String name, Class<?> element) {
+    private static MethodData createMethodData(String name, Class<?> element) {
         return new MethodData(name, TypeName.get(element));
     }
 

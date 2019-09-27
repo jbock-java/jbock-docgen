@@ -2,13 +2,13 @@ plugins {
     id "application"
 }
 
-mainClassName = "de.h90.jblobs.docgen.Gen"
+mainClassName = "net.jbock.coerce.Gen"
 
 repositories {
     mavenCentral()
 }
 
-def jbock = "com.github.h908714124:jbock:2.8.0"
+def jbock = "com.github.h908714124:jbock:2.8.1"
 
 dependencies {
     compile "$jbock"

@@ -28,7 +28,8 @@ import net.jbock.Parameter;
 
 /**
  * This class contains all the basic parameter types
- * that can be used without a custom mapper in jbock 2.8.0, except primitives.
+ * that can be used without a custom mapper in jbock 2.8.1.
+ * Optional and List thereof can also be used.
  * All non-private enums can also be used directly.
  * The default mapper will use their {@code static valueOf(String)} method.
  */
