@@ -25,7 +25,9 @@ public class GenAutoTypes {
 
     static final String GEN_CLASS_NAME = "JbockAutoTypes";
 
-    private static void notMain(String version) throws NoSuchFieldException, IllegalAccessException, IOException {
+    static final String PACKAGE = "com.example.hello";
+
+    private static void generate(String version) throws NoSuchFieldException, IllegalAccessException, IOException {
         Field mappers = AutoMapper.class.getDeclaredField("MAPPERS");
         mappers.setAccessible(true);
         List<Map.Entry<Class<?>, CodeBlock>> map = (List<Map.Entry<Class<?>, CodeBlock>>) mappers.get(null);
@@ -48,8 +50,7 @@ public class GenAutoTypes {
                 "All non-private enums can also be used directly.\n" +
                 "The default mapper will use their {@code static valueOf(String)} method.\n");
 
-        String packageName = "com.example.helloworld";
-        JavaFile javaFile = JavaFile.builder(packageName, spec.build())
+        JavaFile javaFile = JavaFile.builder(PACKAGE, spec.build())
                 .skipJavaLangImports(true)
                 .build();
 
@@ -58,8 +59,8 @@ public class GenAutoTypes {
 
     public static void main(String[] args) throws IllegalAccessException, NoSuchFieldException, IOException {
         String version = net.jbock.compiler.Processor.class.getPackage().getImplementationVersion();
-        notMain(version);
-        GenAutoTypesParser.notMain();
+        generate(version);
+        GenAutoTypesParser.generate();
     }
 
     private static MethodData createMethodData(String name, Class<?> element) {

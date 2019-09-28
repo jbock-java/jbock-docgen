@@ -1,4 +1,4 @@
-package com.example.helloworld;
+package com.example.hello;
 
 import java.io.File;
 import java.io.IOException;
