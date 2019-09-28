@@ -6,13 +6,16 @@ import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 import javax.lang.model.element.Modifier;
 import net.jbock.CommandLineArguments;
 import net.jbock.Parameter;
@@ -21,22 +24,30 @@ public class GenAutoTypes {
 
     private static final Comparator<MethodData> COMP = Comparator
             .<MethodData>comparingInt(methodData -> methodData.type.isBoxedPrimitive() ? -1 : 1)
-            .thenComparing(methodData -> methodData.name);
+            .thenComparing(methodData -> methodData.simpleName);
 
-    static final String GEN_CLASS_NAME = "JbockAutoTypes";
+    private static final String AUTO_TYPES_CLASSNAME = "JbockAutoTypes";
 
-    static final String PACKAGE = "com.example.hello";
+    private static final String PACKAGE = "com.example.hello";
+
+    static final String AUTO_TYPES = "src/main/java/" +
+            PACKAGE.replace('.', '/') +
+            "/" + AUTO_TYPES_CLASSNAME + ".java";
+
+    static final String AUTO_TYPES_PARSER = "src/main/java/" +
+            PACKAGE.replace('.', '/') +
+            "/" + AUTO_TYPES_CLASSNAME + "_Parser.java";
 
     private static void generate(String version) throws NoSuchFieldException, IllegalAccessException, IOException {
         Field mappers = AutoMapper.class.getDeclaredField("MAPPERS");
         mappers.setAccessible(true);
         List<Map.Entry<Class<?>, CodeBlock>> map = (List<Map.Entry<Class<?>, CodeBlock>>) mappers.get(null);
-        TypeSpec.Builder spec = TypeSpec.classBuilder(GEN_CLASS_NAME);
+        TypeSpec.Builder spec = TypeSpec.classBuilder(AUTO_TYPES_CLASSNAME);
         List<MethodData> data = new ArrayList<>(map.size());
         for (Map.Entry<Class<?>, CodeBlock> mapMirror : map) {
             Class<?> mapperReturnType = mapMirror.getKey();
-            String name = baseName(TypeName.get(mapperReturnType));
-            data.add(createMethodData(name, mapperReturnType));
+            String simpleName = simpleName(TypeName.get(mapperReturnType));
+            data.add(createMethodData(simpleName, mapperReturnType));
         }
         data.sort(COMP);
         for (MethodData datum : data) {
@@ -57,46 +68,36 @@ public class GenAutoTypes {
         javaFile.writeTo(Paths.get("src/main/java"));
     }
 
-    public static void main(String[] args) throws IllegalAccessException, NoSuchFieldException, IOException {
+    public static void main(String[] args) throws IllegalAccessException, NoSuchFieldException, IOException, InterruptedException {
+
+        Stream.of(AUTO_TYPES, AUTO_TYPES_PARSER)
+                .map(Paths::get)
+                .map(Path::toFile)
+                .filter(File::exists)
+                .forEach(File::delete);
+
         String version = net.jbock.compiler.Processor.class.getPackage().getImplementationVersion();
         generate(version);
         GenAutoTypesParser.generate();
     }
 
-    private static MethodData createMethodData(String name, Class<?> element) {
-        return new MethodData(name, TypeName.get(element));
+    private static MethodData createMethodData(String simpleName, Class<?> element) {
+        return new MethodData(simpleName, TypeName.get(element));
     }
 
     static class MethodData {
 
-        final String name;
+        final String simpleName;
 
         final TypeName type;
 
-        MethodData(String name, TypeName type) {
-            this.name = snakeToCamel(name);
+        MethodData(String simpleName, TypeName type) {
+            this.simpleName = simpleName;
             this.type = type;
         }
     }
 
-    private static String snakeToCamel(String s) {
-        StringBuilder sb = new StringBuilder();
-        boolean upcase = false;
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (c == '_') {
-                upcase = true;
-            } else if (upcase) {
-                sb.append(Character.toUpperCase(c));
-                upcase = false;
-            } else {
-                sb.append(c);
-            }
-        }
-        return sb.toString();
-    }
-
-    private static String baseName(TypeName type) {
+    private static String simpleName(TypeName type) {
         String[] tokens = type.toString().split("[.]", -1);
         return tokens[tokens.length - 1];
     }
@@ -108,7 +109,7 @@ public class GenAutoTypes {
         if (datum.type.isBoxedPrimitive()) {
             name.append("boxed");
         }
-        name.append(datum.name);
+        name.append(datum.simpleName);
         return MethodSpec.methodBuilder(name.toString())
                 .addModifiers(Modifier.ABSTRACT)
                 .returns(datum.type)

@@ -13,27 +13,21 @@ import javax.tools.JavaFileObject;
 import net.jbock.compiler.Processor;
 
 import static com.google.testing.compile.Compiler.javac;
-import static net.jbock.coerce.GenAutoTypes.GEN_CLASS_NAME;
-import static net.jbock.coerce.GenAutoTypes.PACKAGE;
+import static net.jbock.coerce.GenAutoTypes.AUTO_TYPES;
+import static net.jbock.coerce.GenAutoTypes.AUTO_TYPES_PARSER;
 
 public class GenAutoTypesParser {
 
     static void generate() throws IOException {
 
-        String sourceFile = "src/main/java/" +
-                PACKAGE.replace('.', '/') +
-                "/" + GEN_CLASS_NAME + ".java";
-        String targetFile = "src/main/java/" +
-                PACKAGE.replace('.', '/') +
-                "/" + GEN_CLASS_NAME + "_Parser.java";
-
-        JavaFileObject javaFileObject = JavaFileObjects.forSourceLines("com.example.helloworld.JbockAutoTypes", Files.readAllLines(Paths.get(sourceFile)));
+        JavaFileObject javaFileObject = JavaFileObjects.forSourceLines("com.example.helloworld.JbockAutoTypes",
+                Files.readAllLines(Paths.get(AUTO_TYPES)));
 
         Compilation compilation = javac().withProcessors(new Processor()).compile(javaFileObject);
         ImmutableList<JavaFileObject> results = compilation.generatedSourceFiles();
 
         try (InputStream in = results.get(0).openInputStream();
-             OutputStream out = new FileOutputStream(targetFile)) {
+             OutputStream out = new FileOutputStream(AUTO_TYPES_PARSER)) {
             byte[] buffer = new byte[in.available()];
             in.read(buffer);
             out.write(buffer);

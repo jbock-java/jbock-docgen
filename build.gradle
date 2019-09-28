@@ -15,7 +15,6 @@ dependencies {
     compile "com.squareup:javapoet:1.11.1"
     compile "com.google.testing.compile:compile-testing:0.18"
     testCompile "org.junit.jupiter:junit-jupiter:5.5.1"
-    annotationProcessor "$jbock"
 }
 
 test {
