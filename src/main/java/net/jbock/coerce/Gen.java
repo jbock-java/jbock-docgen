@@ -1,7 +1,6 @@
 package net.jbock.coerce;
 
 import com.squareup.javapoet.AnnotationSpec;
-import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
@@ -13,13 +12,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
-import java.util.OptionalLong;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
@@ -30,16 +25,13 @@ import net.jbock.compiler.TypeTool;
 
 public class Gen {
 
-    private static final String GEN_CLASS_NAME = "JbockAllTypes";
-    private static final Comparator<MethodData> COMPARATOR = Comparator
-            .comparingInt(MethodData::ordering)
-            .thenComparing(data -> data.name);
-    private static final List<Class<?>> PRIMITIVE_OPTIONALS = Arrays.asList(
-            OptionalInt.class,
-            OptionalLong.class,
-            OptionalDouble.class);
+    private static final Comparator<MethodData> COMP = Comparator
+            .<MethodData>comparingInt(methodData -> methodData.type.isBoxedPrimitive() ? -1 : 1)
+            .thenComparing(methodData -> methodData.name);
 
-    private static void notMain(String version, TypeTool tool, Elements elements) throws NoSuchFieldException, IllegalAccessException, IOException, NoSuchMethodException, InvocationTargetException, InstantiationException {
+    private static final String GEN_CLASS_NAME = "JbockAutoTypes";
+
+    private static void notMain(String version) throws NoSuchFieldException, IllegalAccessException, IOException {
         Field mappers = AutoMapper.class.getDeclaredField("MAPPERS");
         mappers.setAccessible(true);
         List<Map.Entry<Class<?>, CodeBlock>> map = (List<Map.Entry<Class<?>, CodeBlock>>) mappers.get(null);
@@ -50,11 +42,7 @@ public class Gen {
             String name = baseName(TypeName.get(mapperReturnType));
             data.add(createMethodData(name, mapperReturnType));
         }
-        PRIMITIVE_OPTIONALS
-                .stream()
-                .map(Gen::createMethodData)
-                .forEach(data::add);
-        data.sort(COMPARATOR);
+        data.sort(COMP);
         for (MethodData datum : data) {
             spec.addMethod(createMethod(datum));
         }
@@ -77,8 +65,7 @@ public class Gen {
     public static void main(String[] args) {
         String version = net.jbock.compiler.Processor.class.getPackage().getImplementationVersion();
         EvaluatingProcessor.source().run((elements, types) -> {
-            TypeTool tool = createTypeTool(elements, types);
-            notMain(version, tool, elements);
+            notMain(version);
         });
     }
 
@@ -86,10 +73,6 @@ public class Gen {
         Constructor<?>[] constructors = TypeTool.class.getDeclaredConstructors();
         constructors[0].setAccessible(true);
         return (TypeTool) constructors[0].newInstance(elements, types);
-    }
-
-    private static MethodData createMethodData(Class<?> element) {
-        return createMethodData(element.getSimpleName(), element);
     }
 
     private static MethodData createMethodData(String name, Class<?> element) {
@@ -105,24 +88,6 @@ public class Gen {
         MethodData(String name, TypeName type) {
             this.name = snakeToCamel(name);
             this.type = type;
-        }
-
-        int ordering() {
-            if (type.isPrimitive()) {
-                return -3;
-            }
-            if (type.isBoxedPrimitive()) {
-                return -2;
-            }
-            for (Class<?> aClass : PRIMITIVE_OPTIONALS) {
-                if (TypeName.get(aClass).equals(type)) {
-                    return -1;
-                }
-            }
-            if (type instanceof ClassName) {
-                return Math.abs(((ClassName) type).packageName().hashCode());
-            }
-            return 0;
         }
     }
 
@@ -152,11 +117,11 @@ public class Gen {
         AnnotationSpec.Builder spec = AnnotationSpec.builder(Parameter.class)
                 .addMember("longName", "$S", datum.type.toString());
         StringBuilder name = new StringBuilder();
-        name.append("a_");
         if (datum.type.isBoxedPrimitive()) {
-            name.append("boxed_");
+            name.append("boxed");
         }
-        return MethodSpec.methodBuilder(snakeToCamel(name.toString()) + datum.name)
+        name.append(datum.name);
+        return MethodSpec.methodBuilder(name.toString())
                 .addModifiers(Modifier.ABSTRACT)
                 .returns(datum.type)
                 .addAnnotation(spec.build())
