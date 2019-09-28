@@ -2,7 +2,7 @@ plugins {
     id "application"
 }
 
-mainClassName = "net.jbock.coerce.Gen"
+mainClassName = "net.jbock.coerce.GenAutoTypes"
 
 repositories {
     mavenCentral()

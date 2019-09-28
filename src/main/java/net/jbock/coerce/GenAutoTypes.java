@@ -16,15 +16,14 @@ import java.util.Map;
 import javax.lang.model.element.Modifier;
 import net.jbock.CommandLineArguments;
 import net.jbock.Parameter;
-import net.jbock.compiler.EvaluatingProcessor;
 
-public class Gen {
+public class GenAutoTypes {
 
     private static final Comparator<MethodData> COMP = Comparator
             .<MethodData>comparingInt(methodData -> methodData.type.isBoxedPrimitive() ? -1 : 1)
             .thenComparing(methodData -> methodData.name);
 
-    private static final String GEN_CLASS_NAME = "JbockAutoTypes";
+    static final String GEN_CLASS_NAME = "JbockAutoTypes";
 
     private static void notMain(String version) throws NoSuchFieldException, IllegalAccessException, IOException {
         Field mappers = AutoMapper.class.getDeclaredField("MAPPERS");
@@ -55,14 +54,12 @@ public class Gen {
                 .build();
 
         javaFile.writeTo(Paths.get("src/main/java"));
-
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IllegalAccessException, NoSuchFieldException, IOException {
         String version = net.jbock.compiler.Processor.class.getPackage().getImplementationVersion();
-        EvaluatingProcessor.source().run((elements, types) -> {
-            notMain(version);
-        });
+        notMain(version);
+        GenAutoTypesParser.notMain();
     }
 
     private static MethodData createMethodData(String name, Class<?> element) {
