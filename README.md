@@ -2,7 +2,7 @@
 
 Generates some documentation for the [jbock](https://github.com/h908714124/jbock) tool.
 
-Generate `JbockAllTypes.java`:
+Generate `AutoTypes.java`:
 
 ````sh
 gradle clean run
