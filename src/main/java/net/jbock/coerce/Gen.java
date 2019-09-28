@@ -7,21 +7,16 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import javax.lang.model.element.Modifier;
-import javax.lang.model.util.Elements;
-import javax.lang.model.util.Types;
 import net.jbock.CommandLineArguments;
 import net.jbock.Parameter;
 import net.jbock.compiler.EvaluatingProcessor;
-import net.jbock.compiler.TypeTool;
 
 public class Gen {
 
@@ -56,6 +51,7 @@ public class Gen {
 
         String packageName = "com.example.helloworld";
         JavaFile javaFile = JavaFile.builder(packageName, spec.build())
+                .skipJavaLangImports(true)
                 .build();
 
         javaFile.writeTo(Paths.get("src/main/java"));
@@ -67,12 +63,6 @@ public class Gen {
         EvaluatingProcessor.source().run((elements, types) -> {
             notMain(version);
         });
-    }
-
-    private static TypeTool createTypeTool(Elements elements, Types types) throws IllegalAccessException, InvocationTargetException, InstantiationException {
-        Constructor<?>[] constructors = TypeTool.class.getDeclaredConstructors();
-        constructors[0].setAccessible(true);
-        return (TypeTool) constructors[0].newInstance(elements, types);
     }
 
     private static MethodData createMethodData(String name, Class<?> element) {

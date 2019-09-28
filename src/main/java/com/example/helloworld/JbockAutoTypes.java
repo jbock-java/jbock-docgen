@@ -1,14 +1,6 @@
 package com.example.helloworld;
 
 import java.io.File;
-import java.lang.Byte;
-import java.lang.Character;
-import java.lang.Double;
-import java.lang.Float;
-import java.lang.Integer;
-import java.lang.Long;
-import java.lang.Short;
-import java.lang.String;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
