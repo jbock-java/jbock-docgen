@@ -21,14 +21,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static net.jbock.coerce.GenMyArgumentsParser.MY_ARGUMENTS_PARSER;
+
 public class GenAutoTypes {
 
     private static final Comparator<MethodData> COMP = Comparator
             .comparing(methodData -> methodData.type.getSimpleName());
 
-    private static final String AUTO_TYPES_CLASSNAME = "JbockAutoTypes";
+    static final String AUTO_TYPES_CLASSNAME = "JbockAutoTypes";
 
-    private static final String PACKAGE = "com.example.hello";
+    static final String PACKAGE = "com.example.hello";
 
     static final String AUTO_TYPES = "src/main/java/" +
             PACKAGE.replace('.', '/') +
@@ -77,7 +79,7 @@ public class GenAutoTypes {
 
     public static void main(String[] args) throws IllegalAccessException, NoSuchFieldException, IOException {
 
-        Stream.of(AUTO_TYPES, AUTO_TYPES_PARSER)
+        Stream.of(AUTO_TYPES, AUTO_TYPES_PARSER, MY_ARGUMENTS_PARSER)
                 .map(Paths::get)
                 .map(Path::toFile)
                 .filter(File::exists)
@@ -86,6 +88,7 @@ public class GenAutoTypes {
         String version = net.jbock.compiler.Processor.class.getPackage().getImplementationVersion();
         generate(version);
         GenAutoTypesParser.generate();
+        GenMyArgumentsParser.generate();
     }
 
     private static MethodData createMethodData(Class<?> type, CodeBlock mapExpr) {
