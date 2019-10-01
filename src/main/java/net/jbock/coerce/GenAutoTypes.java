@@ -6,6 +6,10 @@ import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
+import net.jbock.CommandLineArguments;
+import net.jbock.Parameter;
+
+import javax.lang.model.element.Modifier;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -16,9 +20,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
-import javax.lang.model.element.Modifier;
-import net.jbock.CommandLineArguments;
-import net.jbock.Parameter;
 
 public class GenAutoTypes {
 
@@ -45,9 +46,11 @@ public class GenAutoTypes {
         TypeSpec.Builder spec = TypeSpec.classBuilder(AUTO_TYPES_CLASSNAME);
         List<MethodData> data = new ArrayList<>(map.size());
         for (Map.Entry<Class<?>, CodeBlock> mapMirror : map) {
-            Class<?> mapperReturnType = mapMirror.getKey();
-            String simpleName = simpleName(TypeName.get(mapperReturnType));
-            data.add(createMethodData(simpleName, mapperReturnType));
+            Class<?> type = mapMirror.getKey();
+            if (!isBoxedPrimitive(type)) {
+                String simpleName = simpleName(TypeName.get(type));
+                data.add(createMethodData(simpleName, type));
+            }
         }
         data.sort(COMP);
         for (MethodData datum : data) {
@@ -56,10 +59,12 @@ public class GenAutoTypes {
         spec.addModifiers(Modifier.ABSTRACT);
         spec.addAnnotation(CommandLineArguments.class);
         spec.addJavadoc("This class contains all the basic parameter types\n" +
-                "that can be used without a custom mapper in jbock " + version + ".\n" +
-                "Optional and List thereof can also be used.\n" +
-                "All non-private enums can also be used directly.\n" +
-                "The default mapper will use their {@code static valueOf(String)} method.\n");
+                "that can be used without custom mappers or collectors in jbock " + version + ".\n" +
+                "Primitives and boxed primitives are omitted here.\n" +
+                "All non-private enums can also be used.\n" +
+                "For each such type X, Optional<X> defines an optional parameter,\n" +
+                "and List<X> defines a repeatable parameter.\n" +
+                "boolean or Boolean defines a flag.\n");
 
         JavaFile javaFile = JavaFile.builder(PACKAGE, spec.build())
                 .skipJavaLangImports(true)
@@ -68,7 +73,18 @@ public class GenAutoTypes {
         javaFile.writeTo(Paths.get("src/main/java"));
     }
 
-    public static void main(String[] args) throws IllegalAccessException, NoSuchFieldException, IOException, InterruptedException {
+    private static boolean isBoxedPrimitive(Class<?> type) {
+        return type.equals(Integer.class) ||
+                type.equals(Long.class) ||
+                type.equals(Short.class) ||
+                type.equals(Byte.class) ||
+                type.equals(Float.class) ||
+                type.equals(Double.class) ||
+                type.equals(Boolean.class) ||
+                type.equals(Character.class);
+    }
+
+    public static void main(String[] args) throws IllegalAccessException, NoSuchFieldException, IOException {
 
         Stream.of(AUTO_TYPES, AUTO_TYPES_PARSER)
                 .map(Paths::get)

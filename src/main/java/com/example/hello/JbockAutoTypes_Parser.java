@@ -6,17 +6,11 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.lang.AssertionError;
-import java.lang.Byte;
 import java.lang.Character;
-import java.lang.Double;
-import java.lang.Float;
 import java.lang.IllegalArgumentException;
 import java.lang.IllegalStateException;
-import java.lang.Integer;
-import java.lang.Long;
 import java.lang.Override;
 import java.lang.RuntimeException;
-import java.lang.Short;
 import java.lang.String;
 import java.lang.System;
 import java.math.BigDecimal;
@@ -254,10 +248,12 @@ final class JbockAutoTypes_Parser {
       out.incrementIndent();
       List<String> descriptionFromJavadoc = new ArrayList<>();
       descriptionFromJavadoc.add("This class contains all the basic parameter types");
-      descriptionFromJavadoc.add("that can be used without a custom mapper in jbock 2.8.2.");
-      descriptionFromJavadoc.add("Optional and List thereof can also be used.");
-      descriptionFromJavadoc.add("All non-private enums can also be used directly.");
-      descriptionFromJavadoc.add("The default mapper will use their {@code static valueOf(String)} method.");
+      descriptionFromJavadoc.add("that can be used without custom mappers or collectors in jbock 2.8.2.");
+      descriptionFromJavadoc.add("Primitives and boxed primitives are omitted here.");
+      descriptionFromJavadoc.add("All non-private enums can also be used.");
+      descriptionFromJavadoc.add("For each such type X, Optional<X> defines an optional parameter,");
+      descriptionFromJavadoc.add("and List<X> defines a repeatable parameter.");
+      descriptionFromJavadoc.add("boolean or Boolean defines a flag.");
       for (String line : messages.getMessage("jbock.description", descriptionFromJavadoc)) {
         out.println(line);
       }
@@ -290,13 +286,6 @@ final class JbockAutoTypes_Parser {
     static String synopsis() {
       StringJoiner joiner = new StringJoiner(" ");
       joiner.add("JbockAutoTypes");
-      joiner.add(Option.BOXED_BYTE.example());
-      joiner.add(Option.BOXED_CHARACTER.example());
-      joiner.add(Option.BOXED_DOUBLE.example());
-      joiner.add(Option.BOXED_FLOAT.example());
-      joiner.add(Option.BOXED_INTEGER.example());
-      joiner.add(Option.BOXED_LONG.example());
-      joiner.add(Option.BOXED_SHORT.example());
       joiner.add(Option.BIG_DECIMAL.example());
       joiner.add(Option.BIG_INTEGER.example());
       joiner.add(Option.CHARSET.example());
@@ -329,20 +318,6 @@ final class JbockAutoTypes_Parser {
   }
 
   private static class JbockAutoTypesImpl extends JbockAutoTypes {
-    final Byte boxedByte;
-
-    final Character boxedCharacter;
-
-    final Double boxedDouble;
-
-    final Float boxedFloat;
-
-    final Integer boxedInteger;
-
-    final Long boxedLong;
-
-    final Short boxedShort;
-
     final BigDecimal bigDecimal;
 
     final BigInteger bigInteger;
@@ -369,18 +344,10 @@ final class JbockAutoTypes_Parser {
 
     final ZonedDateTime zonedDateTime;
 
-    JbockAutoTypesImpl(Byte boxedByte, Character boxedCharacter, Double boxedDouble,
-        Float boxedFloat, Integer boxedInteger, Long boxedLong, Short boxedShort,
-        BigDecimal bigDecimal, BigInteger bigInteger, Charset charset, File file, Instant instant,
-        LocalDate localDate, LocalDateTime localDateTime, OffsetDateTime offsetDateTime, Path path,
-        Pattern pattern, String string, URI uri, ZonedDateTime zonedDateTime) {
-      this.boxedByte = boxedByte;
-      this.boxedCharacter = boxedCharacter;
-      this.boxedDouble = boxedDouble;
-      this.boxedFloat = boxedFloat;
-      this.boxedInteger = boxedInteger;
-      this.boxedLong = boxedLong;
-      this.boxedShort = boxedShort;
+    JbockAutoTypesImpl(BigDecimal bigDecimal, BigInteger bigInteger, Charset charset, File file,
+        Instant instant, LocalDate localDate, LocalDateTime localDateTime,
+        OffsetDateTime offsetDateTime, Path path, Pattern pattern, String string, URI uri,
+        ZonedDateTime zonedDateTime) {
       this.bigDecimal = bigDecimal;
       this.bigInteger = bigInteger;
       this.charset = charset;
@@ -394,41 +361,6 @@ final class JbockAutoTypes_Parser {
       this.string = string;
       this.uri = uri;
       this.zonedDateTime = zonedDateTime;
-    }
-
-    @Override
-    Byte boxedByte() {
-      return boxedByte;
-    }
-
-    @Override
-    Character boxedCharacter() {
-      return boxedCharacter;
-    }
-
-    @Override
-    Double boxedDouble() {
-      return boxedDouble;
-    }
-
-    @Override
-    Float boxedFloat() {
-      return boxedFloat;
-    }
-
-    @Override
-    Integer boxedInteger() {
-      return boxedInteger;
-    }
-
-    @Override
-    Long boxedLong() {
-      return boxedLong;
-    }
-
-    @Override
-    Short boxedShort() {
-      return boxedShort;
     }
 
     @Override
@@ -498,20 +430,6 @@ final class JbockAutoTypes_Parser {
   }
 
   private enum Option {
-    BOXED_BYTE("java.lang.Byte", null, "null", OptionalInt.empty(), "BOXED_BYTE", Collections.emptyList()),
-
-    BOXED_CHARACTER("java.lang.Character", null, "null", OptionalInt.empty(), "BOXED_CHARACTER", Collections.emptyList()),
-
-    BOXED_DOUBLE("java.lang.Double", null, "null", OptionalInt.empty(), "BOXED_DOUBLE", Collections.emptyList()),
-
-    BOXED_FLOAT("java.lang.Float", null, "null", OptionalInt.empty(), "BOXED_FLOAT", Collections.emptyList()),
-
-    BOXED_INTEGER("java.lang.Integer", null, "null", OptionalInt.empty(), "BOXED_INTEGER", Collections.emptyList()),
-
-    BOXED_LONG("java.lang.Long", null, "null", OptionalInt.empty(), "BOXED_LONG", Collections.emptyList()),
-
-    BOXED_SHORT("java.lang.Short", null, "null", OptionalInt.empty(), "BOXED_SHORT", Collections.emptyList()),
-
     BIG_DECIMAL("java.math.BigDecimal", null, "null", OptionalInt.empty(), "BIG_DECIMAL", Collections.emptyList()),
 
     BIG_INTEGER("java.math.BigInteger", null, "null", OptionalInt.empty(), "BIG_INTEGER", Collections.emptyList()),
@@ -650,15 +568,6 @@ final class JbockAutoTypes_Parser {
 
     Optional<? extends JbockAutoTypesImpl> build() {
       return Optional.of(new JbockAutoTypesImpl(
-          parsers.get(Option.BOXED_BYTE).value().map(Byte::valueOf).orElseThrow(Option.BOXED_BYTE.missingRequired()),
-          parsers.get(Option.BOXED_CHARACTER).value().map(s -> { if (s.length() != 1) {
-            throw new IllegalArgumentException("Not a single character: <" + s + ">");}
-          return s.charAt(0); }).orElseThrow(Option.BOXED_CHARACTER.missingRequired()),
-          parsers.get(Option.BOXED_DOUBLE).value().map(Double::valueOf).orElseThrow(Option.BOXED_DOUBLE.missingRequired()),
-          parsers.get(Option.BOXED_FLOAT).value().map(Float::valueOf).orElseThrow(Option.BOXED_FLOAT.missingRequired()),
-          parsers.get(Option.BOXED_INTEGER).value().map(Integer::valueOf).orElseThrow(Option.BOXED_INTEGER.missingRequired()),
-          parsers.get(Option.BOXED_LONG).value().map(Long::valueOf).orElseThrow(Option.BOXED_LONG.missingRequired()),
-          parsers.get(Option.BOXED_SHORT).value().map(Short::valueOf).orElseThrow(Option.BOXED_SHORT.missingRequired()),
           parsers.get(Option.BIG_DECIMAL).value().map(BigDecimal::new).orElseThrow(Option.BIG_DECIMAL.missingRequired()),
           parsers.get(Option.BIG_INTEGER).value().map(BigInteger::new).orElseThrow(Option.BIG_INTEGER.missingRequired()),
           parsers.get(Option.CHARSET).value().map(Charset::forName).orElseThrow(Option.CHARSET.missingRequired()),

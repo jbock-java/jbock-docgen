@@ -17,48 +17,15 @@ import net.jbock.Parameter;
 
 /**
  * This class contains all the basic parameter types
- * that can be used without a custom mapper in jbock 2.8.2.
- * Optional and List thereof can also be used.
- * All non-private enums can also be used directly.
- * The default mapper will use their {@code static valueOf(String)} method.
+ * that can be used without custom mappers or collectors in jbock 2.8.2.
+ * Primitives and boxed primitives are omitted here.
+ * All non-private enums can also be used.
+ * For each such type X, Optional<X> defines an optional parameter,
+ * and List<X> defines a repeatable parameter.
+ * boolean or Boolean defines a flag.
  */
 @CommandLineArguments
 abstract class JbockAutoTypes {
-  @Parameter(
-      longName = "java.lang.Byte"
-  )
-  abstract Byte boxedByte();
-
-  @Parameter(
-      longName = "java.lang.Character"
-  )
-  abstract Character boxedCharacter();
-
-  @Parameter(
-      longName = "java.lang.Double"
-  )
-  abstract Double boxedDouble();
-
-  @Parameter(
-      longName = "java.lang.Float"
-  )
-  abstract Float boxedFloat();
-
-  @Parameter(
-      longName = "java.lang.Integer"
-  )
-  abstract Integer boxedInteger();
-
-  @Parameter(
-      longName = "java.lang.Long"
-  )
-  abstract Long boxedLong();
-
-  @Parameter(
-      longName = "java.lang.Short"
-  )
-  abstract Short boxedShort();
-
   @Parameter(
       longName = "java.math.BigDecimal"
   )
