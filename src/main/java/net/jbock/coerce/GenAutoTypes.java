@@ -110,11 +110,11 @@ public class GenAutoTypes {
     private static MethodSpec createMethod(MethodData data) {
         String name = Character.toLowerCase(data.type.getSimpleName().charAt(0)) + data.type.getSimpleName().substring(1);
         return MethodSpec.methodBuilder(name)
-                .addJavadoc("mapped by: " + data.mapExpr.toString() + "\n")
+                .addJavadoc("Mapped by: " + data.mapExpr.toString() + "\n")
                 .addModifiers(Modifier.ABSTRACT)
                 .returns(data.type)
                 .addAnnotation(AnnotationSpec.builder(Parameter.class)
-                        .addMember("longName", "$S", name).build())
+                        .addMember("longName", "$S", data.type.getSimpleName()).build())
                 .build();
     }
 }
