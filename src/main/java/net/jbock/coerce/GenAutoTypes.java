@@ -74,14 +74,14 @@ public class GenAutoTypes {
     }
 
     private static boolean isBoxedPrimitive(Class<?> type) {
-        return type.equals(Integer.class) ||
-                type.equals(Long.class) ||
-                type.equals(Short.class) ||
-                type.equals(Byte.class) ||
-                type.equals(Float.class) ||
-                type.equals(Double.class) ||
-                type.equals(Boolean.class) ||
-                type.equals(Character.class);
+        return type == Integer.class ||
+                type == Long.class ||
+                type == Short.class ||
+                type == Byte.class ||
+                type == Float.class ||
+                type == Double.class ||
+                type == Boolean.class ||
+                type == Character.class;
     }
 
     public static void main(String[] args) throws IllegalAccessException, NoSuchFieldException, IOException {
