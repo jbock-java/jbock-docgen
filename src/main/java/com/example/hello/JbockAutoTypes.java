@@ -26,68 +26,107 @@ import net.jbock.Parameter;
  */
 @CommandLineArguments
 abstract class JbockAutoTypes {
+  /**
+   * mapped by: java.math.BigDecimal::new
+   */
   @Parameter(
-      longName = "java.math.BigDecimal"
+      longName = "bigDecimal"
   )
-  abstract BigDecimal BigDecimal();
+  abstract BigDecimal bigDecimal();
 
+  /**
+   * mapped by: java.math.BigInteger::new
+   */
   @Parameter(
-      longName = "java.math.BigInteger"
+      longName = "bigInteger"
   )
-  abstract BigInteger BigInteger();
+  abstract BigInteger bigInteger();
 
+  /**
+   * mapped by: java.nio.charset.Charset::forName
+   */
   @Parameter(
-      longName = "java.nio.charset.Charset"
+      longName = "charset"
   )
-  abstract Charset Charset();
+  abstract Charset charset();
 
+  /**
+   * mapped by: java.io.File::new
+   */
   @Parameter(
-      longName = "java.io.File"
+      longName = "file"
   )
-  abstract File File();
+  abstract File file();
 
+  /**
+   * mapped by: java.time.Instant::parse
+   */
   @Parameter(
-      longName = "java.time.Instant"
+      longName = "instant"
   )
-  abstract Instant Instant();
+  abstract Instant instant();
 
+  /**
+   * mapped by: java.time.LocalDate::parse
+   */
   @Parameter(
-      longName = "java.time.LocalDate"
+      longName = "localDate"
   )
-  abstract LocalDate LocalDate();
+  abstract LocalDate localDate();
 
+  /**
+   * mapped by: java.time.LocalDateTime::parse
+   */
   @Parameter(
-      longName = "java.time.LocalDateTime"
+      longName = "localDateTime"
   )
-  abstract LocalDateTime LocalDateTime();
+  abstract LocalDateTime localDateTime();
 
+  /**
+   * mapped by: java.time.OffsetDateTime::parse
+   */
   @Parameter(
-      longName = "java.time.OffsetDateTime"
+      longName = "offsetDateTime"
   )
-  abstract OffsetDateTime OffsetDateTime();
+  abstract OffsetDateTime offsetDateTime();
 
+  /**
+   * mapped by: java.nio.file.Paths::get
+   */
   @Parameter(
-      longName = "java.nio.file.Path"
+      longName = "path"
   )
-  abstract Path Path();
+  abstract Path path();
 
+  /**
+   * mapped by: java.util.regex.Pattern::compile
+   */
   @Parameter(
-      longName = "java.util.regex.Pattern"
+      longName = "pattern"
   )
-  abstract Pattern Pattern();
+  abstract Pattern pattern();
 
+  /**
+   * mapped by: java.util.function.Function.identity()
+   */
   @Parameter(
-      longName = "java.lang.String"
+      longName = "string"
   )
-  abstract String String();
+  abstract String string();
 
+  /**
+   * mapped by: java.net.URI::create
+   */
   @Parameter(
-      longName = "java.net.URI"
+      longName = "uRI"
   )
-  abstract URI URI();
+  abstract URI uRI();
 
+  /**
+   * mapped by: java.time.ZonedDateTime::parse
+   */
   @Parameter(
-      longName = "java.time.ZonedDateTime"
+      longName = "zonedDateTime"
   )
-  abstract ZonedDateTime ZonedDateTime();
+  abstract ZonedDateTime zonedDateTime();
 }

@@ -24,8 +24,7 @@ import java.util.stream.Stream;
 public class GenAutoTypes {
 
     private static final Comparator<MethodData> COMP = Comparator
-            .<MethodData>comparingInt(methodData -> methodData.type.isBoxedPrimitive() ? -1 : 1)
-            .thenComparing(methodData -> methodData.simpleName);
+            .comparing(methodData -> methodData.type.getSimpleName());
 
     private static final String AUTO_TYPES_CLASSNAME = "JbockAutoTypes";
 
@@ -45,11 +44,10 @@ public class GenAutoTypes {
         List<Map.Entry<Class<?>, CodeBlock>> map = (List<Map.Entry<Class<?>, CodeBlock>>) mappers.get(null);
         TypeSpec.Builder spec = TypeSpec.classBuilder(AUTO_TYPES_CLASSNAME);
         List<MethodData> data = new ArrayList<>(map.size());
-        for (Map.Entry<Class<?>, CodeBlock> mapMirror : map) {
-            Class<?> type = mapMirror.getKey();
+        for (Map.Entry<Class<?>, CodeBlock> entry : map) {
+            Class<?> type = entry.getKey();
             if (!isBoxedPrimitive(type)) {
-                String simpleName = simpleName(TypeName.get(type));
-                data.add(createMethodData(simpleName, type));
+                data.add(createMethodData(type, entry.getValue()));
             }
         }
         data.sort(COMP);
@@ -74,14 +72,7 @@ public class GenAutoTypes {
     }
 
     private static boolean isBoxedPrimitive(Class<?> type) {
-        return type == Integer.class ||
-                type == Long.class ||
-                type == Short.class ||
-                type == Byte.class ||
-                type == Float.class ||
-                type == Double.class ||
-                type == Boolean.class ||
-                type == Character.class;
+        return TypeName.get(type).isBoxedPrimitive();
     }
 
     public static void main(String[] args) throws IllegalAccessException, NoSuchFieldException, IOException {
@@ -97,39 +88,30 @@ public class GenAutoTypes {
         GenAutoTypesParser.generate();
     }
 
-    private static MethodData createMethodData(String simpleName, Class<?> element) {
-        return new MethodData(simpleName, TypeName.get(element));
+    private static MethodData createMethodData(Class<?> type, CodeBlock mapExpr) {
+        return new MethodData(type, mapExpr);
     }
 
-    static class MethodData {
+    private static class MethodData {
 
-        final String simpleName;
+        final Class<?> type;
+        final CodeBlock mapExpr;
 
-        final TypeName type;
-
-        MethodData(String simpleName, TypeName type) {
-            this.simpleName = simpleName;
+        MethodData(Class<?> type, CodeBlock mapExpr) {
             this.type = type;
+            this.mapExpr = mapExpr;
         }
     }
 
-    private static String simpleName(TypeName type) {
-        String[] tokens = type.toString().split("[.]", -1);
-        return tokens[tokens.length - 1];
-    }
 
-    private static MethodSpec createMethod(MethodData datum) {
-        AnnotationSpec.Builder spec = AnnotationSpec.builder(Parameter.class)
-                .addMember("longName", "$S", datum.type.toString());
-        StringBuilder name = new StringBuilder();
-        if (datum.type.isBoxedPrimitive()) {
-            name.append("boxed");
-        }
-        name.append(datum.simpleName);
-        return MethodSpec.methodBuilder(name.toString())
+    private static MethodSpec createMethod(MethodData data) {
+        String name = Character.toLowerCase(data.type.getSimpleName().charAt(0)) + data.type.getSimpleName().substring(1);
+        return MethodSpec.methodBuilder(name)
+                .addJavadoc("mapped by: " + data.mapExpr.toString() + "\n")
                 .addModifiers(Modifier.ABSTRACT)
-                .returns(datum.type)
-                .addAnnotation(spec.build())
+                .returns(data.type)
+                .addAnnotation(AnnotationSpec.builder(Parameter.class)
+                        .addMember("longName", "$S", name).build())
                 .build();
     }
 }

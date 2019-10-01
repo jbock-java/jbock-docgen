@@ -297,7 +297,7 @@ final class JbockAutoTypes_Parser {
       joiner.add(Option.PATH.example());
       joiner.add(Option.PATTERN.example());
       joiner.add(Option.STRING.example());
-      joiner.add(Option.URI.example());
+      joiner.add(Option.U_RI.example());
       joiner.add(Option.ZONED_DATE_TIME.example());
       return joiner.toString();
     }
@@ -340,13 +340,13 @@ final class JbockAutoTypes_Parser {
 
     final String string;
 
-    final URI uri;
+    final URI uRi;
 
     final ZonedDateTime zonedDateTime;
 
     JbockAutoTypesImpl(BigDecimal bigDecimal, BigInteger bigInteger, Charset charset, File file,
         Instant instant, LocalDate localDate, LocalDateTime localDateTime,
-        OffsetDateTime offsetDateTime, Path path, Pattern pattern, String string, URI uri,
+        OffsetDateTime offsetDateTime, Path path, Pattern pattern, String string, URI uRi,
         ZonedDateTime zonedDateTime) {
       this.bigDecimal = bigDecimal;
       this.bigInteger = bigInteger;
@@ -359,102 +359,102 @@ final class JbockAutoTypes_Parser {
       this.path = path;
       this.pattern = pattern;
       this.string = string;
-      this.uri = uri;
+      this.uRi = uRi;
       this.zonedDateTime = zonedDateTime;
     }
 
     @Override
-    BigDecimal BigDecimal() {
+    BigDecimal bigDecimal() {
       return bigDecimal;
     }
 
     @Override
-    BigInteger BigInteger() {
+    BigInteger bigInteger() {
       return bigInteger;
     }
 
     @Override
-    Charset Charset() {
+    Charset charset() {
       return charset;
     }
 
     @Override
-    File File() {
+    File file() {
       return file;
     }
 
     @Override
-    Instant Instant() {
+    Instant instant() {
       return instant;
     }
 
     @Override
-    LocalDate LocalDate() {
+    LocalDate localDate() {
       return localDate;
     }
 
     @Override
-    LocalDateTime LocalDateTime() {
+    LocalDateTime localDateTime() {
       return localDateTime;
     }
 
     @Override
-    OffsetDateTime OffsetDateTime() {
+    OffsetDateTime offsetDateTime() {
       return offsetDateTime;
     }
 
     @Override
-    Path Path() {
+    Path path() {
       return path;
     }
 
     @Override
-    Pattern Pattern() {
+    Pattern pattern() {
       return pattern;
     }
 
     @Override
-    String String() {
+    String string() {
       return string;
     }
 
     @Override
-    URI URI() {
-      return uri;
+    URI uRI() {
+      return uRi;
     }
 
     @Override
-    ZonedDateTime ZonedDateTime() {
+    ZonedDateTime zonedDateTime() {
       return zonedDateTime;
     }
   }
 
   private enum Option {
-    BIG_DECIMAL("java.math.BigDecimal", null, "null", OptionalInt.empty(), "BIG_DECIMAL", Collections.emptyList()),
+    BIG_DECIMAL("bigDecimal", null, "null", OptionalInt.empty(), "BIG_DECIMAL", Collections.singletonList("mapped by: java.math.BigDecimal::new")),
 
-    BIG_INTEGER("java.math.BigInteger", null, "null", OptionalInt.empty(), "BIG_INTEGER", Collections.emptyList()),
+    BIG_INTEGER("bigInteger", null, "null", OptionalInt.empty(), "BIG_INTEGER", Collections.singletonList("mapped by: java.math.BigInteger::new")),
 
-    CHARSET("java.nio.charset.Charset", null, "null", OptionalInt.empty(), "CHARSET", Collections.emptyList()),
+    CHARSET("charset", null, "null", OptionalInt.empty(), "CHARSET", Collections.singletonList("mapped by: java.nio.charset.Charset::forName")),
 
-    FILE("java.io.File", null, "null", OptionalInt.empty(), "FILE", Collections.emptyList()),
+    FILE("file", null, "null", OptionalInt.empty(), "FILE", Collections.singletonList("mapped by: java.io.File::new")),
 
-    INSTANT("java.time.Instant", null, "null", OptionalInt.empty(), "INSTANT", Collections.emptyList()),
+    INSTANT("instant", null, "null", OptionalInt.empty(), "INSTANT", Collections.singletonList("mapped by: java.time.Instant::parse")),
 
-    LOCAL_DATE("java.time.LocalDate", null, "null", OptionalInt.empty(), "LOCAL_DATE", Collections.emptyList()),
+    LOCAL_DATE("localDate", null, "null", OptionalInt.empty(), "LOCAL_DATE", Collections.singletonList("mapped by: java.time.LocalDate::parse")),
 
-    LOCAL_DATE_TIME("java.time.LocalDateTime", null, "null", OptionalInt.empty(), "LOCAL_DATE_TIME", Collections.emptyList()),
+    LOCAL_DATE_TIME("localDateTime", null, "null", OptionalInt.empty(), "LOCAL_DATE_TIME", Collections.singletonList("mapped by: java.time.LocalDateTime::parse")),
 
-    OFFSET_DATE_TIME("java.time.OffsetDateTime", null, "null", OptionalInt.empty(), "OFFSET_DATE_TIME", Collections.emptyList()),
+    OFFSET_DATE_TIME("offsetDateTime", null, "null", OptionalInt.empty(), "OFFSET_DATE_TIME", Collections.singletonList("mapped by: java.time.OffsetDateTime::parse")),
 
-    PATH("java.nio.file.Path", null, "null", OptionalInt.empty(), "PATH", Collections.emptyList()),
+    PATH("path", null, "null", OptionalInt.empty(), "PATH", Collections.singletonList("mapped by: java.nio.file.Paths::get")),
 
-    PATTERN("java.util.regex.Pattern", null, "null", OptionalInt.empty(), "PATTERN", Collections.emptyList()),
+    PATTERN("pattern", null, "null", OptionalInt.empty(), "PATTERN", Collections.singletonList("mapped by: java.util.regex.Pattern::compile")),
 
-    STRING("java.lang.String", null, "null", OptionalInt.empty(), "STRING", Collections.emptyList()),
+    STRING("string", null, "null", OptionalInt.empty(), "STRING", Collections.singletonList("mapped by: java.util.function.Function.identity()")),
 
-    URI("java.net.URI", null, "null", OptionalInt.empty(), "URI", Collections.emptyList()),
+    U_RI("uRI", null, "null", OptionalInt.empty(), "U_RI", Collections.singletonList("mapped by: java.net.URI::create")),
 
-    ZONED_DATE_TIME("java.time.ZonedDateTime", null, "null", OptionalInt.empty(), "ZONED_DATE_TIME", Collections.emptyList());
+    ZONED_DATE_TIME("zonedDateTime", null, "null", OptionalInt.empty(), "ZONED_DATE_TIME", Collections.singletonList("mapped by: java.time.ZonedDateTime::parse"));
 
     final String longName;
 
@@ -579,7 +579,7 @@ final class JbockAutoTypes_Parser {
           parsers.get(Option.PATH).value().map(Paths::get).orElseThrow(Option.PATH.missingRequired()),
           parsers.get(Option.PATTERN).value().map(Pattern::compile).orElseThrow(Option.PATTERN.missingRequired()),
           parsers.get(Option.STRING).value().map(Function.identity()).orElseThrow(Option.STRING.missingRequired()),
-          parsers.get(Option.URI).value().map(URI::create).orElseThrow(Option.URI.missingRequired()),
+          parsers.get(Option.U_RI).value().map(URI::create).orElseThrow(Option.U_RI.missingRequired()),
           parsers.get(Option.ZONED_DATE_TIME).value().map(ZonedDateTime::parse).orElseThrow(Option.ZONED_DATE_TIME.missingRequired())));
     }
 
