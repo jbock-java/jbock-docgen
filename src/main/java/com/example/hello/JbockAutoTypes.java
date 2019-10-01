@@ -27,106 +27,106 @@ import net.jbock.Parameter;
 @CommandLineArguments
 abstract class JbockAutoTypes {
   /**
-   * mapped by: java.math.BigDecimal::new
+   * Mapped by: java.math.BigDecimal::new
    */
   @Parameter(
-      longName = "bigDecimal"
+      longName = "BigDecimal"
   )
   abstract BigDecimal bigDecimal();
 
   /**
-   * mapped by: java.math.BigInteger::new
+   * Mapped by: java.math.BigInteger::new
    */
   @Parameter(
-      longName = "bigInteger"
+      longName = "BigInteger"
   )
   abstract BigInteger bigInteger();
 
   /**
-   * mapped by: java.nio.charset.Charset::forName
+   * Mapped by: java.nio.charset.Charset::forName
    */
   @Parameter(
-      longName = "charset"
+      longName = "Charset"
   )
   abstract Charset charset();
 
   /**
-   * mapped by: java.io.File::new
+   * Mapped by: java.io.File::new
    */
   @Parameter(
-      longName = "file"
+      longName = "File"
   )
   abstract File file();
 
   /**
-   * mapped by: java.time.Instant::parse
+   * Mapped by: java.time.Instant::parse
    */
   @Parameter(
-      longName = "instant"
+      longName = "Instant"
   )
   abstract Instant instant();
 
   /**
-   * mapped by: java.time.LocalDate::parse
+   * Mapped by: java.time.LocalDate::parse
    */
   @Parameter(
-      longName = "localDate"
+      longName = "LocalDate"
   )
   abstract LocalDate localDate();
 
   /**
-   * mapped by: java.time.LocalDateTime::parse
+   * Mapped by: java.time.LocalDateTime::parse
    */
   @Parameter(
-      longName = "localDateTime"
+      longName = "LocalDateTime"
   )
   abstract LocalDateTime localDateTime();
 
   /**
-   * mapped by: java.time.OffsetDateTime::parse
+   * Mapped by: java.time.OffsetDateTime::parse
    */
   @Parameter(
-      longName = "offsetDateTime"
+      longName = "OffsetDateTime"
   )
   abstract OffsetDateTime offsetDateTime();
 
   /**
-   * mapped by: java.nio.file.Paths::get
+   * Mapped by: java.nio.file.Paths::get
    */
   @Parameter(
-      longName = "path"
+      longName = "Path"
   )
   abstract Path path();
 
   /**
-   * mapped by: java.util.regex.Pattern::compile
+   * Mapped by: java.util.regex.Pattern::compile
    */
   @Parameter(
-      longName = "pattern"
+      longName = "Pattern"
   )
   abstract Pattern pattern();
 
   /**
-   * mapped by: java.util.function.Function.identity()
+   * Mapped by: java.util.function.Function.identity()
    */
   @Parameter(
-      longName = "string"
+      longName = "String"
   )
   abstract String string();
 
   /**
-   * mapped by: java.net.URI::create
+   * Mapped by: java.net.URI::create
    */
   @Parameter(
-      longName = "uRI"
+      longName = "URI"
   )
   abstract URI uRI();
 
   /**
-   * mapped by: java.time.ZonedDateTime::parse
+   * Mapped by: java.time.ZonedDateTime::parse
    */
   @Parameter(
-      longName = "zonedDateTime"
+      longName = "ZonedDateTime"
   )
   abstract ZonedDateTime zonedDateTime();
 }

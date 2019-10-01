@@ -430,31 +430,31 @@ final class JbockAutoTypes_Parser {
   }
 
   private enum Option {
-    BIG_DECIMAL("bigDecimal", null, "null", OptionalInt.empty(), "BIG_DECIMAL", Collections.singletonList("mapped by: java.math.BigDecimal::new")),
+    BIG_DECIMAL("BigDecimal", null, "null", OptionalInt.empty(), "BIG_DECIMAL", Collections.singletonList("Mapped by: java.math.BigDecimal::new")),
 
-    BIG_INTEGER("bigInteger", null, "null", OptionalInt.empty(), "BIG_INTEGER", Collections.singletonList("mapped by: java.math.BigInteger::new")),
+    BIG_INTEGER("BigInteger", null, "null", OptionalInt.empty(), "BIG_INTEGER", Collections.singletonList("Mapped by: java.math.BigInteger::new")),
 
-    CHARSET("charset", null, "null", OptionalInt.empty(), "CHARSET", Collections.singletonList("mapped by: java.nio.charset.Charset::forName")),
+    CHARSET("Charset", null, "null", OptionalInt.empty(), "CHARSET", Collections.singletonList("Mapped by: java.nio.charset.Charset::forName")),
 
-    FILE("file", null, "null", OptionalInt.empty(), "FILE", Collections.singletonList("mapped by: java.io.File::new")),
+    FILE("File", null, "null", OptionalInt.empty(), "FILE", Collections.singletonList("Mapped by: java.io.File::new")),
 
-    INSTANT("instant", null, "null", OptionalInt.empty(), "INSTANT", Collections.singletonList("mapped by: java.time.Instant::parse")),
+    INSTANT("Instant", null, "null", OptionalInt.empty(), "INSTANT", Collections.singletonList("Mapped by: java.time.Instant::parse")),
 
-    LOCAL_DATE("localDate", null, "null", OptionalInt.empty(), "LOCAL_DATE", Collections.singletonList("mapped by: java.time.LocalDate::parse")),
+    LOCAL_DATE("LocalDate", null, "null", OptionalInt.empty(), "LOCAL_DATE", Collections.singletonList("Mapped by: java.time.LocalDate::parse")),
 
-    LOCAL_DATE_TIME("localDateTime", null, "null", OptionalInt.empty(), "LOCAL_DATE_TIME", Collections.singletonList("mapped by: java.time.LocalDateTime::parse")),
+    LOCAL_DATE_TIME("LocalDateTime", null, "null", OptionalInt.empty(), "LOCAL_DATE_TIME", Collections.singletonList("Mapped by: java.time.LocalDateTime::parse")),
 
-    OFFSET_DATE_TIME("offsetDateTime", null, "null", OptionalInt.empty(), "OFFSET_DATE_TIME", Collections.singletonList("mapped by: java.time.OffsetDateTime::parse")),
+    OFFSET_DATE_TIME("OffsetDateTime", null, "null", OptionalInt.empty(), "OFFSET_DATE_TIME", Collections.singletonList("Mapped by: java.time.OffsetDateTime::parse")),
 
-    PATH("path", null, "null", OptionalInt.empty(), "PATH", Collections.singletonList("mapped by: java.nio.file.Paths::get")),
+    PATH("Path", null, "null", OptionalInt.empty(), "PATH", Collections.singletonList("Mapped by: java.nio.file.Paths::get")),
 
-    PATTERN("pattern", null, "null", OptionalInt.empty(), "PATTERN", Collections.singletonList("mapped by: java.util.regex.Pattern::compile")),
+    PATTERN("Pattern", null, "null", OptionalInt.empty(), "PATTERN", Collections.singletonList("Mapped by: java.util.regex.Pattern::compile")),
 
-    STRING("string", null, "null", OptionalInt.empty(), "STRING", Collections.singletonList("mapped by: java.util.function.Function.identity()")),
+    STRING("String", null, "null", OptionalInt.empty(), "STRING", Collections.singletonList("Mapped by: java.util.function.Function.identity()")),
 
-    U_RI("uRI", null, "null", OptionalInt.empty(), "U_RI", Collections.singletonList("mapped by: java.net.URI::create")),
+    U_RI("URI", null, "null", OptionalInt.empty(), "U_RI", Collections.singletonList("Mapped by: java.net.URI::create")),
 
-    ZONED_DATE_TIME("zonedDateTime", null, "null", OptionalInt.empty(), "ZONED_DATE_TIME", Collections.singletonList("mapped by: java.time.ZonedDateTime::parse"));
+    ZONED_DATE_TIME("ZonedDateTime", null, "null", OptionalInt.empty(), "ZONED_DATE_TIME", Collections.singletonList("Mapped by: java.time.ZonedDateTime::parse"));
 
     final String longName;
 
