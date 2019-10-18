@@ -15,10 +15,6 @@ import net.jbock.Parameter;
  * that can be used without custom mappers or collectors in jbock 2.8.4.
  * Primitives and boxed primitives are omitted here.
  * All enums can also be used; they are mapped by their {@code valueOf} method.
- *
- * For any type {@code X} in that list,
- * {@code Optional<X>} is the corresponding optional type, and
- * {@code List<X>} is the corresponding repeatable type.
  */
 @CommandLineArguments
 abstract class JbockAutoTypes {
