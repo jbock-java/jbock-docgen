@@ -254,6 +254,7 @@ final class JbockAutoTypes_Parser {
       descriptionFromJavadoc.add("that can be used without custom mappers or collectors in jbock 2.8.4.");
       descriptionFromJavadoc.add("Primitives and boxed primitives are omitted here.");
       descriptionFromJavadoc.add("All enums can also be used; they are mapped by their {@code valueOf} method.");
+      descriptionFromJavadoc.add("");
       descriptionFromJavadoc.add("For any type {@code X} in that list,");
       descriptionFromJavadoc.add("{@code Optional<X>} is the corresponding optional type, and");
       descriptionFromJavadoc.add("{@code List<X>} is the corresponding repeatable type.");
