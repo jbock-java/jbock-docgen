@@ -253,10 +253,10 @@ final class JbockAutoTypes_Parser {
       descriptionFromJavadoc.add("This class contains all the basic parameter types");
       descriptionFromJavadoc.add("that can be used without custom mappers or collectors in jbock 2.8.4.");
       descriptionFromJavadoc.add("Primitives and boxed primitives are omitted here.");
-      descriptionFromJavadoc.add("All non-private enums can also be used.");
-      descriptionFromJavadoc.add("For each such type X, Optional<X> defines an optional parameter,");
-      descriptionFromJavadoc.add("and List<X> defines a repeatable parameter.");
-      descriptionFromJavadoc.add("boolean or Boolean defines a flag.");
+      descriptionFromJavadoc.add("All enums can also be used; they are mapped by their {@code valueOf} method.");
+      descriptionFromJavadoc.add("For any type {@code X} in that list,");
+      descriptionFromJavadoc.add("{@code Optional<X>} is the corresponding optional type, and");
+      descriptionFromJavadoc.add("{@code List<X>} is the corresponding repeatable type.");
       for (String line : messages.getMessage("jbock.description", descriptionFromJavadoc)) {
         out.println(line);
       }

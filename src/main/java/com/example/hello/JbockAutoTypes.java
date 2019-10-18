@@ -14,10 +14,10 @@ import net.jbock.Parameter;
  * This class contains all the basic parameter types
  * that can be used without custom mappers or collectors in jbock 2.8.4.
  * Primitives and boxed primitives are omitted here.
- * All non-private enums can also be used.
- * For each such type X, Optional<X> defines an optional parameter,
- * and List<X> defines a repeatable parameter.
- * boolean or Boolean defines a flag.
+ * All enums can also be used; they are mapped by their {@code valueOf} method.
+ * For any type {@code X} in that list,
+ * {@code Optional<X>} is the corresponding optional type, and
+ * {@code List<X>} is the corresponding repeatable type.
  */
 @CommandLineArguments
 abstract class JbockAutoTypes {

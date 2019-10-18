@@ -61,10 +61,10 @@ public class GenAutoTypes {
         spec.addJavadoc("This class contains all the basic parameter types\n" +
                 "that can be used without custom mappers or collectors in jbock " + version + ".\n" +
                 "Primitives and boxed primitives are omitted here.\n" +
-                "All non-private enums can also be used.\n" +
-                "For each such type X, Optional<X> defines an optional parameter,\n" +
-                "and List<X> defines a repeatable parameter.\n" +
-                "boolean or Boolean defines a flag.\n");
+                "All enums can also be used; they are mapped by their {@code valueOf} method.\n" +
+                "For any type {@code X} in that list,\n" +
+                "{@code Optional<X>} is the corresponding optional type, and\n" +
+                "{@code List<X>} is the corresponding repeatable type.\n");
 
         JavaFile javaFile = JavaFile.builder(PACKAGE, spec.build())
                 .skipJavaLangImports(true)
