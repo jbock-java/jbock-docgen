@@ -8,7 +8,7 @@ repositories {
     mavenCentral()
 }
 
-def jbock = "com.github.h908714124:jbock:2.8.6"
+def jbock = "com.github.h908714124:jbock:2.8.7"
 
 dependencies {
     compile "$jbock"
