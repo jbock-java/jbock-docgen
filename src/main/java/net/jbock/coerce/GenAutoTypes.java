@@ -6,10 +6,6 @@ import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
-import net.jbock.CommandLineArguments;
-import net.jbock.Parameter;
-
-import javax.lang.model.element.Modifier;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -20,6 +16,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
+import javax.lang.model.element.Modifier;
+import net.jbock.CommandLineArguments;
+import net.jbock.Parameter;
 
 import static net.jbock.coerce.GenMyArgumentsParser.MY_ARGUMENTS_PARSER;
 
@@ -104,14 +103,34 @@ public class GenAutoTypes {
     }
 
 
+    /**
+     * Mapped by: <pre>{@code s -> {
+     *   java.io.File f = new java.io.File(s);
+     *   if (!f.exists()) {
+     *     throw new java.lang.IllegalStateException("File does not exist: " + s);
+     *   }
+     *   if (!f.isFile()) {
+     *     throw new java.lang.IllegalStateException("Not a file: " + s);
+     *   }
+     *   return f;
+     * }}</pre>
+     */
     private static MethodSpec createMethod(MethodData data) {
         String name = Character.toLowerCase(data.type.getSimpleName().charAt(0)) + data.type.getSimpleName().substring(1);
         return MethodSpec.methodBuilder(name)
-                .addJavadoc("Mapped by: " + data.mapExpr.toString() + "\n")
+                .addJavadoc("Mapped by: " + mapExprString(data) + "\n")
                 .addModifiers(Modifier.ABSTRACT)
                 .returns(data.type)
                 .addAnnotation(AnnotationSpec.builder(Parameter.class)
                         .addMember("longName", "$S", data.type.getSimpleName()).build())
                 .build();
+    }
+
+    private static String mapExprString(MethodData data) {
+        String result = data.mapExpr.toString();
+        if (result.contains("->")) {
+            return "<pre>{@code " + result + "}</pre>";
+        }
+        return result;
     }
 }

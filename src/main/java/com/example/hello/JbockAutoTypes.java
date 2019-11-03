@@ -12,7 +12,7 @@ import net.jbock.Parameter;
 
 /**
  * This class contains all the basic parameter types
- * that can be used without custom mappers or collectors in jbock 2.8.7.
+ * that can be used without custom mappers or collectors in jbock 2.8.8.
  * Primitives and boxed primitives are omitted here.
  * All enums can also be used; they are mapped by their {@code valueOf} method.
  */
@@ -35,7 +35,16 @@ abstract class JbockAutoTypes {
   abstract BigInteger bigInteger();
 
   /**
-   * Mapped by: java.io.File::new
+   * Mapped by: <pre>{@code s -> {
+   *   java.io.File f = new java.io.File(s);
+   *   if (!f.exists()) {
+   *     throw new java.lang.IllegalStateException("File does not exist: " + s);
+   *   }
+   *   if (!f.isFile()) {
+   *     throw new java.lang.IllegalStateException("Not a file: " + s);
+   *   }
+   *   return f;
+   * }}</pre>
    */
   @Parameter(
       longName = "File"
