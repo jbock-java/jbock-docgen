@@ -8,13 +8,12 @@ repositories {
     mavenCentral()
 }
 
-def jbock = "com.github.h908714124:jbock:2.8.9"
-
 dependencies {
-    compile "$jbock"
-    compile "com.squareup:javapoet:1.11.1"
-    compile "com.google.testing.compile:compile-testing:0.18"
-    testCompile "org.junit.jupiter:junit-jupiter:5.5.1"
+    implementation "com.github.h908714124:jbock-annotations:2.7"
+    implementation "com.github.h908714124:jbock:2.9.0"
+    implementation "com.squareup:javapoet:1.11.1"
+    implementation "com.google.testing.compile:compile-testing:0.18"
+    testImplementation "org.junit.jupiter:junit-jupiter:5.5.1"
 }
 
 test {

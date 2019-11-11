@@ -12,7 +12,7 @@ import net.jbock.Parameter;
 
 /**
  * This class contains all the basic parameter types
- * that can be used without custom mappers or collectors in jbock 2.8.9.
+ * that can be used without custom mappers or collectors in jbock 2.9.0.
  * Primitives and boxed primitives are omitted here.
  * All enums can also be used; they are mapped by their {@code valueOf} method.
  */
