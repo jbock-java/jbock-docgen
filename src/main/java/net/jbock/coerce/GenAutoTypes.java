@@ -122,7 +122,7 @@ public class GenAutoTypes {
                 .addModifiers(Modifier.ABSTRACT)
                 .returns(data.type)
                 .addAnnotation(AnnotationSpec.builder(Parameter.class)
-                        .addMember("longName", "$S", data.type.getSimpleName()).build())
+                        .addMember("value", "$S", data.type.getSimpleName()).build())
                 .build();
     }
 

@@ -9,11 +9,11 @@ repositories {
 }
 
 dependencies {
-    implementation "com.github.h908714124:jbock-annotations:2.7"
-    implementation "com.github.h908714124:jbock:2.9.1"
+    implementation "com.github.h908714124:jbock-annotations:3.1"
+    implementation "com.github.h908714124:jbock:3.0.2"
     implementation "com.squareup:javapoet:1.11.1"
     implementation "com.google.testing.compile:compile-testing:0.18"
-    testImplementation "org.junit.jupiter:junit-jupiter:5.5.1"
+    testImplementation "org.junit.jupiter:junit-jupiter:5.6.0-M1"
 }
 
 test {

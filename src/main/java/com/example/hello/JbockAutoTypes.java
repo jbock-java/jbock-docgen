@@ -12,7 +12,7 @@ import net.jbock.Parameter;
 
 /**
  * This class contains all the basic parameter types
- * that can be used without custom mappers or collectors in jbock 2.9.1.
+ * that can be used without custom mappers or collectors in jbock 3.0.2.
  * Primitives and boxed primitives are omitted here.
  * All enums can also be used; they are mapped by their {@code valueOf} method.
  */
@@ -21,17 +21,13 @@ abstract class JbockAutoTypes {
   /**
    * Mapped by: java.math.BigDecimal::new
    */
-  @Parameter(
-      longName = "BigDecimal"
-  )
+  @Parameter("BigDecimal")
   abstract BigDecimal bigDecimal();
 
   /**
    * Mapped by: java.math.BigInteger::new
    */
-  @Parameter(
-      longName = "BigInteger"
-  )
+  @Parameter("BigInteger")
   abstract BigInteger bigInteger();
 
   /**
@@ -46,48 +42,36 @@ abstract class JbockAutoTypes {
    *   return f;
    * }}</pre>
    */
-  @Parameter(
-      longName = "File"
-  )
+  @Parameter("File")
   abstract File file();
 
   /**
    * Mapped by: java.time.LocalDate::parse
    */
-  @Parameter(
-      longName = "LocalDate"
-  )
+  @Parameter("LocalDate")
   abstract LocalDate localDate();
 
   /**
    * Mapped by: java.nio.file.Paths::get
    */
-  @Parameter(
-      longName = "Path"
-  )
+  @Parameter("Path")
   abstract Path path();
 
   /**
    * Mapped by: java.util.regex.Pattern::compile
    */
-  @Parameter(
-      longName = "Pattern"
-  )
+  @Parameter("Pattern")
   abstract Pattern pattern();
 
   /**
    * Mapped by: java.util.function.Function.identity()
    */
-  @Parameter(
-      longName = "String"
-  )
+  @Parameter("String")
   abstract String string();
 
   /**
    * Mapped by: java.net.URI::create
    */
-  @Parameter(
-      longName = "URI"
-  )
+  @Parameter("URI")
   abstract URI uRI();
 }

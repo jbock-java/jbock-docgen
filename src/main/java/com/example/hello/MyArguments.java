@@ -10,9 +10,9 @@ import java.util.OptionalInt;
 @CommandLineArguments
 abstract class MyArguments {
 
-    @PositionalParameter
+    @PositionalParameter(1)
     abstract Path path();
 
-    @Parameter(shortName = 'v')
+    @Parameter(value = "verbosity", mnemonic = 'v')
     abstract OptionalInt verbosity();
 }
