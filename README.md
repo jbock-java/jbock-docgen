@@ -5,12 +5,12 @@ Generates some documentation for the [jbock](https://github.com/h908714124/jbock
 Generate `JbockAutoTypes.java`:
 
 ````sh
-gradle clean run
+./gradlew clean run
 ````
 
 Run tests:
 
 ````sh
-gradle test
+./gradlew test
 ````
 
