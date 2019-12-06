@@ -6,6 +6,10 @@ import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
+import net.jbock.Command;
+import net.jbock.Option;
+
+import javax.lang.model.element.Modifier;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -16,9 +20,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
-import javax.lang.model.element.Modifier;
-import net.jbock.CommandLineArguments;
-import net.jbock.Parameter;
 
 import static net.jbock.coerce.GenMyArgumentsParser.MY_ARGUMENTS_PARSER;
 
@@ -56,7 +57,7 @@ public class GenAutoTypes {
             spec.addMethod(createMethod(datum));
         }
         spec.addModifiers(Modifier.ABSTRACT);
-        spec.addAnnotation(CommandLineArguments.class);
+        spec.addAnnotation(Command.class);
         spec.addJavadoc("This class contains all the basic parameter types\n" +
                 "that can be used without custom mappers or collectors in jbock " + version + ".\n" +
                 "Primitives and boxed primitives are omitted here.\n" +
@@ -121,7 +122,7 @@ public class GenAutoTypes {
                 .addJavadoc("Mapped by: " + mapExprString(data) + "\n")
                 .addModifiers(Modifier.ABSTRACT)
                 .returns(data.type)
-                .addAnnotation(AnnotationSpec.builder(Parameter.class)
+                .addAnnotation(AnnotationSpec.builder(Option.class)
                         .addMember("value", "$S", data.type.getSimpleName()).build())
                 .build();
     }

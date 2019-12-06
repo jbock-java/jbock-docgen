@@ -7,27 +7,27 @@ import java.net.URI;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
-import net.jbock.CommandLineArguments;
-import net.jbock.Parameter;
+import net.jbock.Command;
+import net.jbock.Option;
 
 /**
  * This class contains all the basic parameter types
- * that can be used without custom mappers or collectors in jbock 3.0.3.
+ * that can be used without custom mappers or collectors in jbock 3.4.
  * Primitives and boxed primitives are omitted here.
  * All enums can also be used; they are mapped by their {@code valueOf} method.
  */
-@CommandLineArguments
+@Command
 abstract class JbockAutoTypes {
   /**
    * Mapped by: java.math.BigDecimal::new
    */
-  @Parameter("BigDecimal")
+  @Option("BigDecimal")
   abstract BigDecimal bigDecimal();
 
   /**
    * Mapped by: java.math.BigInteger::new
    */
-  @Parameter("BigInteger")
+  @Option("BigInteger")
   abstract BigInteger bigInteger();
 
   /**
@@ -42,36 +42,36 @@ abstract class JbockAutoTypes {
    *   return f;
    * }}</pre>
    */
-  @Parameter("File")
+  @Option("File")
   abstract File file();
 
   /**
    * Mapped by: java.time.LocalDate::parse
    */
-  @Parameter("LocalDate")
+  @Option("LocalDate")
   abstract LocalDate localDate();
 
   /**
    * Mapped by: java.nio.file.Paths::get
    */
-  @Parameter("Path")
+  @Option("Path")
   abstract Path path();
 
   /**
    * Mapped by: java.util.regex.Pattern::compile
    */
-  @Parameter("Pattern")
+  @Option("Pattern")
   abstract Pattern pattern();
 
   /**
    * Mapped by: java.util.function.Function.identity()
    */
-  @Parameter("String")
+  @Option("String")
   abstract String string();
 
   /**
    * Mapped by: java.net.URI::create
    */
-  @Parameter("URI")
+  @Option("URI")
   abstract URI uRI();
 }

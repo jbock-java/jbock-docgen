@@ -1,18 +1,18 @@
 package com.example.hello;
 
-import net.jbock.CommandLineArguments;
-import net.jbock.Parameter;
-import net.jbock.PositionalParameter;
+import net.jbock.Command;
+import net.jbock.Option;
+import net.jbock.Param;
 
 import java.nio.file.Path;
 import java.util.OptionalInt;
 
-@CommandLineArguments
+@Command
 abstract class MyArguments {
 
-    @PositionalParameter(1)
+    @Param(1)
     abstract Path path();
 
-    @Parameter(value = "verbosity", mnemonic = 'v')
+    @Option(value = "verbosity", mnemonic = 'v')
     abstract OptionalInt verbosity();
 }
