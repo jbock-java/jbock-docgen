@@ -245,10 +245,11 @@ final class MyArguments_Parser {
   }
 
   private enum Option {
-    PATH(Collections.emptyList(), null, Collections.emptyList(), "path"),
+    PATH(Collections.emptyList(), null, Collections.singletonList("A \"param\" is a positional parameter."), "path"),
 
-    VERBOSITY(Arrays.asList("-v",
-        "--verbosity"), "verbosity", Collections.emptyList(), "-v, --verbosity VERBOSITY");
+    VERBOSITY(Arrays.asList("-v", "--verbosity"), "verbosity", Arrays.asList(
+        "This javadoc will show up when \"--help\" is passed.",
+        "Alternatively you can define the help text in a resource bundle."), "-v, --verbosity VERBOSITY");
 
     List<String> names;
 

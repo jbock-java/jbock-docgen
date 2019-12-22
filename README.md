@@ -8,6 +8,13 @@ Generate `JbockAutoTypes.java`:
 ./gradlew clean run
 ````
 
+Show help text:
+
+````java
+java -cp build/classes/java/main com.example.hello.ShowHelp
+````
+
+
 Run tests:
 
 ````sh
