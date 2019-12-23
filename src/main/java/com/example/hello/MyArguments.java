@@ -12,6 +12,7 @@ abstract class MyArguments {
 
     /**
      * A "param" is a positional parameter.
+     * The number 1 is arbitrary as long as there is only one param.
      */
     @Param(1)
     abstract Path path();
