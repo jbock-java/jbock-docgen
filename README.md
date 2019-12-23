@@ -23,9 +23,3 @@ java -cp build/classes/java/main com.example.hello.ShowHelp
                              resource bundle.
 </code></pre>
 
-Run tests:
-
-````sh
-./gradlew test
-````
-
