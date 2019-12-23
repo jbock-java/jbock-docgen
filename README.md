@@ -14,7 +14,7 @@ Show help text:
 java -cp build/classes/java/main com.example.hello.ShowHelp
 ````
 
-<pre><code>Usage: my-arguments [options...] <path>
+<pre><code>Usage: my-arguments [options...] &lt;path&gt;
 
   path                       A "param" is a positional parameter. The number 1
                              is arbitrary as long as there is only one param.
