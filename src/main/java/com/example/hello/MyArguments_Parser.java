@@ -232,7 +232,8 @@ final class MyArguments_Parser {
   }
 
   private enum Option {
-    PATH(Collections.emptyList(), null, Collections.singletonList("A \"param\" is a positional parameter."), "path"),
+    PATH(Collections.emptyList(), null, Arrays.asList("A \"param\" is a positional parameter.",
+        "The number 1 is arbitrary as long as there is only one param."), "path"),
 
     VERBOSITY(Arrays.asList("-v", "--verbosity"), "verbosity", Arrays.asList(
         "This javadoc will show up when \"--help\" is passed.",
