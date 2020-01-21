@@ -13,7 +13,7 @@ import net.jbock.Option;
 /**
  * This class contains all the basic parameter types
  * that can be used without custom mappers or collectors in jbock 3.4.008.
- * Primitives and boxed primitives are omitted here.
+ * Primitives and boxed primitives are auto types, except the booleans.
  * All enums can also be used; they are mapped by their {@code valueOf} method.
  */
 @Command
