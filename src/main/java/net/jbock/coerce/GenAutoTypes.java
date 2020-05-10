@@ -63,7 +63,7 @@ public class GenAutoTypes {
                 "Primitives and boxed primitives are also auto types, except the booleans.\n" +
                 "All enums are also auto types; they are mapped via their static {@code valueOf} method.\n" +
                 "Special rules apply for java.util.List and java.util.Optional, see skew.\n" +
-                "If you are using a type that is not an auto type, jbock will not generate\n" +
+                "If you are using a type that is not special or an auto type, jbock will not generate\n" +
                 "any code unless a custom mapper is defined.\n");
 
         JavaFile javaFile = JavaFile.builder(PACKAGE, spec.build())
