@@ -61,7 +61,7 @@ public class GenAutoTypes {
         spec.addJavadoc("This class contains all the basic parameter types\n" +
                 "that can be used without custom mappers or collectors in jbock " + version + ".\n" +
                 "Primitives and boxed primitives are also auto types, except the booleans.\n" +
-                "All enums are auto types; they are mapped via their {@code valueOf} method.\n");
+                "All enums are auto types; they are mapped via their static {@code valueOf} method.\n");
 
         JavaFile javaFile = JavaFile.builder(PACKAGE, spec.build())
                 .skipJavaLangImports(true)

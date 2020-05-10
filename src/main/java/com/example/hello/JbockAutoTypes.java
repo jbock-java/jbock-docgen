@@ -14,7 +14,7 @@ import net.jbock.Option;
  * This class contains all the basic parameter types
  * that can be used without custom mappers or collectors in jbock 3.4.009.
  * Primitives and boxed primitives are also auto types, except the booleans.
- * All enums are auto types; they are mapped via their {@code valueOf} method.
+ * All enums are auto types; they are mapped via their static {@code valueOf} method.
  */
 @Command
 abstract class JbockAutoTypes {
