@@ -59,7 +59,7 @@ public class GenAutoTypes {
         spec.addModifiers(Modifier.ABSTRACT);
         spec.addAnnotation(Command.class);
         spec.addJavadoc("This class contains all the basic parameter types\n" +
-                "that can be used without custom mappers or collectors in jbock " + version + ".\n" +
+                "that can be used without a custom mapper in jbock " + version + ".\n" +
                 "Primitives and boxed primitives are also auto types, except the booleans.\n" +
                 "All enums are also auto types; they are mapped via their static {@code valueOf} method.\n" +
                 "Special rules apply for java.util.List and java.util.Optional, see skew.\n" +
