@@ -16,9 +16,9 @@ import java.nio.file.Paths;
 import static com.google.testing.compile.Compiler.javac;
 import static net.jbock.coerce.GenAutoTypes.PACKAGE;
 
-public class GenMyArgumentsParser {
+public class GenMyCommandParser {
 
-    private static final String FULLY_QUALIFIED_NAME = PACKAGE + ".MyArguments";
+    private static final String FULLY_QUALIFIED_NAME = PACKAGE + ".MyCommand";
     static final String MY_ARGUMENTS_PARSER = "src/main/java/" +
             FULLY_QUALIFIED_NAME.replace('.', '/') + "_Parser.java";
 

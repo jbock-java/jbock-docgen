@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static net.jbock.coerce.GenMyArgumentsParser.MY_ARGUMENTS_PARSER;
+import static net.jbock.coerce.GenMyCommandParser.MY_ARGUMENTS_PARSER;
 
 public class GenAutoTypes {
 
@@ -91,7 +91,7 @@ public class GenAutoTypes {
         String version = net.jbock.compiler.Processor.class.getPackage().getImplementationVersion();
         generate(version);
         GenAutoTypesParser.generate();
-        GenMyArgumentsParser.generate();
+        GenMyCommandParser.generate();
     }
 
     private static MethodData createMethodData(String type, CodeBlock mapExpr) {
