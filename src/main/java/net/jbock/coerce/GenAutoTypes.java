@@ -43,11 +43,11 @@ public class GenAutoTypes {
     private static void generate(String version) throws NoSuchFieldException, IllegalAccessException, IOException {
         Field mappers = AutoMapper.class.getDeclaredField("MAPPERS");
         mappers.setAccessible(true);
-        List<Map.Entry<Class<?>, CodeBlock>> map = (List<Map.Entry<Class<?>, CodeBlock>>) mappers.get(null);
+        List<Map.Entry<String, CodeBlock>> map = (List<Map.Entry<String, CodeBlock>>) mappers.get(null);
         TypeSpec.Builder spec = TypeSpec.classBuilder(AUTO_TYPES_CLASSNAME);
         List<MethodData> data = new ArrayList<>(map.size());
-        for (Map.Entry<Class<?>, CodeBlock> entry : map) {
-            Class<?> type = entry.getKey();
+        for (Map.Entry<String, CodeBlock> entry : map) {
+            String type = entry.getKey();
             if (!isBoxedPrimitive(type)) {
                 data.add(createMethodData(type, entry.getValue()));
             }
@@ -62,9 +62,8 @@ public class GenAutoTypes {
                 "that can be used without a custom mapper in jbock " + version + ".\n" +
                 "Primitives and boxed primitives are also auto types, except the booleans.\n" +
                 "All enums are also auto types; they are mapped via their static {@code valueOf} method.\n" +
-                "Special rules apply for java.util.List and java.util.Optional, see skew.\n" +
-                "If you are using a type that is not special or an auto type, jbock will not generate\n" +
-                "any code unless a custom mapper is defined.\n");
+                "Special rules apply for java.util.List and java.util.Optional, see skew rules.\n" +
+                "A custom mapper must be defined for all other types.\n");
 
         JavaFile javaFile = JavaFile.builder(PACKAGE, spec.build())
                 .skipJavaLangImports(true)
@@ -73,8 +72,12 @@ public class GenAutoTypes {
         javaFile.writeTo(Paths.get("src/main/java"));
     }
 
-    private static boolean isBoxedPrimitive(Class<?> type) {
-        return TypeName.get(type).isBoxedPrimitive();
+    private static boolean isBoxedPrimitive(String type) {
+        try {
+            return TypeName.get(Class.forName(type)).isBoxedPrimitive();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void main(String[] args) throws IllegalAccessException, NoSuchFieldException, IOException {
@@ -91,8 +94,12 @@ public class GenAutoTypes {
         GenMyArgumentsParser.generate();
     }
 
-    private static MethodData createMethodData(Class<?> type, CodeBlock mapExpr) {
-        return new MethodData(type, mapExpr);
+    private static MethodData createMethodData(String type, CodeBlock mapExpr) {
+        try {
+            return new MethodData(Class.forName(type), mapExpr);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static class MethodData {

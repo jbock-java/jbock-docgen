@@ -12,12 +12,11 @@ import net.jbock.Option;
 
 /**
  * This class contains all the basic parameter types
- * that can be used without a custom mapper in jbock 3.4.009.
+ * that can be used without a custom mapper in jbock 3.4.011.
  * Primitives and boxed primitives are also auto types, except the booleans.
  * All enums are also auto types; they are mapped via their static {@code valueOf} method.
- * Special rules apply for java.util.List and java.util.Optional, see skew.
- * If you are using a type that is not special or an auto type, jbock will not generate
- * any code unless a custom mapper is defined.
+ * Special rules apply for java.util.List and java.util.Optional, see skew rules.
+ * A custom mapper must be defined for all other types.
  */
 @Command
 abstract class JbockAutoTypes {
