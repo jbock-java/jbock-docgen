@@ -1,11 +1,11 @@
 package net.jbock.coerce;
 
-import com.squareup.javapoet.AnnotationSpec;
-import com.squareup.javapoet.CodeBlock;
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeName;
-import com.squareup.javapoet.TypeSpec;
+import net.jbock.javapoet.AnnotationSpec;
+import net.jbock.javapoet.CodeBlock;
+import net.jbock.javapoet.JavaFile;
+import net.jbock.javapoet.MethodSpec;
+import net.jbock.javapoet.TypeName;
+import net.jbock.javapoet.TypeSpec;
 import net.jbock.Command;
 import net.jbock.Option;
 
