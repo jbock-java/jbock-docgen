@@ -16,7 +16,7 @@ import net.jbock.Option;
  * Primitives and boxed primitives are also auto types, except the booleans.
  * All enums are also auto types; they are mapped via their static {@code valueOf} method.
  * Special rules apply for java.util.List and java.util.Optional, see skew rules.
- * A custom mapper must be defined for all other types.
+ * A custom mapper must be used for all other types.
  */
 @Command
 abstract class JbockAutoTypes {

@@ -63,7 +63,7 @@ public class GenAutoTypes {
                 "Primitives and boxed primitives are also auto types, except the booleans.\n" +
                 "All enums are also auto types; they are mapped via their static {@code valueOf} method.\n" +
                 "Special rules apply for java.util.List and java.util.Optional, see skew rules.\n" +
-                "A custom mapper must be defined for all other types.\n");
+                "A custom mapper must be used for all other types.\n");
 
         JavaFile javaFile = JavaFile.builder(PACKAGE, spec.build())
                 .skipJavaLangImports(true)
