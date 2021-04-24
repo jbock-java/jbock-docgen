@@ -15,7 +15,7 @@ abstract class MyCommand {
      * This particular param is in the first position,
      * since there are no other params in lower positions.
      */
-    @Param(1)
+    @Param(0)
     abstract Path path();
 
     /**
