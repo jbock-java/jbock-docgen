@@ -270,11 +270,9 @@ final class MyCommand_Parser {
   }
 
   private enum Option {
-    PATH("A {@code @Param} is a positional parameter.",
-    "This particular param is in the first position,",
-    "since there are no other params in lower positions."),
+    PATH("A positional parameter."),
 
-    VERBOSITY("An {@code @Option} is a named option.");
+    VERBOSITY("A named option.");
 
     String[] description;
 
