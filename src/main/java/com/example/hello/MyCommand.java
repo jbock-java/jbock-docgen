@@ -11,15 +11,13 @@ import java.util.OptionalInt;
 abstract class MyCommand {
 
     /**
-     * A {@code @Param} is a positional parameter.
-     * This particular param is in the first position,
-     * since there are no other params in lower positions.
+     * A positional parameter.
      */
     @Param(0)
     abstract Path path();
 
     /**
-     * An {@code @Option} is a named option.
+     * A named option.
      */
     @Option("verbosity")
     abstract OptionalInt verbosity();
