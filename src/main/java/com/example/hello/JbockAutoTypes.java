@@ -12,7 +12,7 @@ import net.jbock.Option;
 
 /**
  * This class contains all the basic parameter types
- * that can be used without a custom mapper in jbock 3.6.006.
+ * that can be used without a custom mapper in jbock 4.0.000.
  * Primitives and boxed primitives are also auto types, except the booleans.
  * All enums are also auto types; they are mapped via their static {@code valueOf} method.
  * Special rules apply for java.util.List and java.util.Optional, see skew rules.
@@ -23,13 +23,17 @@ abstract class JbockAutoTypes {
   /**
    * Mapped by: java.math.BigDecimal::new
    */
-  @Option("BigDecimal")
+  @Option(
+      names = "--BigDecimal"
+  )
   abstract BigDecimal bigDecimal();
 
   /**
    * Mapped by: java.math.BigInteger::new
    */
-  @Option("BigInteger")
+  @Option(
+      names = "--BigInteger"
+  )
   abstract BigInteger bigInteger();
 
   /**
@@ -44,36 +48,48 @@ abstract class JbockAutoTypes {
    *   return f;
    * }}</pre>
    */
-  @Option("File")
+  @Option(
+      names = "--File"
+  )
   abstract File file();
 
   /**
    * Mapped by: java.time.LocalDate::parse
    */
-  @Option("LocalDate")
+  @Option(
+      names = "--LocalDate"
+  )
   abstract LocalDate localDate();
 
   /**
    * Mapped by: java.nio.file.Paths::get
    */
-  @Option("Path")
+  @Option(
+      names = "--Path"
+  )
   abstract Path path();
 
   /**
    * Mapped by: java.util.regex.Pattern::compile
    */
-  @Option("Pattern")
+  @Option(
+      names = "--Pattern"
+  )
   abstract Pattern pattern();
 
   /**
    * Mapped by: java.util.function.Function.identity()
    */
-  @Option("String")
+  @Option(
+      names = "--String"
+  )
   abstract String string();
 
   /**
    * Mapped by: java.net.URI::create
    */
-  @Option("URI")
+  @Option(
+      names = "--URI"
+  )
   abstract URI uRI();
 }

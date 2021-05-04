@@ -17,8 +17,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.h908714124:jbock-annotations:3.6'
-    implementation 'com.github.h908714124:jbock:3.6.006'
+    implementation 'com.github.h908714124:jbock-annotations:4.0'
+    implementation 'com.github.h908714124:jbock:4.0.000'
     implementation 'com.google.testing.compile:compile-testing:0.19'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
 }

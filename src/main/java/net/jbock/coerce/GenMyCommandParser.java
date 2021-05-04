@@ -18,7 +18,7 @@ import static net.jbock.coerce.GenAutoTypes.PACKAGE;
 
 public class GenMyCommandParser {
 
-    private static final String FULLY_QUALIFIED_NAME = PACKAGE + ".MyCommand";
+    private static final String FULLY_QUALIFIED_NAME = PACKAGE + ".DeleteCommand";
     static final String MY_ARGUMENTS_PARSER = "src/main/java/" +
             FULLY_QUALIFIED_NAME.replace('.', '/') + "_Parser.java";
 

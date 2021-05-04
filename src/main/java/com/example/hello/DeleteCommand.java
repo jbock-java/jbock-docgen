@@ -2,23 +2,23 @@ package com.example.hello;
 
 import net.jbock.Command;
 import net.jbock.Option;
-import net.jbock.Param;
+import net.jbock.Parameter;
 
 import java.nio.file.Path;
 import java.util.OptionalInt;
 
 @Command
-abstract class MyCommand {
+abstract class DeleteCommand {
 
     /**
      * A positional parameter.
      */
-    @Param(0)
+    @Parameter(index = 0)
     abstract Path path();
 
     /**
      * A named option.
      */
-    @Option("verbosity")
+    @Option(names = "--verbosity")
     abstract OptionalInt verbosity();
 }

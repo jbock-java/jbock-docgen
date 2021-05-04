@@ -1,13 +1,13 @@
 package net.jbock.coerce;
 
+import net.jbock.Command;
+import net.jbock.Option;
 import net.jbock.javapoet.AnnotationSpec;
 import net.jbock.javapoet.CodeBlock;
 import net.jbock.javapoet.JavaFile;
 import net.jbock.javapoet.MethodSpec;
 import net.jbock.javapoet.TypeName;
 import net.jbock.javapoet.TypeSpec;
-import net.jbock.Command;
-import net.jbock.Option;
 
 import javax.lang.model.element.Modifier;
 import java.io.File;
@@ -133,7 +133,7 @@ public class GenAutoTypes {
                 .addModifiers(Modifier.ABSTRACT)
                 .returns(data.type)
                 .addAnnotation(AnnotationSpec.builder(Option.class)
-                        .addMember("value", "$S", data.type.getSimpleName()).build())
+                        .addMember("names", "$S", "--" + data.type.getSimpleName()).build())
                 .build();
     }
 
