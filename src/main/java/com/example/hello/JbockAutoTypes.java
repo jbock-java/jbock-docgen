@@ -12,32 +12,32 @@ import net.jbock.Option;
 
 /**
  * This class contains all the basic parameter types
- * that can be used without a custom mapper in jbock 4.1.000.
+ * that can be used without a custom converter in jbock 4.1.000.
  * Primitives and boxed primitives are also auto types, except the booleans.
- * All enums are also auto types; they are mapped via their static {@code valueOf} method.
+ * All enums are also auto types; they are converted via their static {@code valueOf} method.
  * Special rules apply for java.util.List and java.util.Optional, see skew rules.
  * A custom mapper must be used for all other types.
  */
 @Command
 abstract class JbockAutoTypes {
   /**
-   * Mapped by: java.math.BigDecimal::new
+   * Converted by: java.math.BigDecimal::new
    */
   @Option(
-      names = "--BigDecimal"
+      names = "--bigdecimal"
   )
   abstract BigDecimal bigDecimal();
 
   /**
-   * Mapped by: java.math.BigInteger::new
+   * Converted by: java.math.BigInteger::new
    */
   @Option(
-      names = "--BigInteger"
+      names = "--biginteger"
   )
   abstract BigInteger bigInteger();
 
   /**
-   * Mapped by: <pre>{@code s -> {
+   * Converted by: <pre>{@code s -> {
    *   java.io.File f = new java.io.File(s);
    *   if (!f.exists()) {
    *     throw new java.lang.IllegalStateException("File does not exist: " + s);
@@ -49,47 +49,39 @@ abstract class JbockAutoTypes {
    * }}</pre>
    */
   @Option(
-      names = "--File"
+      names = "--file"
   )
   abstract File file();
 
   /**
-   * Mapped by: java.time.LocalDate::parse
+   * Converted by: java.time.LocalDate::parse
    */
   @Option(
-      names = "--LocalDate"
+      names = "--localdate"
   )
   abstract LocalDate localDate();
 
   /**
-   * Mapped by: java.nio.file.Paths::get
+   * Converted by: java.nio.file.Paths::get
    */
   @Option(
-      names = "--Path"
+      names = "--path"
   )
   abstract Path path();
 
   /**
-   * Mapped by: java.util.regex.Pattern::compile
+   * Converted by: java.util.regex.Pattern::compile
    */
   @Option(
-      names = "--Pattern"
+      names = "--pattern"
   )
   abstract Pattern pattern();
 
   /**
-   * Mapped by: java.util.function.Function.identity()
+   * Converted by: java.net.URI::create
    */
   @Option(
-      names = "--String"
-  )
-  abstract String string();
-
-  /**
-   * Mapped by: java.net.URI::create
-   */
-  @Option(
-      names = "--URI"
+      names = "--uri"
   )
   abstract URI uRI();
 }

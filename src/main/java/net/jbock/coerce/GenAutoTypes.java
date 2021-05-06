@@ -18,6 +18,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -48,7 +49,7 @@ public class GenAutoTypes {
         List<MethodData> data = new ArrayList<>(map.size());
         for (Map.Entry<String, CodeBlock> entry : map) {
             String type = entry.getKey();
-            if (!isBoxedPrimitive(type)) {
+            if (!isBoxedPrimitive(type) && !isString(type)) {
                 data.add(createMethodData(type, entry.getValue()));
             }
         }
@@ -59,9 +60,9 @@ public class GenAutoTypes {
         spec.addModifiers(Modifier.ABSTRACT);
         spec.addAnnotation(Command.class);
         spec.addJavadoc("This class contains all the basic parameter types\n" +
-                "that can be used without a custom mapper in jbock " + version + ".\n" +
+                "that can be used without a custom converter in jbock " + version + ".\n" +
                 "Primitives and boxed primitives are also auto types, except the booleans.\n" +
-                "All enums are also auto types; they are mapped via their static {@code valueOf} method.\n" +
+                "All enums are also auto types; they are converted via their static {@code valueOf} method.\n" +
                 "Special rules apply for java.util.List and java.util.Optional, see skew rules.\n" +
                 "A custom mapper must be used for all other types.\n");
 
@@ -78,6 +79,10 @@ public class GenAutoTypes {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static boolean isString(String type) {
+        return type.equals(String.class.getCanonicalName());
     }
 
     public static void main(String[] args) throws IllegalAccessException, NoSuchFieldException, IOException {
@@ -127,13 +132,15 @@ public class GenAutoTypes {
      * }}</pre>
      */
     private static MethodSpec createMethod(MethodData data) {
-        String name = Character.toLowerCase(data.type.getSimpleName().charAt(0)) + data.type.getSimpleName().substring(1);
+        String name = Character.toLowerCase(data.type.getSimpleName().charAt(0)) +
+            data.type.getSimpleName().substring(1);
         return MethodSpec.methodBuilder(name)
-                .addJavadoc("Mapped by: " + mapExprString(data) + "\n")
+                .addJavadoc("Converted by: " + mapExprString(data) + "\n")
                 .addModifiers(Modifier.ABSTRACT)
                 .returns(data.type)
                 .addAnnotation(AnnotationSpec.builder(Option.class)
-                        .addMember("names", "$S", "--" + data.type.getSimpleName()).build())
+                        .addMember("names", "$S", "--" + data.type.getSimpleName()
+                            .toLowerCase(Locale.US)).build())
                 .build();
     }
 
