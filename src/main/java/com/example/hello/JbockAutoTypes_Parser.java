@@ -118,7 +118,7 @@ final class JbockAutoTypes_Parser {
     Collections.addAll(description, "Primitives and boxed primitives are also auto types, except the booleans.".split("\\s+", -1));
     Collections.addAll(description, "All enums are also auto types; they are converted via their static {@code valueOf} method.".split("\\s+", -1));
     Collections.addAll(description, "Special rules apply for java.util.List and java.util.Optional, see skew rules.".split("\\s+", -1));
-    Collections.addAll(description, "A custom mapper must be used for all other types.".split("\\s+", -1));
+    Collections.addAll(description, "A custom converter must be used for all other types.".split("\\s+", -1));
     printTokens("", description);
     err.println();
     err.println("USAGE");
