@@ -9,7 +9,7 @@ java {
 }
 
 application {
-    mainClass = 'net.jbock.coerce.GenAutoTypes'
+    mainClass = 'net.jbock.convert.GenAutoTypes'
 }
 
 repositories {
@@ -18,7 +18,7 @@ repositories {
 
 dependencies {
     implementation 'com.github.h908714124:jbock-annotations:4.1'
-    implementation 'com.github.h908714124:jbock:4.1.000'
+    implementation 'com.github.h908714124:jbock:4.1.001'
     implementation 'com.google.testing.compile:compile-testing:0.19'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
 }

@@ -1,4 +1,4 @@
-package net.jbock.coerce;
+package net.jbock.convert;
 
 import net.jbock.Command;
 import net.jbock.Option;
@@ -22,7 +22,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static net.jbock.coerce.GenMyCommandParser.MY_ARGUMENTS_PARSER;
+import static net.jbock.convert.GenMyCommandParser.MY_ARGUMENTS_PARSER;
 
 public class GenAutoTypes {
 
@@ -49,7 +49,7 @@ public class GenAutoTypes {
         List<MethodData> data = new ArrayList<>(map.size());
         for (Map.Entry<String, CodeBlock> entry : map) {
             String type = entry.getKey();
-            if (!isBoxedPrimitive(type) && !isString(type)) {
+            if (!isBoxedPrimitive(type)) {
                 data.add(createMethodData(type, entry.getValue()));
             }
         }
@@ -79,10 +79,6 @@ public class GenAutoTypes {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static boolean isString(String type) {
-        return type.equals(String.class.getCanonicalName());
     }
 
     public static void main(String[] args) throws IllegalAccessException, NoSuchFieldException, IOException {
