@@ -42,7 +42,7 @@ public class GenAutoTypes {
             "/" + AUTO_TYPES_CLASSNAME + "_Parser.java";
 
     private static void generate(String version) throws NoSuchFieldException, IllegalAccessException, IOException {
-        Field mappers = AutoMapper.class.getDeclaredField("MAPPERS");
+        Field mappers = AutoConverter.class.getDeclaredField("CONVERTERS");
         mappers.setAccessible(true);
         List<Map.Entry<String, CodeBlock>> map = (List<Map.Entry<String, CodeBlock>>) mappers.get(null);
         TypeSpec.Builder spec = TypeSpec.classBuilder(AUTO_TYPES_CLASSNAME);
