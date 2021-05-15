@@ -62,7 +62,7 @@ public class GenAutoTypes {
         spec.addJavadoc("This class contains all \"auto types\"\n" +
                 "that can be used without a custom converter in jbock " + version + ".\n" +
                 "Primitives and boxed primitives are also auto types, except the booleans.\n" +
-                "All enums are also auto types; they are converted via their static {@code valueOf} method.\n" +
+                "All enums are auto types. They are converted via their static {@code valueOf} method.\n" +
                 "Special rules apply for boolean, java.util.List and java.util.Optional.");
 
         JavaFile javaFile = JavaFile.builder(PACKAGE, spec.build())
