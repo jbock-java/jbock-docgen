@@ -309,7 +309,7 @@ final class JbockAutoTypes_Parser {
   }
 
   private enum Option {
-    FILE("Converted by: <pre>{@code s -> {",
+    FILE("converter: <pre>{@code s -> {",
     "java.io.File f = new java.io.File(s);",
     "if (!f.exists()) {",
     "throw new java.lang.IllegalStateException(\"File does not exist: \" + s);",
@@ -320,17 +320,17 @@ final class JbockAutoTypes_Parser {
     "return f;",
     "}}</pre>"),
 
-    BIG_DECIMAL("Converted by: java.math.BigDecimal::new"),
+    BIG_DECIMAL("converter: java.math.BigDecimal::new"),
 
-    BIG_INTEGER("Converted by: java.math.BigInteger::new"),
+    BIG_INTEGER("converter: java.math.BigInteger::new"),
 
-    U_RI("Converted by: java.net.URI::create"),
+    U_RI("converter: java.net.URI::create"),
 
-    PATH("Converted by: java.nio.file.Paths::get"),
+    PATH("converter: java.nio.file.Paths::get"),
 
-    LOCAL_DATE("Converted by: java.time.LocalDate::parse"),
+    LOCAL_DATE("converter: java.time.LocalDate::parse"),
 
-    PATTERN("Converted by: java.util.regex.Pattern::compile");
+    PATTERN("converter: java.util.regex.Pattern::compile");
 
     String[] description;
 

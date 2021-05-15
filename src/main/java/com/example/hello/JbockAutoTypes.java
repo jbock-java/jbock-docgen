@@ -31,7 +31,7 @@ import net.jbock.Option;
 @Command
 abstract class JbockAutoTypes {
   /**
-   * Converted by: <pre>{@code s -> {
+   * converter: <pre>{@code s -> {
    *   java.io.File f = new java.io.File(s);
    *   if (!f.exists()) {
    *     throw new java.lang.IllegalStateException("File does not exist: " + s);
@@ -48,7 +48,7 @@ abstract class JbockAutoTypes {
   abstract File file();
 
   /**
-   * Converted by: java.math.BigDecimal::new
+   * converter: java.math.BigDecimal::new
    */
   @Option(
       names = "--bigdecimal"
@@ -56,7 +56,7 @@ abstract class JbockAutoTypes {
   abstract BigDecimal bigDecimal();
 
   /**
-   * Converted by: java.math.BigInteger::new
+   * converter: java.math.BigInteger::new
    */
   @Option(
       names = "--biginteger"
@@ -64,7 +64,7 @@ abstract class JbockAutoTypes {
   abstract BigInteger bigInteger();
 
   /**
-   * Converted by: java.net.URI::create
+   * converter: java.net.URI::create
    */
   @Option(
       names = "--uri"
@@ -72,7 +72,7 @@ abstract class JbockAutoTypes {
   abstract URI uRI();
 
   /**
-   * Converted by: java.nio.file.Paths::get
+   * converter: java.nio.file.Paths::get
    */
   @Option(
       names = "--path"
@@ -80,7 +80,7 @@ abstract class JbockAutoTypes {
   abstract Path path();
 
   /**
-   * Converted by: java.time.LocalDate::parse
+   * converter: java.time.LocalDate::parse
    */
   @Option(
       names = "--localdate"
@@ -88,7 +88,7 @@ abstract class JbockAutoTypes {
   abstract LocalDate localDate();
 
   /**
-   * Converted by: java.util.regex.Pattern::compile
+   * converter: java.util.regex.Pattern::compile
    */
   @Option(
       names = "--pattern"

@@ -143,7 +143,7 @@ public class GenAutoTypes {
         String name = Character.toLowerCase(data.type.getSimpleName().charAt(0)) +
                 data.type.getSimpleName().substring(1);
         return MethodSpec.methodBuilder(name)
-                .addJavadoc("Converted by: " + mapExprString(data) + "\n")
+                .addJavadoc("converter: " + mapExprString(data) + "\n")
                 .addModifiers(Modifier.ABSTRACT)
                 .returns(data.type)
                 .addAnnotation(AnnotationSpec.builder(Option.class)
