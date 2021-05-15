@@ -102,7 +102,7 @@ final class JbockAutoTypes_Parser {
     Collections.addAll(description, "This class contains all \"auto types\"".split("\\s+", -1));
     Collections.addAll(description, "that can be used without a custom converter in jbock 4.2.000.".split("\\s+", -1));
     Collections.addAll(description, "Primitives and boxed primitives are also auto types, except the booleans.".split("\\s+", -1));
-    Collections.addAll(description, "All enums are also auto types; they are converted via their static {@code valueOf} method.".split("\\s+", -1));
+    Collections.addAll(description, "All enums are auto types. They are converted via their static {@code valueOf} method.".split("\\s+", -1));
     Collections.addAll(description, "Special rules apply for boolean, java.util.List and java.util.Optional.".split("\\s+", -1));
     printTokens("", description);
     err.println();
