@@ -27,7 +27,7 @@ import static net.jbock.convert.GenMyCommandParser.MY_ARGUMENTS_PARSER;
 public class GenAutoTypes {
 
     private static final Comparator<MethodData> COMP = Comparator
-            .comparing(methodData -> methodData.type.getSimpleName());
+            .comparing(methodData -> methodData.type.getCanonicalName());
 
     static final String AUTO_TYPES_CLASSNAME = "JbockAutoTypes";
 
@@ -59,11 +59,24 @@ public class GenAutoTypes {
         }
         spec.addModifiers(Modifier.ABSTRACT);
         spec.addAnnotation(Command.class);
-        spec.addJavadoc("This class contains all \"auto types\"\n" +
-                "that can be used without a custom converter in jbock " + version + ".\n" +
-                "Primitives and boxed primitives are also auto types, except the booleans.\n" +
+        StringBuilder javadoc = new StringBuilder();
+        javadoc.append("<p>This class contains all \"auto types\"\n");
+        javadoc.append("that can be used without a custom converter in jbock ");
+        javadoc.append(version);
+        javadoc.append(":</p>\n");
+        javadoc.append("\n");
+        javadoc.append("<ul>\n");
+        for (MethodData datum : data) {
+            javadoc.append("  <li>");
+            javadoc.append(datum.type.getCanonicalName());
+            javadoc.append("<li>\n");
+        }
+        javadoc.append("</ul>\n");
+        javadoc.append("\n");
+        javadoc.append("<p>Primitives and boxed primitives are also auto types, except the booleans.\n" +
                 "All enums are auto types. They are converted via their static {@code valueOf} method.\n" +
-                "Special rules apply for boolean, java.util.List and java.util.Optional.");
+                "Special rules apply for boolean, java.util.List and java.util.Optional.</p>");
+        spec.addJavadoc(javadoc.toString());
 
         JavaFile javaFile = JavaFile.builder(PACKAGE, spec.build())
                 .skipJavaLangImports(true)
@@ -128,14 +141,14 @@ public class GenAutoTypes {
      */
     private static MethodSpec createMethod(MethodData data) {
         String name = Character.toLowerCase(data.type.getSimpleName().charAt(0)) +
-            data.type.getSimpleName().substring(1);
+                data.type.getSimpleName().substring(1);
         return MethodSpec.methodBuilder(name)
                 .addJavadoc("Converted by: " + mapExprString(data) + "\n")
                 .addModifiers(Modifier.ABSTRACT)
                 .returns(data.type)
                 .addAnnotation(AnnotationSpec.builder(Option.class)
                         .addMember("names", "$S", "--" + data.type.getSimpleName()
-                            .toLowerCase(Locale.US)).build())
+                                .toLowerCase(Locale.US)).build())
                 .build();
     }
 

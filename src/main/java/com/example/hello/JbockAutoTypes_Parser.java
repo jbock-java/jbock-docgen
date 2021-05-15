@@ -99,24 +99,33 @@ final class JbockAutoTypes_Parser {
 
   void printOnlineHelp() {
     List<String> description = new ArrayList<>();
-    Collections.addAll(description, "This class contains all \"auto types\"".split("\\s+", -1));
-    Collections.addAll(description, "that can be used without a custom converter in jbock 4.2.000.".split("\\s+", -1));
-    Collections.addAll(description, "Primitives and boxed primitives are also auto types, except the booleans.".split("\\s+", -1));
+    Collections.addAll(description, "<p>This class contains all \"auto types\"".split("\\s+", -1));
+    Collections.addAll(description, "that can be used without a custom converter in jbock 4.2.000:</p>".split("\\s+", -1));
+    Collections.addAll(description, "<ul>".split("\\s+", -1));
+    Collections.addAll(description, "<li>java.io.File<li>".split("\\s+", -1));
+    Collections.addAll(description, "<li>java.math.BigDecimal<li>".split("\\s+", -1));
+    Collections.addAll(description, "<li>java.math.BigInteger<li>".split("\\s+", -1));
+    Collections.addAll(description, "<li>java.net.URI<li>".split("\\s+", -1));
+    Collections.addAll(description, "<li>java.nio.file.Path<li>".split("\\s+", -1));
+    Collections.addAll(description, "<li>java.time.LocalDate<li>".split("\\s+", -1));
+    Collections.addAll(description, "<li>java.util.regex.Pattern<li>".split("\\s+", -1));
+    Collections.addAll(description, "</ul>".split("\\s+", -1));
+    Collections.addAll(description, "<p>Primitives and boxed primitives are also auto types, except the booleans.".split("\\s+", -1));
     Collections.addAll(description, "All enums are auto types. They are converted via their static {@code valueOf} method.".split("\\s+", -1));
-    Collections.addAll(description, "Special rules apply for boolean, java.util.List and java.util.Optional.".split("\\s+", -1));
+    Collections.addAll(description, "Special rules apply for boolean, java.util.List and java.util.Optional.</p>".split("\\s+", -1));
     printTokens("", description);
     err.println();
     err.println("USAGE");
     printTokens("        ", usage());
     err.println();
     err.println("OPTIONS");
+    printOption(Option.FILE, "  --file FILE             ");
     printOption(Option.BIG_DECIMAL, "  --bigdecimal BIGDECIMAL ");
     printOption(Option.BIG_INTEGER, "  --biginteger BIGINTEGER ");
-    printOption(Option.FILE, "  --file FILE             ");
-    printOption(Option.LOCAL_DATE, "  --localdate LOCALDATE   ");
-    printOption(Option.PATH, "  --path PATH             ");
-    printOption(Option.PATTERN, "  --pattern PATTERN       ");
     printOption(Option.U_RI, "  --uri URI               ");
+    printOption(Option.PATH, "  --path PATH             ");
+    printOption(Option.LOCAL_DATE, "  --localdate LOCALDATE   ");
+    printOption(Option.PATTERN, "  --pattern PATTERN       ");
   }
 
   private void printOption(Option option, String names) {
@@ -164,13 +173,13 @@ final class JbockAutoTypes_Parser {
     List<String> result = new ArrayList<>();
     result.add(" ");
     result.add(programName);
+    result.add(String.format("%s %s", "--file", "FILE"));
     result.add(String.format("%s %s", "--bigdecimal", "BIGDECIMAL"));
     result.add(String.format("%s %s", "--biginteger", "BIGINTEGER"));
-    result.add(String.format("%s %s", "--file", "FILE"));
-    result.add(String.format("%s %s", "--localdate", "LOCALDATE"));
-    result.add(String.format("%s %s", "--path", "PATH"));
-    result.add(String.format("%s %s", "--pattern", "PATTERN"));
     result.add(String.format("%s %s", "--uri", "URI"));
+    result.add(String.format("%s %s", "--path", "PATH"));
+    result.add(String.format("%s %s", "--localdate", "LOCALDATE"));
+    result.add(String.format("%s %s", "--pattern", "PATTERN"));
     return result;
   }
 
@@ -186,25 +195,25 @@ final class JbockAutoTypes_Parser {
 
   private static Map<String, Option> optionsByName() {
     Map<String, Option> result = new HashMap<>(7);
+    result.put("--file", Option.FILE);
     result.put("--bigdecimal", Option.BIG_DECIMAL);
     result.put("--biginteger", Option.BIG_INTEGER);
-    result.put("--file", Option.FILE);
-    result.put("--localdate", Option.LOCAL_DATE);
-    result.put("--path", Option.PATH);
-    result.put("--pattern", Option.PATTERN);
     result.put("--uri", Option.U_RI);
+    result.put("--path", Option.PATH);
+    result.put("--localdate", Option.LOCAL_DATE);
+    result.put("--pattern", Option.PATTERN);
     return result;
   }
 
   private static Map<Option, OptionParser> optionParsers() {
     Map<Option, OptionParser> parsers = new EnumMap<>(Option.class);
+    parsers.put(Option.FILE, new RegularOptionParser(Option.FILE));
     parsers.put(Option.BIG_DECIMAL, new RegularOptionParser(Option.BIG_DECIMAL));
     parsers.put(Option.BIG_INTEGER, new RegularOptionParser(Option.BIG_INTEGER));
-    parsers.put(Option.FILE, new RegularOptionParser(Option.FILE));
-    parsers.put(Option.LOCAL_DATE, new RegularOptionParser(Option.LOCAL_DATE));
-    parsers.put(Option.PATH, new RegularOptionParser(Option.PATH));
-    parsers.put(Option.PATTERN, new RegularOptionParser(Option.PATTERN));
     parsers.put(Option.U_RI, new RegularOptionParser(Option.U_RI));
+    parsers.put(Option.PATH, new RegularOptionParser(Option.PATH));
+    parsers.put(Option.LOCAL_DATE, new RegularOptionParser(Option.LOCAL_DATE));
+    parsers.put(Option.PATTERN, new RegularOptionParser(Option.PATTERN));
     return parsers;
   }
 
@@ -259,14 +268,6 @@ final class JbockAutoTypes_Parser {
 
     JbockAutoTypes build() {
       return new JbockAutoTypesImpl(
-          optionParsers.get(Option.BIG_DECIMAL).stream()
-            .map(BigDecimal::new)
-            .findAny()
-            .orElseThrow(() -> missingRequired("BIG_DECIMAL (--bigdecimal)")),
-          optionParsers.get(Option.BIG_INTEGER).stream()
-            .map(BigInteger::new)
-            .findAny()
-            .orElseThrow(() -> missingRequired("BIG_INTEGER (--biginteger)")),
           optionParsers.get(Option.FILE).stream()
             .map(s -> {
               File f = new File(s);
@@ -280,30 +281,34 @@ final class JbockAutoTypes_Parser {
             })
             .findAny()
             .orElseThrow(() -> missingRequired("FILE (--file)")),
-          optionParsers.get(Option.LOCAL_DATE).stream()
-            .map(LocalDate::parse)
+          optionParsers.get(Option.BIG_DECIMAL).stream()
+            .map(BigDecimal::new)
             .findAny()
-            .orElseThrow(() -> missingRequired("LOCAL_DATE (--localdate)")),
+            .orElseThrow(() -> missingRequired("BIG_DECIMAL (--bigdecimal)")),
+          optionParsers.get(Option.BIG_INTEGER).stream()
+            .map(BigInteger::new)
+            .findAny()
+            .orElseThrow(() -> missingRequired("BIG_INTEGER (--biginteger)")),
+          optionParsers.get(Option.U_RI).stream()
+            .map(URI::create)
+            .findAny()
+            .orElseThrow(() -> missingRequired("U_RI (--uri)")),
           optionParsers.get(Option.PATH).stream()
             .map(Paths::get)
             .findAny()
             .orElseThrow(() -> missingRequired("PATH (--path)")),
+          optionParsers.get(Option.LOCAL_DATE).stream()
+            .map(LocalDate::parse)
+            .findAny()
+            .orElseThrow(() -> missingRequired("LOCAL_DATE (--localdate)")),
           optionParsers.get(Option.PATTERN).stream()
             .map(Pattern::compile)
             .findAny()
-            .orElseThrow(() -> missingRequired("PATTERN (--pattern)")),
-          optionParsers.get(Option.U_RI).stream()
-            .map(URI::create)
-            .findAny()
-            .orElseThrow(() -> missingRequired("U_RI (--uri)")));
+            .orElseThrow(() -> missingRequired("PATTERN (--pattern)")));
     }
   }
 
   private enum Option {
-    BIG_DECIMAL("Converted by: java.math.BigDecimal::new"),
-
-    BIG_INTEGER("Converted by: java.math.BigInteger::new"),
-
     FILE("Converted by: <pre>{@code s -> {",
     "java.io.File f = new java.io.File(s);",
     "if (!f.exists()) {",
@@ -315,13 +320,17 @@ final class JbockAutoTypes_Parser {
     "return f;",
     "}}</pre>"),
 
-    LOCAL_DATE("Converted by: java.time.LocalDate::parse"),
+    BIG_DECIMAL("Converted by: java.math.BigDecimal::new"),
+
+    BIG_INTEGER("Converted by: java.math.BigInteger::new"),
+
+    U_RI("Converted by: java.net.URI::create"),
 
     PATH("Converted by: java.nio.file.Paths::get"),
 
-    PATTERN("Converted by: java.util.regex.Pattern::compile"),
+    LOCAL_DATE("Converted by: java.time.LocalDate::parse"),
 
-    U_RI("Converted by: java.net.URI::create");
+    PATTERN("Converted by: java.util.regex.Pattern::compile");
 
     String[] description;
 
@@ -331,29 +340,33 @@ final class JbockAutoTypes_Parser {
   }
 
   private static class JbockAutoTypesImpl extends JbockAutoTypes {
+    File file;
+
     BigDecimal bigDecimal;
 
     BigInteger bigInteger;
 
-    File file;
-
-    LocalDate localDate;
+    URI uRi;
 
     Path path;
 
+    LocalDate localDate;
+
     Pattern pattern;
 
-    URI uRi;
-
-    JbockAutoTypesImpl(BigDecimal bigDecimal, BigInteger bigInteger, File file, LocalDate localDate,
-        Path path, Pattern pattern, URI uRi) {
+    JbockAutoTypesImpl(File file, BigDecimal bigDecimal, BigInteger bigInteger, URI uRi, Path path,
+        LocalDate localDate, Pattern pattern) {
+      this.file = file;
       this.bigDecimal = bigDecimal;
       this.bigInteger = bigInteger;
-      this.file = file;
-      this.localDate = localDate;
-      this.path = path;
-      this.pattern = pattern;
       this.uRi = uRi;
+      this.path = path;
+      this.localDate = localDate;
+      this.pattern = pattern;
+    }
+
+    File file() {
+      return file;
     }
 
     BigDecimal bigDecimal() {
@@ -364,24 +377,20 @@ final class JbockAutoTypes_Parser {
       return bigInteger;
     }
 
-    File file() {
-      return file;
-    }
-
-    LocalDate localDate() {
-      return localDate;
+    URI uRI() {
+      return uRi;
     }
 
     Path path() {
       return path;
     }
 
-    Pattern pattern() {
-      return pattern;
+    LocalDate localDate() {
+      return localDate;
     }
 
-    URI uRI() {
-      return uRi;
+    Pattern pattern() {
+      return pattern;
     }
   }
 

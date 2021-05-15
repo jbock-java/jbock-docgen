@@ -9,7 +9,7 @@ java {
 }
 
 application {
-    mainClass = 'net.jbock.convert.GenAutoTypes'
+    mainClass.set('net.jbock.convert.GenAutoTypes')
 }
 
 repositories {

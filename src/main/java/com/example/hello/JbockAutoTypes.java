@@ -11,30 +11,25 @@ import net.jbock.Command;
 import net.jbock.Option;
 
 /**
- * This class contains all "auto types"
- * that can be used without a custom converter in jbock 4.2.000.
- * Primitives and boxed primitives are also auto types, except the booleans.
+ * <p>This class contains all "auto types"
+ * that can be used without a custom converter in jbock 4.2.000:</p>
+ *
+ * <ul>
+ *   <li>java.io.File<li>
+ *   <li>java.math.BigDecimal<li>
+ *   <li>java.math.BigInteger<li>
+ *   <li>java.net.URI<li>
+ *   <li>java.nio.file.Path<li>
+ *   <li>java.time.LocalDate<li>
+ *   <li>java.util.regex.Pattern<li>
+ * </ul>
+ *
+ * <p>Primitives and boxed primitives are also auto types, except the booleans.
  * All enums are auto types. They are converted via their static {@code valueOf} method.
- * Special rules apply for boolean, java.util.List and java.util.Optional.
+ * Special rules apply for boolean, java.util.List and java.util.Optional.</p>
  */
 @Command
 abstract class JbockAutoTypes {
-  /**
-   * Converted by: java.math.BigDecimal::new
-   */
-  @Option(
-      names = "--bigdecimal"
-  )
-  abstract BigDecimal bigDecimal();
-
-  /**
-   * Converted by: java.math.BigInteger::new
-   */
-  @Option(
-      names = "--biginteger"
-  )
-  abstract BigInteger bigInteger();
-
   /**
    * Converted by: <pre>{@code s -> {
    *   java.io.File f = new java.io.File(s);
@@ -53,12 +48,28 @@ abstract class JbockAutoTypes {
   abstract File file();
 
   /**
-   * Converted by: java.time.LocalDate::parse
+   * Converted by: java.math.BigDecimal::new
    */
   @Option(
-      names = "--localdate"
+      names = "--bigdecimal"
   )
-  abstract LocalDate localDate();
+  abstract BigDecimal bigDecimal();
+
+  /**
+   * Converted by: java.math.BigInteger::new
+   */
+  @Option(
+      names = "--biginteger"
+  )
+  abstract BigInteger bigInteger();
+
+  /**
+   * Converted by: java.net.URI::create
+   */
+  @Option(
+      names = "--uri"
+  )
+  abstract URI uRI();
 
   /**
    * Converted by: java.nio.file.Paths::get
@@ -69,18 +80,18 @@ abstract class JbockAutoTypes {
   abstract Path path();
 
   /**
+   * Converted by: java.time.LocalDate::parse
+   */
+  @Option(
+      names = "--localdate"
+  )
+  abstract LocalDate localDate();
+
+  /**
    * Converted by: java.util.regex.Pattern::compile
    */
   @Option(
       names = "--pattern"
   )
   abstract Pattern pattern();
-
-  /**
-   * Converted by: java.net.URI::create
-   */
-  @Option(
-      names = "--uri"
-  )
-  abstract URI uRI();
 }
