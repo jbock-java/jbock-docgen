@@ -15,13 +15,13 @@ import net.jbock.Option;
  * that can be used without a custom converter in jbock 4.2.000:</p>
  *
  * <ul>
- *   <li>java.io.File<li>
- *   <li>java.math.BigDecimal<li>
- *   <li>java.math.BigInteger<li>
- *   <li>java.net.URI<li>
- *   <li>java.nio.file.Path<li>
- *   <li>java.time.LocalDate<li>
- *   <li>java.util.regex.Pattern<li>
+ *   <li>java.io.File</li>
+ *   <li>java.math.BigDecimal</li>
+ *   <li>java.math.BigInteger</li>
+ *   <li>java.net.URI</li>
+ *   <li>java.nio.file.Path</li>
+ *   <li>java.time.LocalDate</li>
+ *   <li>java.util.regex.Pattern</li>
  * </ul>
  *
  * <p>Primitives and boxed primitives are also auto types, except the booleans.

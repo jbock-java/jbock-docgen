@@ -69,7 +69,7 @@ public class GenAutoTypes {
         for (MethodData datum : data) {
             javadoc.append("  <li>");
             javadoc.append(datum.type.getCanonicalName());
-            javadoc.append("<li>\n");
+            javadoc.append("</li>\n");
         }
         javadoc.append("</ul>\n");
         javadoc.append("\n");
