@@ -89,7 +89,7 @@ final class DeleteCommand_Parser {
     printOption(Option.PATH, "  PATH ");
     err.println();
     err.println("OPTIONS");
-    printOption(Option.VERBOSITY, "  --verbosity VERBOSITY ");
+    printOption(Option.VERBOSITY, "  -v, --verbosity VERBOSITY ");
   }
 
   private void printOption(Option option, String names) {
@@ -170,13 +170,14 @@ final class DeleteCommand_Parser {
   private static class StatefulParser {
     Pattern suspicious = Pattern.compile("-[a-zA-Z0-9]+|--[a-zA-Z0-9-]+");
 
-    Map<String, Option> optionNames = new HashMap<>(1);
+    Map<String, Option> optionNames = new HashMap<>(2);
 
     Map<Option, OptionParser> optionParsers = new EnumMap<>(Option.class);
 
     String[] params = new String[1];
 
     StatefulParser() {
+      optionNames.put("-v", Option.VERBOSITY);
       optionNames.put("--verbosity", Option.VERBOSITY);
       optionParsers.put(Option.VERBOSITY, new RegularOptionParser(Option.VERBOSITY));
     }
