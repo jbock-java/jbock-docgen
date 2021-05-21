@@ -12,7 +12,7 @@ import net.jbock.Option;
 
 /**
  * <p>This class contains all "auto types"
- * that can be used without a custom converter in jbock 4.3.000:</p>
+ * that can be used without a custom converter in jbock 4.3.001:</p>
  *
  * <ul>
  *   <li>java.io.File</li>
