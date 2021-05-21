@@ -10,15 +10,11 @@ import java.util.OptionalInt;
 @Command
 abstract class DeleteCommand {
 
-    /**
-     * A positional parameter.
-     */
-    @Parameter(index = 0)
+    @Parameter(index = 0,
+               description = "A positional parameter.")
     abstract Path path();
 
-    /**
-     * A named option.
-     */
-    @Option(names = "--verbosity")
+    @Option(names = {"-v, ""--verbosity"}, 
+            description = "A named option.")
     abstract OptionalInt verbosity();
 }
