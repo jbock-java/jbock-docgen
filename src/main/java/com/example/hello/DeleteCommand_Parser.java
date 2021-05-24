@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -81,6 +82,10 @@ final class DeleteCommand_Parser {
   }
 
   void printUsageDocumentation() {
+    List<String> description = new ArrayList<>();
+    Collections.addAll(description, "Coffee time!".split("\\s+", -1));
+    makeLines("", description).forEach(err::println);
+    err.println();
     err.println("\u001b[1mUSAGE\u001b[m");
     makeLines("        ", usage(" ")).forEach(err::println);
     err.println();
