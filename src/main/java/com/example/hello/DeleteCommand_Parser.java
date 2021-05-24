@@ -55,7 +55,7 @@ final class DeleteCommand_Parser {
     }
     err.println("\u001b[31;1mERROR\u001b[m " + ((ParsingFailed) result).getError().getMessage());
     err.println(String.join(" ", usage("Usage:")));
-    err.println("Type \u001b[1mdelete-command --help\u001b[m for more information.");
+    err.println("Type \u001b[1mrm --help\u001b[m for more information.");
     err.flush();
     exitHook.accept(result);
     throw new RuntimeException("parsing error");
@@ -130,7 +130,7 @@ final class DeleteCommand_Parser {
   private List<String> usage(String prefix) {
     List<String> result = new ArrayList<>();
     result.add(prefix);
-    result.add("delete-command");
+    result.add("rm");
     result.add("[OPTION]...");
     result.add("PATH");
     return result;
