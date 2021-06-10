@@ -12,10 +12,11 @@ import net.jbock.Option;
 
 /**
  * <p>This class contains all "auto types"
- * that can be used without a custom converter in jbock 4.4.000:</p>
+ * that can be used without a custom converter in jbock 5.0:</p>
  *
  * <ul>
  *   <li>java.io.File</li>
+ *   <li>java.lang.String</li>
  *   <li>java.math.BigDecimal</li>
  *   <li>java.math.BigInteger</li>
  *   <li>java.net.URI</li>
@@ -46,6 +47,14 @@ abstract class JbockAutoTypes {
       names = "--file"
   )
   abstract File file();
+
+  /**
+   * converter: java.util.function.Function.identity()
+   */
+  @Option(
+      names = "--string"
+  )
+  abstract String string();
 
   /**
    * converter: java.math.BigDecimal::new

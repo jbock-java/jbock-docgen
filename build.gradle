@@ -14,11 +14,13 @@ application {
 
 repositories {
     mavenCentral()
+    maven { url 'https://s01.oss.sonatype.org/content/repositories/iogithubjbock-java-1000' }
+    maven { url 'https://s01.oss.sonatype.org/content/repositories/iogithubjbock-java-1001' }
 }
 
 dependencies {
-    implementation 'com.github.h908714124:jbock-annotations:4.4'
-    implementation 'com.github.h908714124:jbock:4.4.000'
+    implementation 'io.github.jbock-java:jbock:5.0'
+    implementation 'io.github.jbock-java:jbock-compiler:5.0'
     implementation 'com.google.testing.compile:compile-testing:0.19'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
 }

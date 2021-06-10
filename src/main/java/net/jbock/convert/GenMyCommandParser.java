@@ -3,7 +3,7 @@ package net.jbock.convert;
 import com.google.common.collect.ImmutableList;
 import com.google.testing.compile.Compilation;
 import com.google.testing.compile.JavaFileObjects;
-import net.jbock.compiler.Processor;
+import net.jbock.processor.JbockProcessor;
 
 import javax.tools.JavaFileObject;
 import java.io.FileOutputStream;
@@ -20,7 +20,7 @@ public class GenMyCommandParser {
 
     private static final String FULLY_QUALIFIED_NAME = PACKAGE + ".DeleteCommand";
     static final String MY_ARGUMENTS_PARSER = "src/main/java/" +
-            FULLY_QUALIFIED_NAME.replace('.', '/') + "_Parser.java";
+            FULLY_QUALIFIED_NAME.replace('.', '/') + "Parser.java";
 
     static void generate() throws IOException {
 
@@ -28,7 +28,7 @@ public class GenMyCommandParser {
                 Files.readAllLines(Paths.get("src/main/java/" +
                         FULLY_QUALIFIED_NAME.replace('.', '/') + ".java")));
 
-        Compilation compilation = javac().withProcessors(new Processor()).compile(javaFileObject);
+        Compilation compilation = javac().withProcessors(new JbockProcessor()).compile(javaFileObject);
         ImmutableList<JavaFileObject> results = compilation.generatedSourceFiles();
 
         try (InputStream in = results.get(0).openInputStream();

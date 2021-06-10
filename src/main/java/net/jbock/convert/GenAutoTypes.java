@@ -2,6 +2,8 @@ package net.jbock.convert;
 
 import net.jbock.Command;
 import net.jbock.Option;
+import net.jbock.common.TypeTool;
+import net.jbock.convert.matching.AutoConverters;
 import net.jbock.javapoet.AnnotationSpec;
 import net.jbock.javapoet.CodeBlock;
 import net.jbock.javapoet.JavaFile;
@@ -12,7 +14,10 @@ import net.jbock.javapoet.TypeSpec;
 import javax.lang.model.element.Modifier;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -39,12 +44,15 @@ public class GenAutoTypes {
 
     static final String AUTO_TYPES_PARSER = "src/main/java/" +
             PACKAGE.replace('.', '/') +
-            "/" + AUTO_TYPES_CLASSNAME + "_Parser.java";
+            "/" + AUTO_TYPES_CLASSNAME + "Parser.java";
 
-    private static void generate(String version) throws NoSuchFieldException, IllegalAccessException, IOException {
-        Field mappers = AutoConverter.class.getDeclaredField("CONVERTERS");
+    private static void generate(String version) throws IllegalAccessException, IOException, NoSuchMethodException, InvocationTargetException, InstantiationException {
+        Constructor<AutoConverters> constructor = AutoConverters.class.getDeclaredConstructor(TypeTool.class);
+        constructor.setAccessible(true);
+        AutoConverters autoConverters = constructor.newInstance(new Object[]{null});
+        Method mappers = AutoConverters.class.getDeclaredMethod("autoConverters");
         mappers.setAccessible(true);
-        List<Map.Entry<String, CodeBlock>> map = (List<Map.Entry<String, CodeBlock>>) mappers.get(null);
+        List<Map.Entry<String, CodeBlock>> map = (List<Map.Entry<String, CodeBlock>>) mappers.invoke(autoConverters);
         TypeSpec.Builder spec = TypeSpec.classBuilder(AUTO_TYPES_CLASSNAME);
         List<MethodData> data = new ArrayList<>(map.size());
         for (Map.Entry<String, CodeBlock> entry : map) {
@@ -93,7 +101,7 @@ public class GenAutoTypes {
         }
     }
 
-    public static void main(String[] args) throws IllegalAccessException, NoSuchFieldException, IOException {
+    public static void main(String[] args) throws IllegalAccessException, IOException, InvocationTargetException, NoSuchMethodException, InstantiationException {
 
         Stream.of(AUTO_TYPES, AUTO_TYPES_PARSER, MY_ARGUMENTS_PARSER)
                 .map(Paths::get)
@@ -101,7 +109,7 @@ public class GenAutoTypes {
                 .filter(File::exists)
                 .forEach(File::delete);
 
-        String version = net.jbock.compiler.Processor.class.getPackage().getImplementationVersion();
+        String version = net.jbock.processor.JbockProcessor.class.getPackage().getImplementationVersion();
         generate(version);
         GenAutoTypesParser.generate();
         GenMyCommandParser.generate();
