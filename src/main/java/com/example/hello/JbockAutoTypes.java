@@ -7,6 +7,7 @@ import java.net.URI;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
+import javax.annotation.processing.Generated;
 import net.jbock.Command;
 import net.jbock.Option;
 
@@ -29,6 +30,7 @@ import net.jbock.Option;
  * All enums are auto types. They are converted via their static {@code valueOf} method.
  * Special rules apply for boolean, java.util.List and java.util.Optional.</p>
  */
+@Generated("net.jbock.convert.GenAutoTypes")
 @Command
 abstract class JbockAutoTypes {
   /**

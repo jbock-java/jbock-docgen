@@ -11,11 +11,11 @@ import net.jbock.javapoet.MethodSpec;
 import net.jbock.javapoet.TypeName;
 import net.jbock.javapoet.TypeSpec;
 
+import javax.annotation.processing.Generated;
 import javax.lang.model.element.Modifier;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
@@ -54,6 +54,9 @@ public class GenAutoTypes {
         mappers.setAccessible(true);
         List<Map.Entry<String, CodeBlock>> map = (List<Map.Entry<String, CodeBlock>>) mappers.invoke(autoConverters);
         TypeSpec.Builder spec = TypeSpec.classBuilder(AUTO_TYPES_CLASSNAME);
+        spec.addAnnotation(AnnotationSpec.builder(Generated.class)
+                .addMember("value", CodeBlock.of("$S", GenAutoTypes.class.getCanonicalName()))
+                .build());
         List<MethodData> data = new ArrayList<>(map.size());
         for (Map.Entry<String, CodeBlock> entry : map) {
             String type = entry.getKey();
