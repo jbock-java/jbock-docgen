@@ -2,17 +2,21 @@ package net.jbock.convert;
 
 import net.jbock.Command;
 import net.jbock.Option;
+import net.jbock.common.SafeElements;
 import net.jbock.common.TypeTool;
 import net.jbock.convert.matching.AutoConverters;
+import net.jbock.convert.matching.MapExpr;
 import net.jbock.javapoet.AnnotationSpec;
 import net.jbock.javapoet.CodeBlock;
 import net.jbock.javapoet.JavaFile;
 import net.jbock.javapoet.MethodSpec;
 import net.jbock.javapoet.TypeName;
 import net.jbock.javapoet.TypeSpec;
+import org.mockito.Mockito;
 
 import javax.annotation.processing.Generated;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.TypeElement;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -25,6 +29,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static net.jbock.convert.GenMyCommandParser.MY_ARGUMENTS_PARSER;
@@ -47,21 +52,21 @@ public class GenAutoTypes {
             "/" + AUTO_TYPES_CLASSNAME + "Parser.java";
 
     private static void generate(String version) throws IllegalAccessException, IOException, NoSuchMethodException, InvocationTargetException, InstantiationException {
-        Constructor<AutoConverters> constructor = AutoConverters.class.getDeclaredConstructor(TypeTool.class);
+        Constructor<AutoConverters> constructor = AutoConverters.class.getDeclaredConstructor(TypeTool.class, SafeElements.class);
         constructor.setAccessible(true);
-        AutoConverters autoConverters = constructor.newInstance(new Object[]{null});
+        AutoConverters autoConverters = constructor.newInstance(new Object[]{null, mockElements()});
         Method mappers = AutoConverters.class.getDeclaredMethod("autoConverters");
         mappers.setAccessible(true);
-        List<Map.Entry<String, CodeBlock>> map = (List<Map.Entry<String, CodeBlock>>) mappers.invoke(autoConverters);
+        List<Map.Entry<String, MapExpr>> map = (List<Map.Entry<String, MapExpr>>) mappers.invoke(autoConverters);
         TypeSpec.Builder spec = TypeSpec.classBuilder(AUTO_TYPES_CLASSNAME);
         spec.addAnnotation(AnnotationSpec.builder(Generated.class)
                 .addMember("value", CodeBlock.of("$S", GenAutoTypes.class.getCanonicalName()))
                 .build());
         List<MethodData> data = new ArrayList<>(map.size());
-        for (Map.Entry<String, CodeBlock> entry : map) {
+        for (Map.Entry<String, MapExpr> entry : map) {
             String type = entry.getKey();
             if (!isBoxedPrimitive(type)) {
-                data.add(createMethodData(type, entry.getValue()));
+                data.add(createMethodData(type, entry.getValue().code()));
             }
         }
         data.sort(COMP);
@@ -94,6 +99,14 @@ public class GenAutoTypes {
                 .build();
 
         javaFile.writeTo(Paths.get("src/main/java"));
+    }
+
+    private static SafeElements mockElements() {
+        SafeElements mock = Mockito.mock(SafeElements.class);
+        TypeElement mockTypeElement = Mockito.mock(TypeElement.class);
+        Mockito.when(mock.getTypeElement(Mockito.anyString()))
+                .thenReturn(Optional.of(mockTypeElement));
+        return mock;
     }
 
     private static boolean isBoxedPrimitive(String type) {

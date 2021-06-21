@@ -13,7 +13,7 @@ import net.jbock.Option;
 
 /**
  * <p>This class contains all "auto types"
- * that can be used without a custom converter in jbock 5.0:</p>
+ * that can be used without a custom converter in jbock 5.1:</p>
  *
  * <ul>
  *   <li>java.io.File</li>
@@ -34,16 +34,13 @@ import net.jbock.Option;
 @Command
 abstract class JbockAutoTypes {
   /**
-   * converter: <pre>{@code s -> {
-   *   java.io.File f = new java.io.File(s);
-   *   if (!f.exists()) {
-   *     throw new java.lang.IllegalStateException("File does not exist: " + s);
-   *   }
-   *   if (!f.isFile()) {
-   *     throw new java.lang.IllegalStateException("Not a file: " + s);
-   *   }
-   *   return f;
-   * }}</pre>
+   * converter: java.io.File file = new java.io.File(token);
+   * if (!file.exists())
+   *   throw new java.lang.IllegalStateException("File does not exist: " + token);
+   * if (!file.isFile())
+   *   throw new java.lang.IllegalStateException("Not a file: " + token);
+   * return file;
+   *
    */
   @Option(
       names = "--file"
@@ -51,7 +48,7 @@ abstract class JbockAutoTypes {
   abstract File file();
 
   /**
-   * converter: java.util.function.Function.identity()
+   * converter: net.jbock.util.StringConverter.create(java.util.function.Function.identity())
    */
   @Option(
       names = "--string"
@@ -59,7 +56,7 @@ abstract class JbockAutoTypes {
   abstract String string();
 
   /**
-   * converter: java.math.BigDecimal::new
+   * converter: net.jbock.util.StringConverter.create(java.math.BigDecimal::new)
    */
   @Option(
       names = "--bigdecimal"
@@ -67,7 +64,7 @@ abstract class JbockAutoTypes {
   abstract BigDecimal bigDecimal();
 
   /**
-   * converter: java.math.BigInteger::new
+   * converter: net.jbock.util.StringConverter.create(java.math.BigInteger::new)
    */
   @Option(
       names = "--biginteger"
@@ -75,7 +72,7 @@ abstract class JbockAutoTypes {
   abstract BigInteger bigInteger();
 
   /**
-   * converter: java.net.URI::create
+   * converter: net.jbock.util.StringConverter.create(java.net.URI::create)
    */
   @Option(
       names = "--uri"
@@ -83,7 +80,7 @@ abstract class JbockAutoTypes {
   abstract URI uRI();
 
   /**
-   * converter: java.nio.file.Paths::get
+   * converter: net.jbock.util.StringConverter.create(java.nio.file.Paths::get)
    */
   @Option(
       names = "--path"
@@ -91,7 +88,7 @@ abstract class JbockAutoTypes {
   abstract Path path();
 
   /**
-   * converter: java.time.LocalDate::parse
+   * converter: net.jbock.util.StringConverter.create(java.time.LocalDate::parse)
    */
   @Option(
       names = "--localdate"
@@ -99,7 +96,7 @@ abstract class JbockAutoTypes {
   abstract LocalDate localDate();
 
   /**
-   * converter: java.util.regex.Pattern::compile
+   * converter: net.jbock.util.StringConverter.create(java.util.regex.Pattern::compile)
    */
   @Option(
       names = "--pattern"
