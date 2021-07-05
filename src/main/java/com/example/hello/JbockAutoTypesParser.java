@@ -1,5 +1,7 @@
 package com.example.hello;
 
+import io.jbock.util.Either;
+import io.jbock.util.Optional;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -12,13 +14,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import javax.annotation.processing.Generated;
 import net.jbock.contrib.StandardErrorHandler;
-import net.jbock.either.Either;
 import net.jbock.model.CommandModel;
 import net.jbock.model.Multiplicity;
 import net.jbock.model.Option;
@@ -31,6 +31,7 @@ import net.jbock.util.ExToken;
 import net.jbock.util.HelpRequested;
 import net.jbock.util.ItemType;
 import net.jbock.util.NotSuccess;
+import net.jbock.util.ParseRequest;
 import net.jbock.util.StringConverter;
 
 @Generated(
@@ -38,34 +39,37 @@ import net.jbock.util.StringConverter;
     comments = "https://github.com/jbock-java"
 )
 class JbockAutoTypesParser {
-  Either<NotSuccess, JbockAutoTypes> parse(String... args) {
-    if (args.length == 0 || "--help".equals(args[0]))
-      return Either.left(new HelpRequested(createModel()));
-    return new AtFileReader().read(args)
-          .mapLeft(err -> err.addModel(createModel()))
+  Either<NotSuccess, JbockAutoTypes> parse(ParseRequest request) {
+    if (request.isHelpRequested())
+      return Either.left(new HelpRequested(createModel(request)));
+    return new AtFileReader().read(request)
+          .mapLeft(err -> err.addModel(createModel(request)))
           .map(List::iterator)
           .flatMap(it -> {
             StatefulParser statefulParser = new StatefulParser();
             try {
               return Either.right(statefulParser.parse(it).build());
             } catch (ExNotSuccess e) {
-              return Either.left(e.toError(createModel()));
+              return Either.left(e.toError(createModel(request)));
             }
           });
   }
 
   JbockAutoTypes parseOrExit(String[] args) {
-    return parse(args).orElseThrow(notSuccess -> {
+    ParseRequest request = ParseRequest.standardBuilder(args)
+      .withHelpRequested(args.length == 0 || "--help".equals(args[0]))
+      .build();
+    return parse(request).orElseThrow(notSuccess -> {
       int code = StandardErrorHandler.builder().build().handle(notSuccess);
       System.exit(code);
       return new RuntimeException();
     });
   }
 
-  private CommandModel createModel() {
-    return CommandModel.builder()
+  private CommandModel createModel(ParseRequest request) {
+    return CommandModel.builder(request)
           .addDescriptionLine("<p>This class contains all \"auto types\"")
-          .addDescriptionLine("that can be used without a custom converter in jbock 5.1:</p>")
+          .addDescriptionLine("that can be used without a custom converter in jbock 5.2:</p>")
           .addDescriptionLine("<ul>")
           .addDescriptionLine("<li>java.io.File</li>")
           .addDescriptionLine("<li>java.lang.String</li>")

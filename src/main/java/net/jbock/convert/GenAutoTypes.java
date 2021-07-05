@@ -29,7 +29,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import static net.jbock.convert.GenMyCommandParser.MY_ARGUMENTS_PARSER;
@@ -105,7 +104,7 @@ public class GenAutoTypes {
         SafeElements mock = Mockito.mock(SafeElements.class);
         TypeElement mockTypeElement = Mockito.mock(TypeElement.class);
         Mockito.when(mock.getTypeElement(Mockito.anyString()))
-                .thenReturn(Optional.of(mockTypeElement));
+                .thenReturn(net.jbock.io.jbock.util.Optional.of(mockTypeElement));
         return mock;
     }
 
