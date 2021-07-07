@@ -1,7 +1,6 @@
 package com.example.hello;
 
 import io.jbock.util.Either;
-import io.jbock.util.Optional;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -14,6 +13,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -68,74 +68,46 @@ class JbockAutoTypesParser {
 
   private CommandModel createModel(ParseRequest request) {
     return CommandModel.builder(request)
-          .addDescriptionLine("<p>This class contains all \"auto types\"")
-          .addDescriptionLine("that can be used without a custom converter in jbock 5.2:</p>")
-          .addDescriptionLine("<ul>")
-          .addDescriptionLine("<li>java.io.File</li>")
-          .addDescriptionLine("<li>java.lang.String</li>")
-          .addDescriptionLine("<li>java.math.BigDecimal</li>")
-          .addDescriptionLine("<li>java.math.BigInteger</li>")
-          .addDescriptionLine("<li>java.net.URI</li>")
-          .addDescriptionLine("<li>java.nio.file.Path</li>")
-          .addDescriptionLine("<li>java.time.LocalDate</li>")
-          .addDescriptionLine("<li>java.util.regex.Pattern</li>")
-          .addDescriptionLine("</ul>")
-          .addDescriptionLine("<p>Primitives and boxed primitives are also auto types, except the booleans.")
-          .addDescriptionLine("All enums are auto types. They are converted via their static {@code valueOf} method.")
-          .addDescriptionLine("Special rules apply for boolean, java.util.List and java.util.Optional.</p>")
           .withProgramName("jbock-auto-types")
           .addOption(Option.builder()
             .withParamLabel("FILE")
             .withNames(List.of("--file"))
             .withMultiplicity(Multiplicity.REQUIRED)
-            .addDescriptionLine("converter: java.io.File file = new java.io.File(token);")
-            .addDescriptionLine("if (!file.exists())")
-            .addDescriptionLine("throw new java.lang.IllegalStateException(\"File does not exist: \" + token);")
-            .addDescriptionLine("if (!file.isFile())")
-            .addDescriptionLine("throw new java.lang.IllegalStateException(\"Not a file: \" + token);")
-            .addDescriptionLine("return file;")
             .build())
           .addOption(Option.builder()
             .withParamLabel("STRING")
             .withNames(List.of("--string"))
             .withMultiplicity(Multiplicity.REQUIRED)
-            .addDescriptionLine("converter: net.jbock.util.StringConverter.create(java.util.function.Function.identity())")
             .build())
           .addOption(Option.builder()
             .withParamLabel("BIGDECIMAL")
             .withNames(List.of("--bigdecimal"))
             .withMultiplicity(Multiplicity.REQUIRED)
-            .addDescriptionLine("converter: net.jbock.util.StringConverter.create(java.math.BigDecimal::new)")
             .build())
           .addOption(Option.builder()
             .withParamLabel("BIGINTEGER")
             .withNames(List.of("--biginteger"))
             .withMultiplicity(Multiplicity.REQUIRED)
-            .addDescriptionLine("converter: net.jbock.util.StringConverter.create(java.math.BigInteger::new)")
             .build())
           .addOption(Option.builder()
             .withParamLabel("URI")
             .withNames(List.of("--uri"))
             .withMultiplicity(Multiplicity.REQUIRED)
-            .addDescriptionLine("converter: net.jbock.util.StringConverter.create(java.net.URI::create)")
             .build())
           .addOption(Option.builder()
             .withParamLabel("PATH")
             .withNames(List.of("--path"))
             .withMultiplicity(Multiplicity.REQUIRED)
-            .addDescriptionLine("converter: net.jbock.util.StringConverter.create(java.nio.file.Paths::get)")
             .build())
           .addOption(Option.builder()
             .withParamLabel("LOCALDATE")
             .withNames(List.of("--localdate"))
             .withMultiplicity(Multiplicity.REQUIRED)
-            .addDescriptionLine("converter: net.jbock.util.StringConverter.create(java.time.LocalDate::parse)")
             .build())
           .addOption(Option.builder()
             .withParamLabel("PATTERN")
             .withNames(List.of("--pattern"))
             .withMultiplicity(Multiplicity.REQUIRED)
-            .addDescriptionLine("converter: net.jbock.util.StringConverter.create(java.util.regex.Pattern::compile)")
             .build())
           .build();
   }
