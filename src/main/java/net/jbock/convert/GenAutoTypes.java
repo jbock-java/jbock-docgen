@@ -76,22 +76,36 @@ public class GenAutoTypes {
         spec.addModifiers(Modifier.ABSTRACT);
         spec.addAnnotation(Command.class);
         StringBuilder javadoc = new StringBuilder();
-        javadoc.append("<p>This class contains all \"auto types\"\n");
+	List<String> specialTypes = List.of(
+			"boolean", 
+			"java.util.List", 
+			"java.util.Optional", 
+			"java.util.OptionalInt", 
+			"java.util.OptionalLong", 
+			"java.util.OptionalDouble", 
+			"io.vavr.control.Option");
+        javadoc.append("This class contains all \"auto types\"\n");
         javadoc.append("that can be used without a custom converter in jbock ");
         javadoc.append(version);
-        javadoc.append(":</p>\n");
-        javadoc.append("\n");
+        javadoc.append(":\n\n");
         javadoc.append("<ul>\n");
         for (MethodData datum : data) {
-            javadoc.append("  <li>");
+            javadoc.append("  <li>{@code ");
             javadoc.append(datum.type.getCanonicalName());
-            javadoc.append("</li>\n");
+            javadoc.append("}\n");
         }
         javadoc.append("</ul>\n");
         javadoc.append("\n");
-        javadoc.append("<p>Primitives and boxed primitives are also auto types, except the booleans.\n" +
+        javadoc.append("Primitives and boxed primitives are also auto types, except the booleans.\n" +
                 "All enums are auto types. They are converted via their static {@code valueOf} method.\n" +
-                "Special rules apply for boolean, java.util.List and java.util.Optional.</p>");
+                "Special rules apply for these types:\n\n");
+	javadoc.append("<ul>\n");
+        for (String specialType: specialTypes) {
+            javadoc.append("  <li>{@code ");
+            javadoc.append(specialType);
+            javadoc.append("}\n");
+        }
+	javadoc.append("</ul>\n");
         spec.addJavadoc(javadoc.toString());
 
         JavaFile javaFile = JavaFile.builder(PACKAGE, spec.build())

@@ -12,23 +12,33 @@ import net.jbock.Command;
 import net.jbock.Option;
 
 /**
- * <p>This class contains all "auto types"
- * that can be used without a custom converter in jbock 5.3:</p>
+ * This class contains all "auto types"
+ * that can be used without a custom converter in jbock 5.3:
  *
  * <ul>
- *   <li>java.io.File</li>
- *   <li>java.lang.String</li>
- *   <li>java.math.BigDecimal</li>
- *   <li>java.math.BigInteger</li>
- *   <li>java.net.URI</li>
- *   <li>java.nio.file.Path</li>
- *   <li>java.time.LocalDate</li>
- *   <li>java.util.regex.Pattern</li>
+ *   <li>{@code java.io.File}
+ *   <li>{@code java.lang.String}
+ *   <li>{@code java.math.BigDecimal}
+ *   <li>{@code java.math.BigInteger}
+ *   <li>{@code java.net.URI}
+ *   <li>{@code java.nio.file.Path}
+ *   <li>{@code java.time.LocalDate}
+ *   <li>{@code java.util.regex.Pattern}
  * </ul>
  *
- * <p>Primitives and boxed primitives are also auto types, except the booleans.
+ * Primitives and boxed primitives are also auto types, except the booleans.
  * All enums are auto types. They are converted via their static {@code valueOf} method.
- * Special rules apply for boolean, java.util.List and java.util.Optional.</p>
+ * Special rules apply for these types:
+ *
+ * <ul>
+ *   <li>{@code boolean}
+ *   <li>{@code java.util.List}
+ *   <li>{@code java.util.Optional}
+ *   <li>{@code java.util.OptionalInt}
+ *   <li>{@code java.util.OptionalLong}
+ *   <li>{@code java.util.OptionalDouble}
+ *   <li>{@code io.vavr.control.Option}
+ * </ul>
  */
 @Generated("net.jbock.convert.GenAutoTypes")
 @Command
