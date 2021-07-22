@@ -1,6 +1,7 @@
 package com.example.hello;
 
 import io.jbock.util.Either;
+import io.jbock.util.Eithers;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.EnumMap;
@@ -133,7 +134,7 @@ class DeleteCommandParser {
     DeleteCommand build() throws ExNotSuccess {
       OptionalInt verbosity = this.optionParsers.get(Opt.VERBOSITY).stream()
             .map(StringConverter.create(Integer::valueOf))
-            .collect(Either.toValidList())
+            .collect(Eithers.toValidList())
             .orElseThrow(left -> new ExConvert(left, ItemType.OPTION, 0))
             .stream().findAny()
             .map(OptionalInt::of).orElse(OptionalInt.empty());

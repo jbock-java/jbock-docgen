@@ -17,8 +17,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.github.jbock-java:jbock:5.5'
-    implementation 'io.github.jbock-java:jbock-compiler:5.5'
+    implementation 'io.github.jbock-java:jbock:5.6'
+    implementation 'io.github.jbock-java:jbock-compiler:5.6'
     implementation 'com.google.testing.compile:compile-testing:0.19'
     implementation 'org.mockito:mockito-core:3.9.0'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
