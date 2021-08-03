@@ -2,7 +2,6 @@ package net.jbock.convert.matching;
 
 import net.jbock.Command;
 import net.jbock.Option;
-import net.jbock.common.SafeElements;
 import net.jbock.common.TypeTool;
 import net.jbock.common.Util;
 import net.jbock.javapoet.AnnotationSpec;
@@ -11,11 +10,9 @@ import net.jbock.javapoet.JavaFile;
 import net.jbock.javapoet.MethodSpec;
 import net.jbock.javapoet.TypeName;
 import net.jbock.javapoet.TypeSpec;
-import org.mockito.Mockito;
 
 import javax.annotation.processing.Generated;
 import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -27,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import static net.jbock.convert.matching.GenMyCommandParser.MY_ARGUMENTS_PARSER;
@@ -111,14 +107,6 @@ public class GenAutoTypes {
                 .build();
 
         javaFile.writeTo(Paths.get("src/main/java"));
-    }
-
-    private static SafeElements mockElements() {
-        SafeElements mock = Mockito.mock(SafeElements.class);
-        TypeElement mockTypeElement = Mockito.mock(TypeElement.class);
-        Mockito.when(mock.getTypeElement(Mockito.anyString()))
-                .thenReturn(Optional.of(mockTypeElement));
-        return mock;
     }
 
     private static boolean isBoxedPrimitive(String type) {
