@@ -13,7 +13,7 @@ import net.jbock.Option;
 
 /**
  * This class contains all "auto types"
- * that can be used without a custom converter in jbock 5.6:
+ * that can be used without a custom converter in jbock 5.7:
  *
  * <ul>
  *   <li>{@code java.io.File}
@@ -40,7 +40,7 @@ import net.jbock.Option;
  *   <li>{@code io.vavr.control.Option}
  * </ul>
  */
-@Generated("net.jbock.convert.GenAutoTypes")
+@Generated("net.jbock.convert.matching.GenAutoTypes")
 @Command
 abstract class JbockAutoTypes {
   /**

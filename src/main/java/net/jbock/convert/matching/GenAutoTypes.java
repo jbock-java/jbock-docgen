@@ -1,11 +1,10 @@
-package net.jbock.convert;
+package net.jbock.convert.matching;
 
 import net.jbock.Command;
 import net.jbock.Option;
 import net.jbock.common.SafeElements;
 import net.jbock.common.TypeTool;
-import net.jbock.convert.matching.AutoConverters;
-import net.jbock.convert.matching.MapExpr;
+import net.jbock.common.Util;
 import net.jbock.javapoet.AnnotationSpec;
 import net.jbock.javapoet.CodeBlock;
 import net.jbock.javapoet.JavaFile;
@@ -28,11 +27,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static net.jbock.convert.GenMyCommandParser.MY_ARGUMENTS_PARSER;
+import static net.jbock.convert.matching.GenMyCommandParser.MY_ARGUMENTS_PARSER;
 
 public class GenAutoTypes {
 
@@ -52,21 +50,21 @@ public class GenAutoTypes {
             "/" + AUTO_TYPES_CLASSNAME + "Parser.java";
 
     private static void generate(String version) throws IllegalAccessException, IOException, NoSuchMethodException, InvocationTargetException, InstantiationException {
-        Constructor<AutoConverters> constructor = AutoConverters.class.getDeclaredConstructor(TypeTool.class, SafeElements.class);
+        Constructor<AutoMapper> constructor = AutoMapper.class.getDeclaredConstructor(TypeTool.class, Util.class);
         constructor.setAccessible(true);
-        AutoConverters autoConverters = constructor.newInstance(new Object[]{null, mockElements()});
-        Method mappers = AutoConverters.class.getDeclaredMethod("autoConverters");
+        AutoMapper autoConverters = constructor.newInstance(new Object[]{new TypeTool(null, null), new Util(null, null)});
+        Method mappers = AutoMapper.class.getDeclaredMethod("autoConversions");
         mappers.setAccessible(true);
-        List<Map.Entry<String, MapExpr>> map = (List<Map.Entry<String, MapExpr>>) mappers.invoke(autoConverters);
+        List<AutoConversion> map = (List<AutoConversion>) mappers.invoke(autoConverters);
         TypeSpec.Builder spec = TypeSpec.classBuilder(AUTO_TYPES_CLASSNAME);
         spec.addAnnotation(AnnotationSpec.builder(Generated.class)
                 .addMember("value", CodeBlock.of("$S", GenAutoTypes.class.getCanonicalName()))
                 .build());
         List<MethodData> data = new ArrayList<>(map.size());
-        for (Map.Entry<String, MapExpr> entry : map) {
-            String type = entry.getKey();
+        for (AutoConversion entry : map) {
+            String type = entry.qualifiedName();
             if (!isBoxedPrimitive(type)) {
-                data.add(createMethodData(type, entry.getValue().code()));
+                data.add(createMethodData(type, entry.code()));
             }
         }
         data.sort(COMP);
@@ -76,14 +74,14 @@ public class GenAutoTypes {
         spec.addModifiers(Modifier.ABSTRACT);
         spec.addAnnotation(Command.class);
         StringBuilder javadoc = new StringBuilder();
-	List<String> specialTypes = List.of(
-			"boolean", 
-			"java.util.List", 
-			"java.util.Optional", 
-			"java.util.OptionalInt", 
-			"java.util.OptionalLong", 
-			"java.util.OptionalDouble", 
-			"io.vavr.control.Option");
+        List<String> specialTypes = List.of(
+                "boolean",
+                "java.util.List",
+                "java.util.Optional",
+                "java.util.OptionalInt",
+                "java.util.OptionalLong",
+                "java.util.OptionalDouble",
+                "io.vavr.control.Option");
         javadoc.append("This class contains all \"auto types\"\n");
         javadoc.append("that can be used without a custom converter in jbock ");
         javadoc.append(version);
@@ -99,13 +97,13 @@ public class GenAutoTypes {
         javadoc.append("Primitives and boxed primitives are also auto types, except the booleans.\n" +
                 "All enums are auto types. They are converted via their static {@code valueOf} method.\n" +
                 "Special rules apply for these types:\n\n");
-	javadoc.append("<ul>\n");
-        for (String specialType: specialTypes) {
+        javadoc.append("<ul>\n");
+        for (String specialType : specialTypes) {
             javadoc.append("  <li>{@code ");
             javadoc.append(specialType);
             javadoc.append("}\n");
         }
-	javadoc.append("</ul>\n");
+        javadoc.append("</ul>\n");
         spec.addJavadoc(javadoc.toString());
 
         JavaFile javaFile = JavaFile.builder(PACKAGE, spec.build())

@@ -1,4 +1,4 @@
-package net.jbock.convert;
+package net.jbock.convert.matching;
 
 import com.google.common.collect.ImmutableList;
 import com.google.testing.compile.Compilation;
@@ -14,25 +14,23 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static com.google.testing.compile.Compiler.javac;
-import static net.jbock.convert.GenAutoTypes.PACKAGE;
+import static net.jbock.convert.matching.GenAutoTypes.AUTO_TYPES;
+import static net.jbock.convert.matching.GenAutoTypes.AUTO_TYPES_CLASSNAME;
+import static net.jbock.convert.matching.GenAutoTypes.AUTO_TYPES_PARSER;
+import static net.jbock.convert.matching.GenAutoTypes.PACKAGE;
 
-public class GenMyCommandParser {
-
-    private static final String FULLY_QUALIFIED_NAME = PACKAGE + ".DeleteCommand";
-    static final String MY_ARGUMENTS_PARSER = "src/main/java/" +
-            FULLY_QUALIFIED_NAME.replace('.', '/') + "Parser.java";
+public class GenAutoTypesParser {
 
     static void generate() throws IOException {
 
-        JavaFileObject javaFileObject = JavaFileObjects.forSourceLines(FULLY_QUALIFIED_NAME,
-                Files.readAllLines(Paths.get("src/main/java/" +
-                        FULLY_QUALIFIED_NAME.replace('.', '/') + ".java")));
+        JavaFileObject javaFileObject = JavaFileObjects.forSourceLines(PACKAGE + "." + AUTO_TYPES_CLASSNAME,
+                Files.readAllLines(Paths.get(AUTO_TYPES)));
 
         Compilation compilation = javac().withProcessors(new JbockProcessor()).compile(javaFileObject);
         ImmutableList<JavaFileObject> results = compilation.generatedSourceFiles();
 
         try (InputStream in = results.get(0).openInputStream();
-             OutputStream out = new FileOutputStream(Paths.get(MY_ARGUMENTS_PARSER).toFile())) {
+             OutputStream out = new FileOutputStream(AUTO_TYPES_PARSER)) {
             byte[] buffer = new byte[in.available()];
             in.read(buffer);
             out.write(buffer);
