@@ -13,7 +13,7 @@ import net.jbock.Option;
 
 /**
  * This class contains all "auto types"
- * that can be used without a custom converter in jbock 5.8:
+ * that can be used without a custom converter in jbock 5.9:
  *
  * <ul>
  *   <li>{@code java.io.File}
