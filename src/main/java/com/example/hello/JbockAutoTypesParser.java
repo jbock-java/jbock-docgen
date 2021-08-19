@@ -20,18 +20,16 @@ import java.util.stream.Stream;
 import javax.annotation.processing.Generated;
 import net.jbock.contrib.StandardErrorHandler;
 import net.jbock.model.CommandModel;
+import net.jbock.model.ItemType;
 import net.jbock.model.Multiplicity;
 import net.jbock.model.Option;
-import net.jbock.util.AtFileReader;
 import net.jbock.util.ErrTokenType;
 import net.jbock.util.ExConvert;
 import net.jbock.util.ExMissingItem;
 import net.jbock.util.ExNotSuccess;
 import net.jbock.util.ExToken;
-import net.jbock.util.HelpRequested;
-import net.jbock.util.ItemType;
-import net.jbock.util.NotSuccess;
 import net.jbock.util.ParseRequest;
+import net.jbock.util.ParsingFailed;
 import net.jbock.util.StringConverter;
 
 @Generated(
@@ -39,35 +37,34 @@ import net.jbock.util.StringConverter;
     comments = "https://github.com/jbock-java"
 )
 class JbockAutoTypesParser {
-  Either<NotSuccess, JbockAutoTypes> parse(ParseRequest request) {
-    if (request.isHelpRequested())
-      return Either.left(new HelpRequested(createModel(request)));
-    return new AtFileReader().read(request)
-          .mapLeft(err -> err.addModel(createModel(request)))
-          .map(List::iterator)
-          .flatMap(it -> {
-            StatefulParser statefulParser = new StatefulParser();
-            try {
-              return Either.right(statefulParser.parse(it).build());
-            } catch (ExNotSuccess e) {
-              return Either.left(e.toError(createModel(request)));
-            }
-          });
+  Either<ParsingFailed, JbockAutoTypes> parse(List<String> tokens) {
+    Iterator<String> it = tokens.iterator();
+    StatefulParser statefulParser = new StatefulParser();
+    try {
+      return Either.right(statefulParser.parse(it).build());
+    } catch (ExNotSuccess e) {
+      return Either.left(e.toError(createModel()));
+    }
   }
 
   JbockAutoTypes parseOrExit(String[] args) {
-    ParseRequest request = ParseRequest.standardBuilder(args)
-      .withHelpRequested(args.length == 0 || "--help".equals(args[0]))
-      .build();
-    return parse(request).orElseThrow(notSuccess -> {
-      int code = StandardErrorHandler.builder().build().handle(notSuccess);
-      System.exit(code);
-      return new RuntimeException();
-    });
+    if (args.length == 0 || "--help".equals(args[0])) {
+      StandardErrorHandler.builder().build()
+        .printUsageDocumentation(createModel());
+      System.exit(0);
+    }
+    return ParseRequest.from(args).expand()
+      .mapLeft(err -> err.addModel(createModel()))
+      .flatMap(this::parse)
+      .orElseThrow(failure -> {
+        StandardErrorHandler.builder().build().printErrorMessage(failure);
+        System.exit(1);
+        return new RuntimeException();
+      });
   }
 
-  private CommandModel createModel(ParseRequest request) {
-    return CommandModel.builder(request)
+  CommandModel createModel() {
+    return CommandModel.builder()
           .withProgramName("jbock-auto-types")
           .addOption(Option.builder()
             .withParamLabel("FILE")

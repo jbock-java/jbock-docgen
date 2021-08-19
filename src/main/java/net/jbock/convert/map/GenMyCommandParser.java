@@ -1,4 +1,4 @@
-package net.jbock.convert.matching;
+package net.jbock.convert.map;
 
 import com.google.common.collect.ImmutableList;
 import com.google.testing.compile.Compilation;
@@ -14,7 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static com.google.testing.compile.Compiler.javac;
-import static net.jbock.convert.matching.GenAutoTypes.PACKAGE;
+import static net.jbock.convert.map.GenAutoTypes.PACKAGE;
 
 public class GenMyCommandParser {
 

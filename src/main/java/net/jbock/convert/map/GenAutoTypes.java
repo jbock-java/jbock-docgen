@@ -1,9 +1,8 @@
-package net.jbock.convert.matching;
+package net.jbock.convert.map;
 
 import net.jbock.Command;
 import net.jbock.Option;
 import net.jbock.common.TypeTool;
-import net.jbock.common.Util;
 import net.jbock.javapoet.AnnotationSpec;
 import net.jbock.javapoet.CodeBlock;
 import net.jbock.javapoet.JavaFile;
@@ -26,7 +25,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Stream;
 
-import static net.jbock.convert.matching.GenMyCommandParser.MY_ARGUMENTS_PARSER;
+import static net.jbock.convert.map.GenMyCommandParser.MY_ARGUMENTS_PARSER;
 
 public class GenAutoTypes {
 
@@ -46,10 +45,10 @@ public class GenAutoTypes {
             "/" + AUTO_TYPES_CLASSNAME + "Parser.java";
 
     private static void generate(String version) throws IllegalAccessException, IOException, NoSuchMethodException, InvocationTargetException, InstantiationException {
-        Constructor<AutoMapper> constructor = AutoMapper.class.getDeclaredConstructor(TypeTool.class, Util.class);
+        Constructor<AutoMappings> constructor = AutoMappings.class.getDeclaredConstructor(TypeTool.class);
         constructor.setAccessible(true);
-        AutoMapper autoConverters = constructor.newInstance(new Object[]{new TypeTool(null, null), new Util(null, null)});
-        Method mappers = AutoMapper.class.getDeclaredMethod("autoConversions");
+        AutoMappings autoConverters = constructor.newInstance(new Object[]{new TypeTool(null, null)});
+        Method mappers = AutoMappings.class.getDeclaredMethod("autoConversions");
         mappers.setAccessible(true);
         List<AutoConversion> map = (List<AutoConversion>) mappers.invoke(autoConverters);
         TypeSpec.Builder spec = TypeSpec.classBuilder(AUTO_TYPES_CLASSNAME);
@@ -60,7 +59,7 @@ public class GenAutoTypes {
         for (AutoConversion entry : map) {
             String type = entry.qualifiedName();
             if (!isBoxedPrimitive(type)) {
-                data.add(createMethodData(type, entry.code()));
+                data.add(createMethodData(type, entry.block().code()));
             }
         }
         data.sort(COMP);
