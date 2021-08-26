@@ -14,8 +14,7 @@ application {
 
 repositories {
     mavenCentral()
-    maven { url 'https://s01.oss.sonatype.org/content/repositories/iogithubjbock-java-1058' }
-    maven { url 'https://s01.oss.sonatype.org/content/repositories/iogithubjbock-java-1059' }
+    maven { url 'https://s01.oss.sonatype.org/content/repositories/iogithubjbock-java-1060' }
 }
 
 dependencies {

@@ -21,6 +21,8 @@ public class GenMyCommandParser {
     private static final String FULLY_QUALIFIED_NAME = PACKAGE + ".DeleteCommand";
     static final String MY_ARGUMENTS_PARSER = "src/main/java/" +
             FULLY_QUALIFIED_NAME.replace('.', '/') + "Parser.java";
+    static final String MY_ARGUMENTS_IMPL = "src/main/java/" +
+            FULLY_QUALIFIED_NAME.replace('.', '/') + "_Impl.java";
 
     static void generate() throws IOException {
 
@@ -33,6 +35,12 @@ public class GenMyCommandParser {
 
         try (InputStream in = results.get(0).openInputStream();
              OutputStream out = new FileOutputStream(Paths.get(MY_ARGUMENTS_PARSER).toFile())) {
+            byte[] buffer = new byte[in.available()];
+            in.read(buffer);
+            out.write(buffer);
+        }
+        try (InputStream in = results.get(1).openInputStream();
+             OutputStream out = new FileOutputStream(Paths.get(MY_ARGUMENTS_IMPL).toFile())) {
             byte[] buffer = new byte[in.available()];
             in.read(buffer);
             out.write(buffer);
