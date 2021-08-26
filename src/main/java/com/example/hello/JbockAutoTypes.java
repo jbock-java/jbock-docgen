@@ -13,7 +13,7 @@ import net.jbock.Option;
 
 /**
  * This class contains all "auto types"
- * that can be used without a custom converter in jbock 5.10:
+ * that can be used without a custom converter in jbock 5.11:
  *
  * <ul>
  *   <li>{@code java.io.File}
@@ -44,13 +44,7 @@ import net.jbock.Option;
 @Command
 abstract class JbockAutoTypes {
   /**
-   * converter: java.io.File file = new java.io.File(token);
-   * if (!file.exists())
-   *   throw new java.lang.IllegalStateException("File does not exist: " + token);
-   * if (!file.isFile())
-   *   throw new java.lang.IllegalStateException("Not a file: " + token);
-   * return file;
-   *
+   * converter: net.jbock.contrib.FileConverter.create()
    */
   @Option(
       names = "--file"

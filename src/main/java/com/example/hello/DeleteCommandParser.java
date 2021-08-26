@@ -6,24 +6,22 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.OptionalInt;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
 import javax.annotation.processing.Generated;
 import net.jbock.contrib.StandardErrorHandler;
 import net.jbock.model.CommandModel;
 import net.jbock.model.ItemType;
 import net.jbock.model.Option;
 import net.jbock.model.Parameter;
-import net.jbock.util.ErrTokenType;
+import net.jbock.parse.OptionState;
+import net.jbock.parse.OptionStateRegular;
+import net.jbock.parse.Parser;
+import net.jbock.parse.RegularParser;
 import net.jbock.util.ExConvert;
+import net.jbock.util.ExFailure;
 import net.jbock.util.ExMissingItem;
-import net.jbock.util.ExNotSuccess;
-import net.jbock.util.ExToken;
 import net.jbock.util.ParseRequest;
 import net.jbock.util.ParsingFailed;
 import net.jbock.util.StringConverter;
@@ -32,13 +30,15 @@ import net.jbock.util.StringConverter;
     value = "net.jbock.processor.JbockProcessor",
     comments = "https://github.com/jbock-java"
 )
-class DeleteCommandParser {
+final class DeleteCommandParser {
+  private final Map<String, Opt> optionNames = optionNames();
+
   Either<ParsingFailed, DeleteCommand> parse(List<String> tokens) {
-    Iterator<String> it = tokens.iterator();
-    StatefulParser statefulParser = new StatefulParser();
+    Parser<Opt> parser = RegularParser.create(optionNames, optionStates(), 1);
     try {
-      return Either.right(statefulParser.parse(it).build());
-    } catch (ExNotSuccess e) {
+      parser.parse(tokens);
+      return Either.right(harvest(parser));
+    } catch (ExFailure e) {
       return Either.left(e.toError(createModel()));
     }
   }
@@ -59,6 +59,33 @@ class DeleteCommandParser {
       });
   }
 
+  private DeleteCommand harvest(Parser<Opt> parser) throws ExFailure {
+    OptionalInt _verbosity = parser.option(Opt.VERBOSITY)
+          .map(StringConverter.create(Integer::valueOf))
+          .collect(Eithers.toValidList())
+          .orElseThrow(left -> new ExConvert(left, ItemType.OPTION, 0))
+          .stream().findAny()
+          .map(OptionalInt::of).orElse(OptionalInt.empty());
+    Path _path = parser.param(0)
+          .map(StringConverter.create(Paths::get))
+          .orElseThrow(() -> new ExMissingItem(ItemType.PARAMETER, 0))
+          .orElseThrow(left -> new ExConvert(left, ItemType.PARAMETER, 0));
+    return new DeleteCommand_Impl(_verbosity, _path);
+  }
+
+  private static Map<String, Opt> optionNames() {
+    Map<String, Opt> result = new HashMap<>(2);
+    result.put("-v", Opt.VERBOSITY);
+    result.put("--verbosity", Opt.VERBOSITY);
+    return result;
+  }
+
+  private Map<Opt, OptionState> optionStates() {
+    Map<Opt, OptionState> result = new EnumMap<>(Opt.class);
+    result.put(Opt.VERBOSITY, new OptionStateRegular());
+    return result;
+  }
+
   CommandModel createModel() {
     return CommandModel.builder()
           .addDescriptionLine("Coffee time!")
@@ -75,125 +102,7 @@ class DeleteCommandParser {
           .build();
   }
 
-  private static class StatefulParser {
-    Pattern sus = Pattern.compile("-[a-zA-Z0-9]+|--[a-zA-Z0-9-]+");
-
-    Map<String, Opt> optionNames = new HashMap<>(2);
-
-    Map<Opt, OptionParser> optionParsers = new EnumMap<>(Opt.class);
-
-    String[] params = new String[1];
-
-    StatefulParser() {
-      optionNames.put("-v", Opt.VERBOSITY);
-      optionNames.put("--verbosity", Opt.VERBOSITY);
-      optionParsers.put(Opt.VERBOSITY, new RegularOptionParser());
-    }
-
-    StatefulParser parse(Iterator<String> it) throws ExToken {
-      int position = 0;
-      boolean endOfOptionParsing = false;
-      while (it.hasNext()) {
-        String token = it.next();
-        if (!endOfOptionParsing && "--".equals(token)) {
-          endOfOptionParsing = true;
-          continue;
-        }
-        if (!endOfOptionParsing && tryParseOption(token, it))
-          continue;
-        if (!endOfOptionParsing && sus.matcher(token).matches())
-          throw new ExToken(ErrTokenType.INVALID_OPTION, token);
-        if (position == 1)
-          throw new ExToken(ErrTokenType.EXCESS_PARAM, token);
-        params[position++] = token;
-      }
-      return this;
-    }
-
-    String readOptionName(String token) {
-      if (token.length() < 2 || !token.startsWith("-"))
-        return null;
-      if (!token.startsWith("--"))
-        return token.substring(0, 2);
-      if (!token.contains("="))
-        return token;
-      return token.substring(0, token.indexOf('='));
-    }
-
-    boolean tryParseOption(String token, Iterator<String> it) throws ExToken {
-      Opt option = optionNames.get(readOptionName(token));
-      if (option == null)
-        return false;
-      optionParsers.get(option).read(token, it);
-      return true;
-    }
-
-    DeleteCommand build() throws ExNotSuccess {
-      OptionalInt verbosity = this.optionParsers.get(Opt.VERBOSITY).stream()
-            .map(StringConverter.create(Integer::valueOf))
-            .collect(Eithers.toValidList())
-            .orElseThrow(left -> new ExConvert(left, ItemType.OPTION, 0))
-            .stream().findAny()
-            .map(OptionalInt::of).orElse(OptionalInt.empty());
-      Path path = Optional.ofNullable(this.params[0])
-            .map(StringConverter.create(Paths::get))
-            .orElseThrow(() -> new ExMissingItem(ItemType.PARAMETER, 0))
-            .orElseThrow(left -> new ExConvert(left, ItemType.PARAMETER, 0));
-      return new DeleteCommandImpl(verbosity, path);
-    }
-  }
-
   private enum Opt {
     VERBOSITY
-  }
-
-  private abstract static class OptionParser {
-    abstract void read(String token, Iterator<String> it) throws ExToken;
-
-    abstract Stream<String> stream();
-
-    String readOptionArgument(String token, Iterator<String> it) throws ExToken {
-      boolean unix = !token.startsWith("--");
-      if (unix && token.length() > 2)
-        return token.substring(2);
-      if (!unix && token.contains("="))
-        return token.substring(token.indexOf('=') + 1);
-      if (it.hasNext())
-        return it.next();
-      throw new ExToken(ErrTokenType.MISSING_ARGUMENT, token);
-    }
-  }
-
-  private static class RegularOptionParser extends OptionParser {
-    String value;
-
-    void read(String token, Iterator<String> it) throws ExToken {
-      if (value != null)
-        throw new ExToken(ErrTokenType.OPTION_REPETITION, token);
-      value = readOptionArgument(token, it);
-    }
-
-    Stream<String> stream() {
-      return Optional.ofNullable(value).stream();
-    }
-  }
-
-  private static class DeleteCommandImpl extends DeleteCommand {
-    OptionalInt verbosity;
-
-    Path path;
-
-    DeleteCommandImpl(OptionalInt verbosity, Path path) {
-      this.verbosity = verbosity;
-      this.path = path;
-    }
-
-    OptionalInt verbosity() {
-      return verbosity;
-    }
-
-    Path path() {
-      return path;
-    }
   }
 }

@@ -15,6 +15,7 @@ import javax.lang.model.element.Modifier;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
@@ -44,7 +45,7 @@ public class GenAutoTypes {
             PACKAGE.replace('.', '/') +
             "/" + AUTO_TYPES_CLASSNAME + "Parser.java";
 
-    private static void generate(String version) throws IllegalAccessException, IOException, NoSuchMethodException, InvocationTargetException, InstantiationException {
+    private static void generate(String version) throws IllegalAccessException, IOException, NoSuchMethodException, InvocationTargetException, InstantiationException, NoSuchFieldException {
         Constructor<AutoMappings> constructor = AutoMappings.class.getDeclaredConstructor(TypeTool.class);
         constructor.setAccessible(true);
         AutoMappings autoConverters = constructor.newInstance(new Object[]{new TypeTool(null, null)});
@@ -59,7 +60,7 @@ public class GenAutoTypes {
         for (AutoConversion entry : map) {
             String type = entry.qualifiedName();
             if (!isBoxedPrimitive(type)) {
-                data.add(createMethodData(type, entry.block().code()));
+                data.add(createMethodData(type, entry));
             }
         }
         data.sort(COMP);
@@ -116,7 +117,7 @@ public class GenAutoTypes {
         }
     }
 
-    public static void main(String[] args) throws IllegalAccessException, IOException, InvocationTargetException, NoSuchMethodException, InstantiationException {
+    public static void main(String[] args) throws IllegalAccessException, IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, NoSuchFieldException {
 
         Stream.of(AUTO_TYPES, AUTO_TYPES_PARSER, MY_ARGUMENTS_PARSER)
                 .map(Paths::get)
@@ -130,7 +131,10 @@ public class GenAutoTypes {
         GenMyCommandParser.generate();
     }
 
-    private static MethodData createMethodData(String type, CodeBlock mapExpr) {
+    private static MethodData createMethodData(String type, AutoConversion autoConversion) throws NoSuchFieldException, IllegalAccessException {
+        Field mapper = AutoConversion.class.getDeclaredField("mapper");
+        mapper.setAccessible(true);
+        CodeBlock mapExpr = (CodeBlock) mapper.get(autoConversion);
         try {
             return new MethodData(Class.forName(type), mapExpr);
         } catch (ClassNotFoundException e) {
