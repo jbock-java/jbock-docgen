@@ -88,8 +88,7 @@ final class DeleteCommandParser {
 
   CommandModel createModel() {
     return CommandModel.builder()
-          .addDescriptionLine("Beans!")
-          .withProgramName("rm")
+          .withProgramName("delete-command")
           .addOption(Option.builder()
             .withParamLabel("VERBOSITY")
             .withNames(List.of("-v", "--verbosity"))

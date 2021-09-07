@@ -7,7 +7,7 @@ import net.jbock.Parameter;
 import java.nio.file.Path;
 import java.util.OptionalInt;
 
-@Command(name = "rm", description = "Beans!")
+@Command
 abstract class DeleteCommand {
 
     @Parameter(index = 0,
