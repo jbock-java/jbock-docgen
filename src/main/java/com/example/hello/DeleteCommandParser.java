@@ -13,12 +13,12 @@ import javax.annotation.processing.Generated;
 import net.jbock.contrib.StandardErrorHandler;
 import net.jbock.model.CommandModel;
 import net.jbock.model.ItemType;
+import net.jbock.model.Multiplicity;
 import net.jbock.model.Option;
 import net.jbock.model.Parameter;
 import net.jbock.parse.OptionState;
-import net.jbock.parse.OptionStateRegular;
-import net.jbock.parse.Parser;
-import net.jbock.parse.RegularParser;
+import net.jbock.parse.OptionStateNonRepeatable;
+import net.jbock.parse.RestlessParser;
 import net.jbock.util.ExConvert;
 import net.jbock.util.ExFailure;
 import net.jbock.util.ExMissingItem;
@@ -34,7 +34,7 @@ final class DeleteCommandParser {
   private final Map<String, Opt> optionNames = optionNames();
 
   Either<ParsingFailed, DeleteCommand> parse(List<String> tokens) {
-    Parser<Opt> parser = RegularParser.create(optionNames, optionStates(), 1);
+    RestlessParser<Opt> parser = RestlessParser.create(optionNames, optionStates(), 1);
     try {
       parser.parse(tokens);
       return Either.right(harvest(parser));
@@ -59,7 +59,7 @@ final class DeleteCommandParser {
       });
   }
 
-  private DeleteCommand harvest(Parser<Opt> parser) throws ExFailure {
+  private DeleteCommand harvest(RestlessParser<Opt> parser) throws ExFailure {
     OptionalInt _verbosity = parser.option(Opt.VERBOSITY)
           .map(StringConverter.create(Integer::valueOf))
           .collect(Eithers.toValidList())
@@ -82,19 +82,19 @@ final class DeleteCommandParser {
 
   private Map<Opt, OptionState> optionStates() {
     Map<Opt, OptionState> result = new EnumMap<>(Opt.class);
-    result.put(Opt.VERBOSITY, new OptionStateRegular());
+    result.put(Opt.VERBOSITY, new OptionStateNonRepeatable());
     return result;
   }
 
   CommandModel createModel() {
     return CommandModel.builder()
           .withProgramName("delete-command")
-          .addOption(Option.builder()
+          .addOption(Option.unary(Multiplicity.OPTIONAL)
             .withParamLabel("VERBOSITY")
             .withNames(List.of("-v", "--verbosity"))
             .addDescriptionLine("A named option.")
             .build())
-          .addParameter(Parameter.builder()
+          .addParameter(Parameter.builder(Multiplicity.REQUIRED)
             .withParamLabel("PATH")
             .addDescriptionLine("A positional parameter.")
             .build())
