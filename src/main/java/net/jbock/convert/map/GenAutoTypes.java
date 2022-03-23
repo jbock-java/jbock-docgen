@@ -76,8 +76,7 @@ public class GenAutoTypes {
                 "java.util.Optional",
                 "java.util.OptionalInt",
                 "java.util.OptionalLong",
-                "java.util.OptionalDouble",
-                "io.vavr.control.Option");
+                "java.util.OptionalDouble");
         javadoc.append("This class contains all \"auto types\"\n");
         javadoc.append("that can be used without a custom converter in jbock ");
         javadoc.append(version);

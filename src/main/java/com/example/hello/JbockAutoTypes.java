@@ -37,7 +37,6 @@ import net.jbock.Option;
  *   <li>{@code java.util.OptionalInt}
  *   <li>{@code java.util.OptionalLong}
  *   <li>{@code java.util.OptionalDouble}
- *   <li>{@code io.vavr.control.Option}
  * </ul>
  */
 @Generated("net.jbock.convert.map.GenAutoTypes")
