@@ -6,7 +6,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "net.jbock.processor.JbockProcessor",
-    comments = "https://github.com/jbock-java"
+    comments = "https://github.com/jbock-java/jbock"
 )
 final class DeleteCommand_Impl extends DeleteCommand {
   private final OptionalInt verbosity;

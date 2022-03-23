@@ -11,7 +11,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "net.jbock.processor.JbockProcessor",
-    comments = "https://github.com/jbock-java"
+    comments = "https://github.com/jbock-java/jbock"
 )
 final class JbockAutoTypes_Impl extends JbockAutoTypes {
   private final File file;

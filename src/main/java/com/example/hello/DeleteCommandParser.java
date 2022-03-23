@@ -28,7 +28,7 @@ import net.jbock.util.StringConverter;
 
 @Generated(
     value = "net.jbock.processor.JbockProcessor",
-    comments = "https://github.com/jbock-java"
+    comments = "https://github.com/jbock-java/jbock"
 )
 final class DeleteCommandParser {
   private final Map<String, Opt> optionNames = optionNames();
@@ -37,14 +37,14 @@ final class DeleteCommandParser {
     RestlessParser<Opt> parser = RestlessParser.create(optionNames, optionStates(), 1);
     try {
       parser.parse(tokens);
-      return Either.right(harvest(parser));
+      return Either.right(extract(parser));
     } catch (ExFailure e) {
       return Either.left(e.toError(createModel()));
     }
   }
 
   DeleteCommand parseOrExit(String[] args) {
-    if (args.length == 0 || "--help".equals(args[0])) {
+    if (args.length > 0 && "--help".equals(args[0])) {
       StandardErrorHandler.builder().build()
         .printUsageDocumentation(createModel());
       System.exit(0);
@@ -59,10 +59,10 @@ final class DeleteCommandParser {
       });
   }
 
-  private DeleteCommand harvest(RestlessParser<Opt> parser) throws ExFailure {
+  private DeleteCommand extract(RestlessParser<Opt> parser) throws ExFailure {
     OptionalInt _verbosity = parser.option(Opt.VERBOSITY)
           .map(StringConverter.create(Integer::valueOf))
-          .collect(Eithers.toValidList())
+          .collect(Eithers.firstFailure())
           .orElseThrow(left -> new ExConvert(left, ItemType.OPTION, 0))
           .stream().findAny()
           .map(OptionalInt::of).orElse(OptionalInt.empty());

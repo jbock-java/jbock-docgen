@@ -1,14 +1,14 @@
 package net.jbock.convert.map;
 
+import io.jbock.shadow.javapoet.AnnotationSpec;
+import io.jbock.shadow.javapoet.CodeBlock;
+import io.jbock.shadow.javapoet.JavaFile;
+import io.jbock.shadow.javapoet.MethodSpec;
+import io.jbock.shadow.javapoet.TypeName;
+import io.jbock.shadow.javapoet.TypeSpec;
 import net.jbock.Command;
 import net.jbock.Option;
 import net.jbock.common.TypeTool;
-import net.jbock.javapoet.AnnotationSpec;
-import net.jbock.javapoet.CodeBlock;
-import net.jbock.javapoet.JavaFile;
-import net.jbock.javapoet.MethodSpec;
-import net.jbock.javapoet.TypeName;
-import net.jbock.javapoet.TypeSpec;
 
 import javax.annotation.processing.Generated;
 import javax.lang.model.element.Modifier;
